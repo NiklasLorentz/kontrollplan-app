@@ -1,7 +1,7 @@
 
 services:
   - type: web
-    name: kontrollplan-app
+    name: kontrollplaner
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt
@@ -9,4 +9,3 @@ services:
     envVars:
       - key: PYTHONUNBUFFERED
         value: "1"
-    autoDeploy: true

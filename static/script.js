@@ -33,7 +33,8 @@ function addCategoryRow(title='Ny rubrik'){
   const tr = document.createElement('tr');
   tr.classList.add('category');
   const tdTitle = document.createElement('td');
-  tdTitle.appendChild(makeEditableCell(title));
+  const span = document.createElement('span'); span.className='editable'; span.contentEditable='true'; span.textContent=title;
+  tdTitle.appendChild(span);
   tr.appendChild(tdTitle);
   for (let i=0;i<5;i++){ tr.appendChild(document.createElement('td')); }
   const tdRemove = document.createElement('td');
@@ -71,8 +72,8 @@ function rebuildHidden(){
     else{
       hidden('is_category[]','0'); hidden('kategori[]','');
       const [kp,vem,hur,mot,nar,sign]=vals;
-      hidden('kp[]',kp||''); hidden('vem[]',vem||''); hidden('hur[]',hur||''); hidden('mot[]',mot||'');
-      hidden('nar[]',nar||''); hidden('signatur[]',sign||'');
+      hidden('kp[]',kp||''); hidden('vem[]',vem||''); hidden('hur[]',hur||'');
+      hidden('mot[]',mot||''); hidden('nar[]',nar||''); hidden('signatur[]',sign||'');
     }
   });
 }

@@ -1,0 +1,44 @@
+
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Cookies – Kontrollplaner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <div><strong>Kontrollplaner</strong></div>
+    <nav style="display:flex;gap:12px">
+      <a href="{{ url_for('landing') }}">Hem</a>
+      <a href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
+    </nav>
+  </header>
+
+  <h1>Cookies</h1>
+  <div class="card">
+    <h3>Vad är cookies?</h3>
+    <p>Cookies är små textfiler som lagras i din webbläsare. De kan användas för grundläggande funktioner, statistik och förbättrad användarupplevelse.</p>
+
+    <h3>Vilka cookies använder vi?</h3>
+    <ul>
+      <li><strong>Nödvändiga:</strong> För att tjänsten ska fungera (t.ex. vid formulärsteg).</li>
+      <li><strong>Analys (valfritt):</strong> Google Analytics eller Matomo – endast om du samtycker.</li>
+    </ul>
+
+    <h3>Samtycke</h3>
+    <p>Analys-cookies sätts endast efter ditt samtycke. Du kan när som helst återkalla samtycket genom att rensa cookies i din webbläsare eller klicka ”Hantera cookies”.</p>
+
+    <h3>Hantera cookies</h3>
+    <p>Klicka på ”Hantera cookies” längst ned på sidan för att ändra ditt val.</p>
+
+    <h3>Kontakt</h3>
+    <p><a href="mailto:info@kontrollplaner.com">info@kontrollplaner.com</a></p>
+  </div>
+
+  {% include "_footer.html" %}
+  {% include "_cookie_banner.html" %}
+  <script src="{{ url_for('cookie_js') }}"></script>
+</body>
+</html>

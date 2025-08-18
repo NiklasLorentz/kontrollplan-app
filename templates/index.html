@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Skapa kontrollplan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -43,8 +44,13 @@
       </label>
     </div>
     <div class="actions">
+      <a class="button secondary" href="{{ url_for('landing') }}">Avbryt</a>
       <button type="submit">Nästa</button>
     </div>
   </form>
+
+  {% include "_footer.html" %}
+  {% include "_cookie_banner.html" %}
+  <script src="{{ url_for('cookie_js') }}"></script>
 </body>
 </html>

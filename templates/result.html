@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Kontrollplan – resultat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script defer src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
@@ -23,7 +24,7 @@
       </tbody>
     </table>
     <div class="actions">
-      <form action="/" method="post">
+      <form action="{{ url_for('skapa') }}" method="post">
         {% for k,v in {"bygglovstyp":bygglovstyp,"byggherre":byggherre,"telefon":telefon,"epost":epost,"fastighetsbeteckning":fastighetsbeteckning,"fastighetsadress":fastighetsadress,"ka_namn":ka_namn,"ka_kontakt":ka_kontakt,"projektbeskrivning":projektbeskrivning}.items() %}
         <input type="hidden" name="{{k}}" value="{{v}}">
         {% endfor %}
@@ -92,6 +93,8 @@
     </form>
   </section>
 
-  <script>window.DEFAULT_ROWS = {{ rows|tojson }};</script>
+  {% include "_footer.html" %}
+  {% include "_cookie_banner.html" %}
+  <script src="{{ url_for('cookie_js') }}"></script>
 </body>
 </html>

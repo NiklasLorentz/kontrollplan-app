@@ -1,0 +1,48 @@
+
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Integritetspolicy – Kontrollplaner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <div><strong>Kontrollplaner</strong></div>
+    <nav style="display:flex;gap:12px">
+      <a href="{{ url_for('landing') }}">Hem</a>
+      <a href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
+    </nav>
+  </header>
+
+  <h1>Integritetspolicy</h1>
+  <div class="card">
+    <p><strong>Senast uppdaterad:</strong> {{ now().year }}</p>
+    <h3>Vilka uppgifter vi hanterar</h3>
+    <p>Uppgifter du skriver i formuläret (t.ex. namn, kontaktuppgifter och projektbeskrivning) används för att generera en kontrollplan (PDF) till dig.</p>
+
+    <h3>Hur vi använder uppgifter</h3>
+    <ul>
+      <li>För att skapa din kontrollplan (PDF) och visa den på skärmen.</li>
+      <li>För att förbättra tjänsten (t.ex. anonymiserad statistik om du samtycker).</li>
+    </ul>
+
+    <h3>Lagring</h3>
+    <p>Som utgångspunkt sparar vi inte dina formulärdata på servern – de bearbetas i minnet för att generera PDF:en. Om vi i framtiden erbjuder konto/inloggning eller sparfunktioner uppdaterar vi denna policy.</p>
+
+    <h3>Tredjepart</h3>
+    <p>Eventuell besöksstatistik (Google Analytics eller Matomo) aktiveras först efter samtycke. IP-anonymisering är aktiverad i exempelkoden.</p>
+
+    <h3>Dina rättigheter</h3>
+    <p>Du kan kontakta oss för frågor eller för att begära radering av eventuella personuppgifter som kan ha lagrats vid incidenter eller fel.</p>
+
+    <h3>Kontakt</h3>
+    <p><a href="mailto:info@kontrollplaner.com">info@kontrollplaner.com</a></p>
+  </div>
+
+  {% include "_footer.html" %}
+  {% include "_cookie_banner.html" %}
+  <script src="{{ url_for('cookie_js') }}"></script>
+</body>
+</html>

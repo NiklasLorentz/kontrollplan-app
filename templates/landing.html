@@ -1,0 +1,74 @@
+
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Kontrollplaner – Skapa kontrollplan enkelt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Skapa en komplett kontrollplan för bygglov på några minuter.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body{max-width:980px;margin:0 auto;padding:24px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    header a{color:#0b57d0;text-decoration:none;font-weight:600}
+    header nav{display:flex;gap:12px}
+    .hero{background:#0b57d0;color:#fff;border-radius:16px;padding:32px}
+    .hero h1{margin:0 0 8px 0;color:#fff}
+    .hero p{margin:0 0 16px 0;color:#e8efff;font-size:1.05rem}
+    .cta{display:inline-block;background:#22c55e;color:#111827;padding:12px 18px;border-radius:10px;font-weight:700;text-decoration:none}
+    .cta:hover{filter:brightness(.96)}
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px}
+    .feature{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px}
+    .feature h3{margin:0 0 6px 0;font-size:1rem}
+    .muted{color:#6b7280}
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>Kontrollplaner</strong></div>
+    <nav>
+      <a href="{{ url_for('landing') }}">Hem</a>
+      <a href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Skapa din kontrollplan på några minuter</h1>
+    <p>Vårt verktyg guidar dig steg för steg och genererar en tydlig kontrollplan som kommuner och kontrollansvariga känner igen.</p>
+    <a class="cta" href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <h3>✅ Enkel att använda</h3>
+      <p class="muted">Fyll i uppgifter, välj åtgärdstyp (t.ex. nybyggnad, tillbyggnad, fasad) – klart.</p>
+    </div>
+    <div class="feature">
+      <h3>🧱 Anpassade kontrollpunkter</h3>
+      <p class="muted">Vi föreslår rätt punkter för vanliga åtgärder. Lägg till, ändra eller ta bort vid behov.</p>
+    </div>
+    <div class="feature">
+      <h3>🖨️ Snygg PDF för inskick</h3>
+      <p class="muted">PDF i liggande A4 med signeringsrad och legend (BH/KA/E).</p>
+    </div>
+    <div class="feature">
+      <h3>💡 Tydlighet</h3>
+      <p class="muted">Obligatoriska rader låses. Övriga kan redigeras för att passa ditt projekt.</p>
+    </div>
+  </section>
+
+  <section class="feature" style="margin-top:12px">
+    <h3>Hur det fungerar</h3>
+    <ol>
+      <li>Klicka på <em>Skapa kontrollplan</em>.</li>
+      <li>Fyll i dina uppgifter och välj åtgärd.</li>
+      <li>Justera kontrollpunkter vid behov.</li>
+      <li>Ladda ner PDF och bifoga till din ansökan.</li>
+    </ol>
+  </section>
+
+  {% include "_footer.html" %}
+  {% include "_cookie_banner.html" %}
+  <script src="{{ url_for('cookie_js') }}"></script>
+</body>
+</html>
