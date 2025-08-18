@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, send_file
+import os
+from datetime import datetime
+from flask import Flask, render_template, request, send_file, make_response
 from io import BytesIO
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
@@ -7,6 +9,23 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from xml.sax.saxutils import escape
 
 app = Flask(__name__)
+
+# ===== Analytics config via env (Render Settings → Environment) =====
+app.config["GA_ID"] = os.environ.get("GA_ID", "")              # ex: G-XXXXXXXXXX
+app.config["MATOMO_URL"] = os.environ.get("MATOMO_URL", "")    # ex: https://matomo.dindomän.se/
+app.config["MATOMO_SITE_ID"] = os.environ.get("MATOMO_SITE_ID", "")  # ex: 1
+
+@app.context_processor
+def inject_analytics_config():
+    return {
+        "GA_ID": app.config.get("GA_ID", ""),
+        "MATOMO_URL": app.config.get("MATOMO_URL", ""),
+        "MATOMO_SITE_ID": app.config.get("MATOMO_SITE_ID", ""),
+    }
+
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow}
 
 # ===========================
 # Hälsa & Ping (för Render)
@@ -23,7 +42,6 @@ def ping():
 # Kontrollplansdata
 # ===========================
 def plan_rows(bygglovstyp: str):
-    """Returnerar standardrader (kategorier + kontrollpunkter) för vald åtgärdstyp."""
     t = (bygglovstyp or "").lower()
 
     def cat(name):
@@ -47,13 +65,11 @@ def plan_rows(bygglovstyp: str):
             row("Utsättning av byggnad på tomten", "BH", "Kontrollmätning", "Situationsplan, bygglovsbeslut", "Före byggstart", oblig=True),
             row("Markarbete och schakt", "E", "Visuell kontroll / foto", "Ritningar, PBL"),
             row("Grundläggning inkl. dränering & fuktskydd", "E", "Foto, egenkontroll", "BBR, AMA"),
-
             cat("Stomme och klimatskal"),
             row("Bärande stomme (väggar, bjälklag, pelare)", "E", "Egenkontroll, foto", "Konstruktionsritningar"),
             row("Takstolar och yttertak", "E", "Egenkontroll, foto", "Ritningar"),
             row("Ytterväggar inkl. isolering & fuktskydd", "E", "Foto, egenkontroll", "BBR"),
             row("Fönster och dörrar (placering, tätning)", "E", "Egenkontroll", "Ritningar, BBR"),
-
             cat("Installationer"),
             row("Elinstallationer", "E", "Intyg", "Elsäkerhetslagen"),
             row("VVS-installationer (vatten, avlopp)", "E", "Täthetsprov, intyg", "Branschregler"),
@@ -61,7 +77,6 @@ def plan_rows(bygglovstyp: str):
             row("Brandskydd (genomföringar, fasad, ev. eldstad/skorsten)", "E", "Foto, intyg, egenkontroll", "BBR"),
             row("Brandskydd i bostaden (brandvarnare, brandsläckare, brandfilt)", "BH", "Egenkontroll", "BBR, MSB rekommendationer"),
             row("Energikrav (täthetsprov, isolering)", "E", "Provtryckning, intyg", "BBR", "Före slutsamråd"),
-
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med beviljat bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Innan slutbesked", oblig=True),
         ]
@@ -71,23 +86,20 @@ def plan_rows(bygglovstyp: str):
             cat("Mark och grund"),
             row("Utsättning av tillbyggnaden på tomten", "BH", "Kontrollmätning", "Situationsplan, bygglovsbeslut", "Före byggstart", oblig=True),
             row("Markarbete och grundläggning", "E", "Foto, egenkontroll", "Ritningar, BBR"),
-
             cat("Stomme och klimatskal"),
             row("Bärande stomme (väggar, bjälklag, pelare)", "E", "Egenkontroll, foto", "Konstruktionsritningar"),
             row("Yttertak (anslutning mot befintligt tak)", "E", "Foto, egenkontroll", "Ritningar"),
             row("Ytterväggar inkl. isolering & fuktskydd", "E", "Foto, egenkontroll", "BBR"),
             row("Fönster och dörrar (placering, tätning)", "E", "Egenkontroll", "Ritningar, BBR"),
             row("Anslutning mot befintlig byggnad (täthet, fuktskydd)", "E", "Foto, egenkontroll", "BBR"),
-
             cat("Installationer"),
             row("Elinstallationer", "E", "Intyg", "Elsäkerhetslagen"),
             row("VVS-installationer (om aktuellt)", "E", "Täthetsprov, intyg", "Branschregler"),
             row("Brandskydd (genomföringar, fasad, ev. eldstad)", "E", "Foto, intyg", "BBR"),
             row("Brandskydd i bostaden (brandvarnare, brandsläckare, brandfilt)", "BH", "Egenkontroll", "BBR, MSB rekommendationer"),
             row("Energikrav (isolering, täthet)", "E", "Provtryckning, intyg", "BBR"),
-
             cat("Slutkontroll"),
-            row("Utförandet överensstämmer med beviljat bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Innan slutbesked", oblig=True),
+            row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Innan slutbesked", oblig=True),
         ]
 
     if "attefall" in t or "komplement" in t:
@@ -95,20 +107,17 @@ def plan_rows(bygglovstyp: str):
             cat("Läge och mått"),
             row("Placering på tomten", "BH", "Kontrollmätning", "Situationsplan, startbesked", "Före byggstart", oblig=True),
             row("Mått (höjd och area)", "BH", "Kontrollmätning", "PBL/PBF", "Före byggstart", oblig=True),
-
             cat("Byggnation"),
             row("Markarbete och grundläggning", "E", "Foto, egenkontroll", "Ritningar"),
             row("Bärande stomme (väggar, bjälklag, pelare)", "E", "Egenkontroll, foto", "Ritningar"),
             row("Yttertak (lutning, täckning)", "E", "Egenkontroll, foto", "Ritningar"),
             row("Ytterväggar och fasad", "E", "Foto, egenkontroll", "Ritningar, BBR"),
             row("Fönster och dörrar (placering, tätning)", "E", "Egenkontroll", "Ritningar"),
-
             cat("Installationer (om aktuellt)"),
             row("Elinstallationer", "E", "Intyg", "Elsäkerhetslagen"),
             row("VVS-installationer", "E", "Intyg", "Branschregler"),
             row("Dagvattenhantering", "E", "Visuell kontroll", "Kommunens krav"),
             row("Brandskydd i bostaden (brandvarnare, brandsläckare, brandfilt)", "BH", "Egenkontroll", "BBR, MSB rekommendationer"),
-
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med startbesked", "BH", "Granskning, intyg", "Startbesked", "Innan slutbesked", oblig=True),
         ]
@@ -123,7 +132,6 @@ def plan_rows(bygglovstyp: str):
             row("Fönster och dörrar (utförande, placering, kulör)", "E", "Egenkontroll", "Ritningar, BBR"),
             row("Tätning och fuktskydd (skarvar, anslutningar)", "E", "Foto, egenkontroll", "BBR"),
             row("Brandskydd (yttervägg, fasadmaterial)", "E", "Intyg, produktdokumentation", "BBR"),
-
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Efter arbetet", oblig=True),
         ]
@@ -137,7 +145,6 @@ def plan_rows(bygglovstyp: str):
             row("Isolering av kanaler (värme/kyla)", "E", "Foto, egenkontroll", "BBR"),
             row("Injustering av ventilationsflöden", "E", "Protokoll", "BBR"),
             row("Funktionsprov (OVK)", "E", "OVK-protokoll", "BBR, OVK-regler"),
-
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Efter arbetet", oblig=True),
         ]
@@ -146,13 +153,11 @@ def plan_rows(bygglovstyp: str):
         return [
             cat("Förberedelser"),
             row("Avstängning av el, vatten, avlopp innan rivning", "BH", "Intyg / foto", "Kommunens krav, arbetsmiljöregler", "Före rivning", oblig=True),
-
             cat("Rivning"),
             row("Rivning utförs enligt startbesked", "E", "Egenkontroll, foto", "Startbesked"),
             row("Sortering och omhändertagande av rivningsmaterial", "E", "Avfallsintyg, foto", "Avfallsförordningen"),
             row("Hantering av farligt avfall (asbest, PCB, olja) om aktuellt", "E", "Intyg", "Miljöbalken"),
             row("Säkerhet på arbetsplatsen (avspärrningar, skydd)", "E", "Egenkontroll", "Arbetsmiljöregler"),
-
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med startbesked", "BH", "Intyg", "Startbesked", "Efter rivning", oblig=True),
         ]
@@ -164,7 +169,6 @@ def plan_rows(bygglovstyp: str):
             row("Brandskydd (avstånd till brännbart material)", "E", "Foto, egenkontroll", "BBR"),
             row("Skorsten/kanal korrekt monterad och tät", "E", "Tryckprov, intyg", "BBR"),
             row("Sotningsintyg / provtryckning utförd", "Sakkunnig sotare", "Intyg", "Sotningslagen / BBR", oblig=True),
-
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Intyg", "Startbesked", "Efter installation", oblig=True),
         ]
@@ -176,12 +180,10 @@ def plan_rows(bygglovstyp: str):
             row("Ny bärande konstruktion (stålbalk, pelare)", "E", "Foto, intyg", "Ritningar"),
             row("Nya innerväggar (placering, material)", "E", "Egenkontroll", "Ritningar"),
             row("Flytt/ny dörröppning eller fönster (om aktuellt)", "E", "Foto, egenkontroll", "Ritningar"),
-
             cat("Installationer"),
             row("Elinstallationer (ändringar)", "E", "Intyg", "Elsäkerhetslagen"),
             row("VVS-installationer (om aktuellt)", "E", "Intyg", "Branschregler"),
             row("Brandskydd (nya krav vid ändring)", "E", "Intyg / dokumentation", "BBR"),
-
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med startbesked", "BH", "Intyg", "Startbesked", "Efter arbetet", oblig=True),
         ]
@@ -191,13 +193,11 @@ def plan_rows(bygglovstyp: str):
             cat("Rivning och förberedelse"),
             row("Rivning av gammalt tätskikt", "E", "Foto, egenkontroll", "Branschregler (BBV/GVK)"),
             row("Nya väggar och golv förberedda", "E", "Foto", "Branschregler"),
-
             cat("Tätskikt och installationer"),
             row("Tätskikt monterat korrekt", "E", "Foto, intyg", "BBV/GVK"),
             row("Golvbrunn (byte/kontroll)", "E", "Foto, intyg", "Säker Vatten"),
             row("Rörgenomföringar tätade", "E", "Foto, intyg", "Säker Vatten"),
             row("Elinstallation (golvvärme, uttag)", "E", "Intyg", "Elsäkerhetslagen"),
-
             cat("Slutkontroll"),
             row("Slutkontroll av färdigt våtrum", "BH", "Visuell kontroll", "Ritningar, branschregler"),
             row("Utförandet överensstämmer med startbesked", "BH", "Intyg", "Startbesked", "Efter arbetet", oblig=True),
@@ -207,11 +207,14 @@ def plan_rows(bygglovstyp: str):
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
 # ===========================
-# Routes: formulär → resultat
+# LANDNING + FORM
 # ===========================
-@app.route('/', methods=['GET','POST'])
-def index():
-    # Prefill till formuläret om man klickar "Ändra uppgifter" från resultatsidan
+@app.route('/')
+def landing():
+    return render_template('landing.html')
+
+@app.route('/skapa', methods=['GET','POST'])
+def skapa():
     fields = ["bygglovstyp","byggherre","telefon","epost","fastighetsbeteckning","fastighetsadress","ka_namn","ka_kontakt","projektbeskrivning"]
     data = {k: "" for k in fields}
     src = request.form if request.method=='POST' and request.form else request.args
@@ -219,15 +222,9 @@ def index():
         for k in fields:
             data[k] = src.get(k, "")
     typer = [
-        "Nybyggnad",
-        "Tillbyggnad",
-        "Attefallshus / Komplementbyggnad",
-        "Fasadändring",
-        "Ventilation",
-        "Rivning",
-        "Eldstad och skorsten",
-        "Ändrad planlösning",
-        "Våtrumsrenovering",
+        "Nybyggnad","Tillbyggnad","Attefallshus / Komplementbyggnad",
+        "Fasadändring","Ventilation","Rivning","Eldstad och skorsten",
+        "Ändrad planlösning","Våtrumsrenovering"
     ]
     return render_template('index.html', typer=typer, data=data)
 
@@ -240,16 +237,33 @@ def result():
     return render_template('result.html', rows=rows, **form)
 
 # ===========================
+# Policy-sidor
+# ===========================
+@app.route('/integritet')
+def integritet():
+    return render_template('integritet.html')
+
+@app.route('/cookies')
+def cookies():
+    return render_template('cookies.html')
+
+# ===========================
+# Cookie JS (templated, injicerar env-nycklar)
+# ===========================
+@app.route('/cookie.js')
+def cookie_js():
+    resp = make_response(render_template('cookie.js'))
+    resp.headers['Content-Type'] = 'application/javascript; charset=utf-8'
+    return resp
+
+# ===========================
 # PDF-generering
 # ===========================
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
-    # 1) Uppgifter
     form = {k: request.form.get(k, '') for k in [
         "bygglovstyp","byggherre","telefon","epost","fastighetsbeteckning","fastighetsadress","ka_namn","ka_kontakt","projektbeskrivning"
     ]}
-
-    # 2) Rader från dolda fält (skapade av JS vid submit)
     kategorier = request.form.getlist('kategori[]')
     is_category = request.form.getlist('is_category[]')
     kp  = request.form.getlist('kp[]')
@@ -259,20 +273,21 @@ def generate_pdf():
     nar = request.form.getlist('nar[]')
     sign = request.form.getlist('signatur[]')
 
-    # 3) Bygg PDF
     buf = BytesIO()
-    doc = SimpleDocTemplate(buf, pagesize=landscape(A4), leftMargin=18, rightMargin=18, topMargin=18, bottomMargin=18)
+    doc = SimpleDocTemplate(
+        buf, pagesize=landscape(A4),
+        leftMargin=18, rightMargin=18, topMargin=18, bottomMargin=18
+    )
     styles = getSampleStyleSheet()
     small = ParagraphStyle('small', parent=styles['Normal'], fontSize=8, leading=10)
     head = ParagraphStyle('head', parent=styles['Heading1'], fontSize=16, leading=18, spaceAfter=6)
 
-    def P(x, st=small):  # säkert paragraph
+    def P(x, st=small):
         return Paragraph(escape(x or ""), st)
 
     elems = []
     elems.append(Paragraph(f"Kontrollplan – {escape(form['bygglovstyp'])}", head))
 
-    # Uppgiftstabell (etikett fet, värde normal)
     info = [
         ["Byggherre:", f"{form['byggherre']}"],
         ["Telefon:", f"{form['telefon']}"],
@@ -284,19 +299,17 @@ def generate_pdf():
     ]
     info_table = Table(info, colWidths=[120, 620])
     info_table.setStyle(TableStyle([
-        ('FONTNAME', (0,0), (0,-1), 'Helvetica-Bold'),
-        ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('FONTSIZE', (0,0), (-1,-1), 9),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('FONTNAME',(0,0),(0,-1),'Helvetica-Bold'),
+        ('VALIGN',(0,0),(-1,-1),'TOP'),
+        ('FONTSIZE',(0,0),(-1,-1),9),
+        ('BOTTOMPADDING',(0,0),(-1,-1),4)
     ]))
     elems.append(info_table)
     elems.append(Spacer(1, 10))
 
-    # Kontrollplan-tabell
     headers = ["Kategori/Kontrollpunkt","Vem","Hur","Kontroll mot","När","Signatur / Datum"]
     data = [[Paragraph(f"<b>{h}</b>", small) for h in headers]]
     category_rows = []
-    # Viktigt: separata räknare så kategorier/data inte blandas ihop
     idx_cat = 0
     idx_data = 0
     for flag in is_category:
@@ -316,29 +329,28 @@ def generate_pdf():
             idx_data += 1
 
     table = Table(data, repeatRows=1, colWidths=[250, 60, 150, 150, 80, 100])
-    tstyle = TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#eef2f7')),
-        ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('LEFTPADDING', (0,0), (-1,-1), 4),
-        ('RIGHTPADDING', (0,0), (-1,-1), 4),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('FONTSIZE', (0,0), (-1,-1), 8),
+    style = TableStyle([
+        ('BACKGROUND',(0,0),(-1,0),'#eef2f7'),
+        ('GRID',(0,0),(-1,-1),0.5,colors.black),
+        ('VALIGN',(0,0),(-1,-1),'TOP'),
+        ('FONTSIZE',(0,0),(-1,-1),8),
+        ('LEFTPADDING',(0,0),(-1,-1),4),
+        ('RIGHTPADDING',(0,0),(-1,-1),4),
+        ('TOPPADDING',(0,0),(-1,-1),4),
+        ('BOTTOMPADDING',(0,0),(-1,-1),4)
     ])
     for r in category_rows:
-        tstyle.add('SPAN', (0, r), (-1, r))
-        tstyle.add('BACKGROUND', (0, r), (-1, r), colors.HexColor('#e8f1ff'))
-        tstyle.add('FONTNAME', (0, r), (-1, r), 'Helvetica-Bold')
-    table.setStyle(tstyle)
+        style.add('SPAN',(0,r),(-1,r))
+        style.add('BACKGROUND',(0,r),(-1,r),'#e8f1ff')
+        style.add('FONTNAME',(0,r),(-1,r),'Helvetica-Bold')
+    table.setStyle(style)
     elems.append(table)
 
-    # Signeringsyta + legend
-    elems.append(Spacer(1, 12))
+    elems.append(Spacer(1,12))
     elems.append(P("Härmed intygas att kontrollpunkterna har utförts och samtliga angivna krav har uppfyllts"))
-    elems.append(Spacer(1, 10))
+    elems.append(Spacer(1,10))
     elems.append(P("Datum: __________________________  Namnteckning: __________________________  Namnförtydligande: __________________________"))
-    elems.append(Spacer(1, 12))
+    elems.append(Spacer(1,12))
     elems.append(P("Förkortningar: BH = Byggherre • KA = Kontrollansvarig • E = Entreprenör"))
 
     doc.build(elems)
@@ -346,7 +358,7 @@ def generate_pdf():
     return send_file(buf, as_attachment=True, download_name="kontrollplan.pdf", mimetype="application/pdf")
 
 # ===========================
-# Lokalt läge
+# Lokalt
 # ===========================
 if __name__ == '__main__':
     app.run(debug=True)
