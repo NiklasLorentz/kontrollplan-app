@@ -1,0 +1,35 @@
+{
+  "Stockholm": {
+    "Fasadändring": [
+      "Fasadmaterial och kulör enligt detaljplan/gestaltningsprogram",
+      "Bevara/återskapa byggnadens karaktär (varsamhet/förvanskning)",
+      "Infästningar och fuktskydd vid byte av fasadbeklädnad",
+      "Brandskydd i yttervägg enligt BBR/EKS",
+      "Byggnadsdelars U-värde/energikrav vid åtgärd"
+    ],
+    "Tillbyggnad": [
+      "Byggnadsarea/höjd enligt detaljplan/avstånd till tomtgräns",
+      "Bärande konstruktion: dimensionering enligt EKS",
+      "Fuktskydd, dränering och anslutningar",
+      "Brandskydd och utrymning",
+      "Energiprestanda (U-värden, köldbryggor)"
+    ]
+  },
+  "Göteborg": {
+    "Fasadändring": [
+      "Fasadkulör och material enligt områdesbestämmelser",
+      "Fuktskydd vid byte",
+      "Energikrav för klimatskärm"
+    ]
+  },
+  "Malmö": {},
+  "Uppsala": {},
+  "Linköping": {},
+  "Övriga": {
+    "Generell": [
+      "Följ PBL/BBR/EKS och lokal detaljplan",
+      "Dokumentera kontrollant, metod och mot vad",
+      "Signera vid utförd kontroll"
+    ]
+  }
+}

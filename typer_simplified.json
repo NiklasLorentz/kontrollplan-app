@@ -1,0 +1,455 @@
+{
+  "Bygga nytt hus": {
+    "Förberedelser": [
+      "Bygglovshandlingar är kompletta",
+      "BH",
+      "Gå igenom handlingar",
+      "Bygglovsbeslut, ritningar",
+      "Innan byggstart"
+    ],
+    "Mark och grund": [
+      "Grundläggning är korrekt",
+      "Entreprenör",
+      "Titta och kontrollera nivåer",
+      "Ritning, AMA",
+      "Vid gjutning"
+    ],
+    "Stomme och yttertak": [
+      "Bärande stomme och tak är rätt monterade",
+      "Entreprenör",
+      "Inspektera under arbetet",
+      "K-ritning",
+      "Under stomresning"
+    ],
+    "Våtrum och fukt": [
+      "Tätskikt i våtrum är rätt utfört",
+      "Entreprenör",
+      "Titta och dokumentera",
+      "Leverantörsanvisning",
+      "Före plattsättning"
+    ],
+    "Ventilation": [
+      "Ventilation fungerar som den ska",
+      "Entreprenör",
+      "Mätning/provkörning",
+      "Ritning/manual",
+      "Vid färdigställande"
+    ],
+    "Vatten och avlopp": [
+      "Vatten/avlopp är tätt och fungerar",
+      "Entreprenör",
+      "Provtryckning/kontroll",
+      "Protokoll/manual",
+      "Vid färdigställande"
+    ],
+    "Elinstallationer": [
+      "El är utförd av behörig och fungerar",
+      "Entreprenör",
+      "Intyg/funktionsprov",
+      "Elsäkerhetsregler",
+      "Vid färdigställande"
+    ],
+    "Värmesystem": [
+      "Värme fungerar och är rätt inställt",
+      "Entreprenör",
+      "Provkörning",
+      "Manual/protokoll",
+      "Vid färdigställande"
+    ],
+    "Tillgänglighet och säkerhet": [
+      "Entré och räcken uppfyller kraven",
+      "Entreprenör",
+      "Mäta och titta",
+      "Ritning, regler",
+      "Vid färdigställande"
+    ],
+    "Energiprestanda": [
+      "Energikraven är uppfyllda",
+      "BH",
+      "Spara beräkning/intyg",
+      "Energiberäkning",
+      "Inför slutsamråd"
+    ],
+    "Avslut": [
+      "Alla egenkontroller är sammanställda",
+      "BH",
+      "Gå igenom och spara",
+      "Kontrollplan, intyg",
+      "Slutsamråd"
+    ]
+  },
+  "Bygga till huset": {
+    "Förberedelser": [
+      "Handlingar är kompletta",
+      "BH",
+      "Gå igenom handlingar",
+      "Bygglovsbeslut, ritningar",
+      "Innan byggstart"
+    ],
+    "Anslutning mot huset": [
+      "Tätning och anslutning mot befintligt är korrekt",
+      "Entreprenör",
+      "Titta och jämföra",
+      "Ritning",
+      "Under arbetet"
+    ],
+    "Stomme och tak": [
+      "Bärande delar och tak är rätt monterade",
+      "Entreprenör",
+      "Inspektera",
+      "K-ritning",
+      "Under arbetet"
+    ],
+    "Våtrum/fukt (om aktuellt)": [
+      "Tätskikt är rätt utfört",
+      "Entreprenör",
+      "Titta och dokumentera",
+      "Leverantörsanvisning",
+      "Före plattsättning"
+    ],
+    "Ventilation/VA/el (om aktuellt)": [
+      "Installationer fungerar",
+      "Entreprenör",
+      "Provning/intyg",
+      "Manual/protokoll",
+      "Vid färdigställande"
+    ],
+    "Avslut": [
+      "Egenkontroller är sammanställda",
+      "BH",
+      "Gå igenom och spara",
+      "Kontrollplan",
+      "Slutbesiktning"
+    ]
+  },
+  "Bygga garage, carport eller förråd": {
+    "Förberedelser": [
+      "Placering stämmer med ritning",
+      "BH",
+      "Mät avstånd och höjder",
+      "Situationsplan",
+      "Före byggstart"
+    ],
+    "Grund och stomme": [
+      "Grund och stomme är rätt monterade",
+      "Entreprenör",
+      "Inspektera",
+      "Ritning",
+      "Under byggtiden"
+    ],
+    "Tak och avvattning": [
+      "Tak och hängrännor är korrekt monterade",
+      "Entreprenör",
+      "Titta och provspola",
+      "Montageanvisning",
+      "Vid färdigställande"
+    ],
+    "El (om aktuellt)": [
+      "Elinstallation är utförd av behörig",
+      "Entreprenör",
+      "Intyg",
+      "Elsäkerhetsregler",
+      "Vid färdigställande"
+    ],
+    "Avslut": [
+      "Egenkontroller sammanställda",
+      "BH",
+      "Gå igenom och spara",
+      "Kontrollplan",
+      "När det är klart"
+    ]
+  },
+  "Bygga mur eller plank": {
+    "Förberedelser": [
+      "Placering och höjd stämmer",
+      "BH",
+      "Mät platsen",
+      "Situationsplan, regler",
+      "Innan byggstart"
+    ],
+    "Grund och stabilitet": [
+      "Grund/fundament är stabila",
+      "Entreprenör",
+      "Titta och kontrollera",
+      "Ritning",
+      "Under byggtiden"
+    ],
+    "Dränering": [
+      "Vatten kan rinna bort",
+      "Entreprenör",
+      "Titta",
+      "Ritning",
+      "Under byggtiden"
+    ],
+    "Avslut": [
+      "Egenkontroller sammanställda",
+      "BH",
+      "Gå igenom och spara",
+      "Kontrollplan",
+      "När det är klart"
+    ]
+  },
+  "Ändra fasadens utseende": {
+    "Förberedelser": [
+      "Rätt färg och material är valt",
+      "BH",
+      "Titta på prover",
+      "Färgprov, materialprov",
+      "Innan beställning"
+    ],
+    "Arbete på fasaden": [
+      "Montering av fasadmaterial är korrekt",
+      "Entreprenör",
+      "Jämför med ritning",
+      "Ritning, montageanvisning",
+      "Under arbetet"
+    ],
+    "Säkerhet och regler": [
+      "Fasad uppfyller brandkrav",
+      "Sakkunnig",
+      "Kontrollera mot regler",
+      "Brandskyddsbeskrivning",
+      "Innan arbetet slutförs"
+    ],
+    "Avslut": [
+      "Alla kontroller är gjorda",
+      "BH",
+      "Gå igenom listan",
+      "Kontrollplanen",
+      "Slutbesiktning"
+    ]
+  },
+  "Bygga takkupa eller höja taket": {
+    "Förberedelser": [
+      "Handlingar är kompletta",
+      "BH",
+      "Gå igenom handlingar",
+      "Bygglov, ritningar",
+      "Innan byggstart"
+    ],
+    "Stomme och infästning": [
+      "Bärande delar och infästningar är rätt",
+      "Entreprenör",
+      "Inspektera",
+      "K-ritning",
+      "Under arbetet"
+    ],
+    "Tätning och tak": [
+      "Tätning runt nya delar är rätt gjord",
+      "Entreprenör",
+      "Titta noga",
+      "Montageanvisning",
+      "Vid arbetet"
+    ],
+    "Avslut": [
+      "Egenkontroller sammanställda",
+      "BH",
+      "Gå igenom och spara",
+      "Kontrollplan",
+      "När det är klart"
+    ]
+  },
+  "Ändra planlösning": {
+    "Förberedelser": [
+      "Planritning stämmer med det som ska göras",
+      "BH",
+      "Gå igenom ritning",
+      "Ritning",
+      "Innan start"
+    ],
+    "Väggar och öppningar": [
+      "Rivning/uppsättning enligt plan",
+      "Entreprenör",
+      "Titta under arbetet",
+      "Ritning",
+      "Under arbetet"
+    ],
+    "El/Vatten (om aktuellt)": [
+      "Installationer är korrekt utförda",
+      "Entreprenör",
+      "Intyg/visuell kontroll",
+      "Regler/manual",
+      "Vid färdigställande"
+    ],
+    "Avslut": [
+      "Egenkontroller sammanställda",
+      "BH",
+      "Gå igenom och spara",
+      "Kontrollplan",
+      "När det är klart"
+    ]
+  },
+  "Ändra bärande konstruktion": {
+    "Förberedelser": [
+      "Ritning för bärande ändring finns",
+      "BH",
+      "Gå igenom ritning",
+      "K-ritning",
+      "Innan start"
+    ],
+    "Utförande": [
+      "Avväxling/infästning är korrekt",
+      "Entreprenör",
+      "Inspektera",
+      "K-ritning",
+      "Under arbetet"
+    ],
+    "Avslut": [
+      "Intyg/egenkontroller klara",
+      "BH",
+      "Sammanställ",
+      "Kontrollplan, intyg",
+      "När det är klart"
+    ]
+  },
+  "Installera eller ändra ventilation": {
+    "Förberedelser": [
+      "Ventilationsritning är klar",
+      "BH",
+      "Gå igenom ritning",
+      "Ritning",
+      "Innan start"
+    ],
+    "Installation": [
+      "Kanaler och aggregat är rätt monterade",
+      "Entreprenör",
+      "Titta och jämför",
+      "Ritning",
+      "Under arbetet"
+    ],
+    "Funktion": [
+      "Luftflöden fungerar",
+      "Entreprenör",
+      "Mätning/provkörning",
+      "Protokoll/manual",
+      "När det är klart"
+    ],
+    "Avslut": [
+      "Dokument sparade",
+      "BH",
+      "Spara intyg/protokoll",
+      "Protokoll",
+      "Efter installation"
+    ]
+  },
+  "Installera eller ändra eldstad/kamin": {
+    "Förberedelser": [
+      "Placering och typ är rätt vald",
+      "BH",
+      "Gå igenom produkt",
+      "Produktblad",
+      "Innan start"
+    ],
+    "Installation": [
+      "Montering följer anvisning",
+      "Entreprenör",
+      "Titta och följa manual",
+      "Montageanvisning",
+      "Under arbetet"
+    ],
+    "Säkerhet": [
+      "Brandskyddsavstånd uppfylls",
+      "Entreprenör",
+      "Mäta och titta",
+      "Manual/regler",
+      "Under arbetet"
+    ],
+    "Avslut": [
+      "Sotare/OVK (om krävs) genomförd",
+      "Sakkunnig",
+      "Intyg",
+      "Protokoll/intyg",
+      "Efter installation"
+    ]
+  },
+  "Bygga Attefallshus": {
+    "Förberedelser": [
+      "Anmälan/ritning är klar",
+      "BH",
+      "Gå igenom handlingar",
+      "Anmälan, ritningar",
+      "Innan start"
+    ],
+    "Mark och grund": [
+      "Grundläggning korrekt",
+      "Entreprenör",
+      "Titta och kontrollera nivåer",
+      "Ritning",
+      "Vid gjutning"
+    ],
+    "Stomme och tak": [
+      "Montering enligt ritning",
+      "Entreprenör",
+      "Inspektera",
+      "Ritning",
+      "Under byggtiden"
+    ],
+    "Avslut": [
+      "Egenkontroller sammanställda",
+      "BH",
+      "Gå igenom och spara",
+      "Kontrollplan",
+      "När det är klart"
+    ]
+  },
+  "Bygga Attefallstillbyggnad": {
+    "Förberedelser": [
+      "Anmälan/ritning är klar",
+      "BH",
+      "Gå igenom handlingar",
+      "Anmälan, ritningar",
+      "Innan start"
+    ],
+    "Anslutning mot huset": [
+      "Tätning/anslutning korrekt",
+      "Entreprenör",
+      "Titta och jämföra",
+      "Ritning",
+      "Under arbetet"
+    ],
+    "Stomme och tak": [
+      "Montering enligt ritning",
+      "Entreprenör",
+      "Inspektera",
+      "Ritning",
+      "Under byggtiden"
+    ],
+    "Avslut": [
+      "Egenkontroller sammanställda",
+      "BH",
+      "Gå igenom och spara",
+      "Kontrollplan",
+      "När det är klart"
+    ]
+  },
+  "Riva byggnad eller del": {
+    "Förberedelser": [
+      "Rivningsplan finns",
+      "BH",
+      "Gå igenom plan",
+      "Rivningsplan",
+      "Innan start"
+    ],
+    "Säkerhet": [
+      "Avstängning el/vatten klar",
+      "Entreprenör",
+      "Kontrollera",
+      "Plan",
+      "Innan rivning"
+    ],
+    "Miljö": [
+      "Sortering av avfall/farligt avfall",
+      "Entreprenör",
+      "Följa plan",
+      "Avfallsplan",
+      "Under rivning"
+    ],
+    "Avslut": [
+      "Återställning av platsen",
+      "Entreprenör",
+      "Inspektera",
+      "Plan",
+      "Efter rivning"
+    ]
+  }
+}

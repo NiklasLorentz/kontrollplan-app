@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <title>Kontrollplan – resultat</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+  <h1>Kontrollplan – {{ bygglovstyp }}</h1>
+
+  <div class="card">
+    <table class="info-table">
+      <tbody>
+        <tr><th>Byggherre</th><td>{{ byggherre }}</td></tr>
+        <tr><th>Telefon</th><td>{{ telefon }}</td></tr>
+        <tr><th>E-post</th><td>{{ epost }}</td></tr>
+        <tr><th>Fastighetsbeteckning</th><td>{{ fastighetsbeteckning }}</td></tr>
+        <tr><th>Fastighetsadress</th><td>{{ fastighetsadress }}</td></tr>
+        <tr><th>Kontrollansvarig</th><td>{{ ka_namn }} {{ ka_kontakt }}</td></tr>
+        <tr><th>Projektbeskrivning</th><td>{{ projektbeskrivning }}</td></tr>
+      </tbody>
+    </table>
+    <div class="actions">
+      <form action="/" method="post">
+        {% for k,v in {"bygglovstyp":bygglovstyp,"byggherre":byggherre,"telefon":telefon,"epost":epost,"fastighetsbeteckning":fastighetsbeteckning,"fastighetsadress":fastighetsadress,"ka_namn":ka_namn,"ka_kontakt":ka_kontakt,"projektbeskrivning":projektbeskrivning}.items() %}
+        <input type="hidden" name="{{k}}" value="{{v}}">
+        {% endfor %}
+        <button type="submit" class="secondary">Ändra uppgifter</button>
+      </form>
+    </div>
+  </div>
+
+  <section class="card">
+    <form id="pdf-form" action="{{ url_for('generate_pdf') }}" method="post">
+      {% for k,v in {"bygglovstyp":bygglovstyp,"byggherre":byggherre,"telefon":telefon,"epost":epost,"fastighetsbeteckning":fastighetsbeteckning,"fastighetsadress":fastighetsadress,"ka_namn":ka_namn,"ka_kontakt":ka_kontakt,"projektbeskrivning":projektbeskrivning}.items() %}
+      <input type="hidden" name="{{k}}" value="{{v}}">
+      {% endfor %}
+
+      <div id="hidden-rows"></div>
+
+      <table id="kontroll-tabell">
+        <thead>
+          <tr>
+            <th>Kategori / Kontrollpunkt</th>
+            <th>Vem</th>
+            <th>Hur</th>
+            <th>Kontroll mot</th>
+            <th>När</th>
+            <th>Signatur / Datum</th>
+            <th>Ta bort</th>
+          </tr>
+        </thead>
+        <tbody>
+          {# Server-side rendering for initial visibility #}
+          {% for r in rows %}
+            {% if r.is_category %}
+              <tr class="category">
+                <td><span class="editable">{{ r.kategori }}</span></td>
+                <td></td><td></td><td></td><td></td><td></td>
+                <td><button type="button" class="danger">Ta bort</button></td>
+              </tr>
+            {% else %}
+              <tr {% if r.obligatorisk %}class="locked"{% endif %}>
+                <td><span class="editable">{{ r.kontrollpunkt }}</span></td>
+                <td><span class="editable">{{ r.vem }}</span></td>
+                <td><span class="editable">{{ r.hur }}</span></td>
+                <td><span class="editable">{{ r.mot }}</span></td>
+                <td><span class="editable">{{ r.nar }}</span></td>
+                <td><span class="editable">{{ r.signatur }}</span></td>
+                <td>
+                  {% if r.obligatorisk %}
+                    Låst
+                  {% else %}
+                    <button type="button" class="danger">Ta bort</button>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Actions moved UNDER the table -->
+      <div class="row actions-under">
+        <button type="button" id="add-category">+ Lägg till rubrik</button>
+        <button type="button" id="add-row">+ Lägg till rad</button>
+        <button type="button" id="clear-all" class="danger">Rensa allt</button>
+        <button type="button" id="undo-remove" class="secondary" disabled>Ångra radering</button>
+        <span class="flex-spacer"></span>
+        <button type="submit">Ladda ner PDF</button>
+      </div>
+    </form>
+  </section>
+
+  <script>window.DEFAULT_ROWS = {{ rows|tojson }};</script>
+</body>
+</html>

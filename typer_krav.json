@@ -1,0 +1,136 @@
+{
+  "Nybyggnad (enbostad)": [
+    "Situationsplan/placering enligt detaljplan; höjder och avstånd till tomtgräns",
+    "Geoteknik/grundläggning (bärighet, sättningsrisk) enligt geoteknisk bedömning",
+    "Dränering och dagvattenhantering (lutningar, fördröjning, anslutning)",
+    "Bärande stomme dimensionerad enligt EKS (ritningar/beräkningar)",
+    "Brandskydd: brandceller, ytskikt, genomföringar och utrymningsvägar (BBR)",
+    "Räddningsvägar och tillgänglighet för räddningstjänst",
+    "Fuktsäkerhet i klimatskärm (ångspärr, tätning, köldbryggor)",
+    "Yttertak: täthet, genomföringar, snörasskydd och taksäkerhet",
+    "Yttervägg/fasad: material, luft- och regntäthet, infästningar",
+    "Fönster/dörrar: U-värde, ljudkrav, montage/tätning",
+    "Våtrum: tätskiktssystem, fall mot golvbrunn, brunnar/anslutningar",
+    "Ventilation: dimensionering, brandspjäll, täthet i kanaler, injustering",
+    "Värmesystem: panna/värmepump/golvvärme – säkerhetsutrustning och dokumentation",
+    "Vatten/avlopp: material, provtryckning, täthets- och funktionsprov",
+    "Elinstallationer: behörighet, skydd och dokumentation",
+    "Energiprestanda: U-värden, lufttäthet, energiberäkning enligt BBR",
+    "Lufttäthetstest (blower door) enligt projekteringskrav",
+    "Ljudkrav mot omgivning och mellan utrymmen",
+    "Tillgänglighet: entré, nivåskillnader, dörrbredder, hygienrum",
+    "Yttre anläggningar: altaner, trappor, räcken och fallskydd",
+    "Tomt och mark: stödmurar, släntstabilitet, skydd av träd",
+    "Relationshandlingar/intyg/protokoll till kommunen"
+  ],
+  "Fasadändring": [
+    "Fasadmaterial och kulör enligt detaljplan/gestaltningsprogram",
+    "Varsamhet: bevara byggnadens karaktär (förvanskning)",
+    "Infästningar för ny beklädnad/isolering; korrosionsskydd",
+    "Regn- och lufttäthet i fasad (vindskydd, tätningar)",
+    "Fuktsäkerhetskontroll vid fasadbyte (risk för inträngning)",
+    "Energikrav för klimatskärm (U-värden vid åtgärd)",
+    "Brandkrav i yttervägg (brandklass, spridning)",
+    "Detaljer mot fönster/bleck/listverk; kulturvärden",
+    "Arbetsmiljö och skydd runt fasadarbete",
+    "Dokument till kommunen: färg-/materialbeskrivning, intyg"
+  ],
+  "Tillbyggnad": [
+    "Byggnadsarea/höjd och avstånd till tomtgräns enligt DP",
+    "Bärande konstruktion (grund/stomme) enligt EKS",
+    "Anslutning mot befintlig byggnad (rörelser, tätning, fukt)",
+    "Brandskydd och utrymning efter ändring",
+    "Energiprestanda (U-värden, köldbryggor, lufttäthet)",
+    "Installationer: ventilation, värme, VA – dimensionering och kontroll",
+    "Ljud och vibrationer mot befintliga delar",
+    "Dagvattenhantering och dränering",
+    "Relationshandlingar/intyg/protokoll till kommunen"
+  ],
+  "Komplementbyggnad (garage/carport/attefall)": [
+    "Placering och höjder enligt plan/avstånd till tomtgräns",
+    "Grundläggning/markbärighet",
+    "Bärande konstruktion och infästningar (tak, vägg, port)",
+    "Brandskydd mot tomtgräns/befintlig byggnad",
+    "Fuktskydd i golv och väggar",
+    "Yttertak (täthet, takavvattning, snörasskydd vid behov)",
+    "Elinstallationer (behörighet, jordning)",
+    "Dagvattenavledning",
+    "Dokumentation och egenkontroller"
+  ],
+  "Uterum/Altan/Balkong": [
+    "Bärande konstruktion (pelare, balkar, infästning i hus)",
+    "Täthet mot befintlig fasad (fukt, kondens)",
+    "Räcken och personsäkerhet (höjd, belastning)",
+    "Glaspartier (säkerhetsglas där krav finns)",
+    "Värmetillskott/uppvärmning – energikrav om uppvärmt",
+    "Dagvattenavledning från tak",
+    "Skydd mot fall/halk (ytor, lutningar)",
+    "Dokumentation/egenkontroll"
+  ],
+  "Fönsterbyte": [
+    "Utseende (spröjs/proportioner) i linje med byggnadens karaktär",
+    "U-värde och energikrav för fönster",
+    "Montage och tätning (fukt, luft, isolering)",
+    "Brandkrav/utrymningsväg för berörda rum",
+    "Ljudkrav mot gata/omgivning",
+    "Bleck och anslutningar (vattentätning)",
+    "Dokumentation (produktblad, montageanvisning)"
+  ],
+  "Mur/Plank/Skärm": [
+    "Höjd och placering, sikttrianglar mot gata",
+    "Stabilitet/fundament och frostskydd",
+    "Dränering och dagvatten vid tät konstruktion",
+    "Material/estetik enligt plan/område",
+    "Bullerskärm: ljuddämpande utformning och täthet",
+    "Grannpåverkan och infästningar",
+    "Dokumentation (ritning, konstruktionsbeskrivning)"
+  ],
+  "Ny skylt/ljusanordning": [
+    "Placering enligt riktlinjer och trafiksäkerhet",
+    "Infästning och bärförmåga (provdragning vid behov)",
+    "Elinstallation och skydd/avsäkring",
+    "Ljusstyrka och bländning (reglerbarhet, skärmning)",
+    "Brandskydd (materialklass/flamskydd)",
+    "Underhålls- och åtkomstlösning",
+    "Dokumentation (produktblad, montageintyg)"
+  ],
+  "Rivning (enklare)": [
+    "Avstängning av el/vatten/ventilation innan start",
+    "Inhägnad och arbetsmiljö/säkerhet",
+    "Dammbekämpning och bullerbegränsning",
+    "Kontroll av bärande delar före/under rivning",
+    "Sortering och hantering av rivningsavfall",
+    "Farligt avfall: inventering och omhändertagande",
+    "Återställning av mark/omgivning",
+    "Dokumentation (rivningsplan, avfallsrapport)"
+  ],
+  "Ändrad planlösning/Bärande": [
+    "Rivning/öppningar i bärande vägg enligt konstruktionshandling",
+    "Avväxlingar och infästningar (EKS)",
+    "Brand- och utrymningsvägar efter ändring",
+    "Ljudklass mellan rum/lägenheter",
+    "Flytt/ändring av våtrum – tätskikt, fall, ventilation",
+    "Installationsändringar (el/VA/vent) – provning och dokumentation",
+    "Tillgänglighet i ändrade utrymmen",
+    "Relationshandlingar till kommunen"
+  ],
+  "Ventilation (installation/ändring)": [
+    "Dimensionering av luftflöden och tryckfall",
+    "Täthet i kanalsystem (provning)",
+    "Brandtekniska krav (brandgasspjäll, genomföringar)",
+    "Ljudkrav från aggregat/kanaler",
+    "Placering av don och injustering",
+    "Drift- och skötselinstruktioner",
+    "OVK-relevans och besiktningsunderlag",
+    "El- och styranslutningar (behörighet)"
+  ],
+  "Marklov/Markåtgärd": [
+    "Schakt/fyllning inom tillåten nivå enligt plan",
+    "Stödmurar och släntstabilitet",
+    "Dagvattenhantering och dränering",
+    "Skydd av träd och rötter (rotzon)",
+    "Siktförhållanden och höjdsättning",
+    "Återställning och erosion/ytvatten",
+    "Dokumentation (situationsplan, höjder, geoteknik vid behov)"
+  ]
+}
