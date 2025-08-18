@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="sv">
 <head>
@@ -52,7 +53,6 @@
           </tr>
         </thead>
         <tbody>
-          {# Server-side rendering for initial visibility #}
           {% for r in rows %}
             {% if r.is_category %}
               <tr class="category">
@@ -81,7 +81,6 @@
         </tbody>
       </table>
 
-      <!-- Actions moved UNDER the table -->
       <div class="row actions-under">
         <button type="button" id="add-category">+ Lägg till rubrik</button>
         <button type="button" id="add-row">+ Lägg till rad</button>
