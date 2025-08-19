@@ -1,3 +1,4 @@
+
 import os
 from datetime import datetime
 from flask import Flask, render_template, request, send_file, make_response
@@ -10,10 +11,10 @@ from xml.sax.saxutils import escape
 
 app = Flask(__name__)
 
-# ===== Analytics config via env (Render Settings → Environment) =====
-app.config["GA_ID"] = os.environ.get("GA_ID", "")              # ex: G-XXXXXXXXXX
-app.config["MATOMO_URL"] = os.environ.get("MATOMO_URL", "")    # ex: https://matomo.dindomän.se/
-app.config["MATOMO_SITE_ID"] = os.environ.get("MATOMO_SITE_ID", "")  # ex: 1
+# ===== Analytics config via env =====
+app.config["GA_ID"] = os.environ.get("GA_ID", "")
+app.config["MATOMO_URL"] = os.environ.get("MATOMO_URL", "")
+app.config["MATOMO_SITE_ID"] = os.environ.get("MATOMO_SITE_ID", "")
 
 @app.context_processor
 def inject_analytics_config():
@@ -203,7 +204,6 @@ def plan_rows(bygglovstyp: str):
             row("Utförandet överensstämmer med startbesked", "BH", "Intyg", "Startbesked", "Efter arbetet", oblig=True),
         ]
 
-    # Fallback
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
 # ===========================

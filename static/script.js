@@ -89,18 +89,13 @@ function undoLastRemove(){
 }
 
 function init(){
-  // Bind handlers to server-rendered rows
   document.querySelectorAll('#kontroll-tabell tbody tr').forEach(tr=>attachRemoveHandler(tr));
-
-  // Buttons under the table
   document.getElementById('add-category').onclick=()=>addCategoryRow('Ny rubrik');
   document.getElementById('add-row').onclick=()=>addDataRow({vem:'BH', hur:'Egenkontroll', mot:'Ritningar', nar:'Under arbetet'});
   document.getElementById('clear-all').onclick=()=>{ document.querySelector('#kontroll-tabell tbody').innerHTML=''; lastRemoved=null; document.getElementById('undo-remove').disabled=true; rebuildHidden(); };
   document.getElementById('undo-remove').onclick=undoLastRemove;
-
   document.querySelector('#kontroll-tabell').addEventListener('input', e=>{ if(e.target.matches('.editable')) rebuildHidden(); });
   document.getElementById('pdf-form').addEventListener('submit', rebuildHidden);
   rebuildHidden();
 }
-
 document.addEventListener('DOMContentLoaded', init);
