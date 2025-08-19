@@ -1,88 +1,13 @@
-
 <!doctype html>
 <html lang="sv">
-<head>
-  <meta charset="utf-8">
-  <title>Skapa kontrollplan för bygglov online – gratis verktyg | Kontrollplaner.com</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Skapa en komplett kontrollplan för bygglov på några minuter. Gratis verktyg för privatpersoner – nybyggnad, tillbyggnad, fasadändring m.m. Ladda ner som PDF.">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <style>
-    body{max-width:980px;margin:0 auto;padding:24px}
-    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-    header a{color:#0b57d0;text-decoration:none;font-weight:600}
-    header nav{display:flex;gap:12px}
-    .hero{background:#0b57d0;color:#fff;border-radius:16px;padding:32px;margin-bottom:16px}
-    .hero h1{margin:0 0 8px 0;color:#fff}
-    .hero p{margin:0 0 16px 0;color:#e8efff;font-size:1.05rem}
-    .cta{display:inline-block;background:#22c55e;color:#111827;padding:12px 18px;border-radius:10px;font-weight:700;text-decoration:none}
-    .cta:hover{filter:brightness(.96)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-    .feature{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px}
-    .feature h3{margin:0 0 6px 0;font-size:1rem}
-    .muted{color:#6b7280}
-    .section{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-top:12px}
-  </style>
-</head>
-<body>
-  <header>
-    <div><strong>Kontrollplaner</strong></div>
-    <nav>
-      <a href="{{ url_for('landing') }}">Hem</a>
-      <a href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h1>Skapa din kontrollplan för bygglov online</h1>
-    <p>Kontrollplaner.com hjälper privatpersoner att snabbt ta fram en korrekt och tydlig kontrollplan för bygglov eller anmälan – nybyggnad, tillbyggnad, fasadändring m.m. Ladda ner som PDF och skicka in till kommunen.</p>
-    <a class="cta" href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
-  </section>
-
-  <section class="section">
-    <h2>Varför behövs en kontrollplan?</h2>
-    <p>En kontrollplan beskriver vilka moment som ska kontrolleras, av vem och på vilket sätt. Den krävs enligt PBL vid de flesta bygglov och anmälningar. Med vårt verktyg får du rätt kontrollpunkter för din åtgärd och en färdig kontrollplan i PDF-format.</p>
-  </section>
-
-  <section class="section">
-    <h2>Så fungerar verktyget</h2>
-    <ol>
-      <li>Fyll i uppgifter: fastighetsadress, byggherre och kort projektbeskrivning.</li>
-      <li>Välj åtgärd: t.ex. nybyggnad, tillbyggnad eller fasadändring.</li>
-      <li>Granska förslaget: redigera eller ta bort punkter vid behov.</li>
-      <li>Ladda ner PDF: bifoga kontrollplanen i din bygglovsansökan.</li>
-    </ol>
-    <p><a class="cta" href="{{ url_for('skapa') }}">Börja nu – gratis</a></p>
-  </section>
-
-  <section class="section">
-    <h2>Exempel på kontrollplaner</h2>
-    <div class="grid">
-      <div class="feature">
-        <h3>Kontrollplan nybyggnad</h3>
-        <p class="muted">Villa, fritidshus – mark & grund, stomme, installationer, energikrav m.m.</p>
-      </div>
-      <div class="feature">
-        <h3>Kontrollplan tillbyggnad</h3>
-        <p class="muted">Garage, uterum – anslutningar, klimatskal, el/VVS och brandskydd.</p>
-      </div>
-      <div class="feature">
-        <h3>Kontrollplan fasadändring</h3>
-        <p class="muted">Ny fasad/puts, kulörbyte, fönster – täthet, material och utförande.</p>
-      </div>
-      <div class="feature">
-        <h3>Kontrollplan rivning</h3>
-        <p class="muted">Säkerhet, avfallshantering och efterkontroll enligt startbesked.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" style="text-align:center">
-    <a class="cta" href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
-  </section>
-
-  {% include "_footer.html" %}
-  {% include "_cookie_banner.html" %}
-  <script src="{{ url_for('cookie_js') }}"></script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Kontrollplaner.com</title>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <h1>Välkommen till Kontrollplaner.com</h1>
+    <p>Skapa enkelt en kontrollplan för ditt bygglov eller din bygganmälan.</p>
+    <a href="/skapa" class="button">Skapa kontrollplan</a>
+  </body>
 </html>

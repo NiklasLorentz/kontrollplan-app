@@ -1,60 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sv">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Skapa kontrollplan</title>
-  <style>
-    :root { --bg:#f7f7f8; --card:#fff; --text:#202124; --muted:#666; --accent:#0b57d0; }
-    * { box-sizing: border-box; }
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--text); margin:0; }
-    header { background: var(--card); border-bottom:1px solid #e5e7eb; padding:16px 24px; position:sticky; top:0; }
-    main { max-width: 980px; margin: 24px auto; padding: 0 16px; }
-    .card { background:var(--card); border:1px solid #e5e7eb; border-radius:12px; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
-    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
-    label { display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
-    input, select { width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:10px; font-size:14px; }
-    button { background:var(--accent); color:#fff; border:0; padding:12px 16px; border-radius:10px; font-weight:600; cursor:pointer; }
-    button:hover { filter:brightness(0.96); }
-    .actions { display:flex; justify-content:flex-end; margin-top:16px; }
-  </style>
-</head>
-<body>
-  <header><h1>Skapa kontrollplan</h1></header>
-  <main>
-    <form class="card" method="POST">
-      <div class="grid">
-        <div>
-          <label>Åtgärd (bygglov/anmälan)</label>
-          <select name="bygglov_typ" required>
-            {% for typ in bygglov_typer %}<option value="{{ typ }}">{{ typ }}</option>{% endfor %}
-          </select>
-        </div>
-        <div>
-          <label>Kommun</label>
-          <input name="kommun" placeholder="Ange kommun" required>
-        </div>
-      </div>
-
-      <h3>Uppgifter</h3>
-      <div class="grid">
-        <div><label>Byggherre (BH)</label><input name="byggherre" required></div>
-        <div><label>Personnummer</label><input name="personnummer" required></div>
-        <div><label>E‑post</label><input type="email" name="epost" required></div>
-        <div><label>Telefon</label><input type="tel" name="telefon" required></div>
-        <div><label>Fastighetsbeteckning</label><input name="fastighet" required></div>
-        <div><label>Adress</label><input name="adress" required></div>
-      </div>
-
-      <h3>Kontrollansvarig (KA)</h3>
-      <div class="grid">
-        <div><label>KA namn</label><input name="ka_namn"></div>
-        <div><label>KA telefon</label><input name="ka_tel"></div>
-        <div style="grid-column:1/-1;"><label>KA e‑post</label><input type="email" name="ka_epost"></div>
-      </div>
-
-      <div class="actions"><button type="submit">Nästa</button></div>
+  <head>
+    <meta charset="utf-8">
+    <title>Skapa kontrollplan</title>
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+  <body>
+    <h1>Skapa kontrollplan</h1>
+    <form method="post">
+      <label>Byggherre:<br><input type="text" name="byggherre"></label><br>
+      <label>Fastighetsadress:<br><input type="text" name="fastighetsadress"></label><br>
+      <label>Fastighetsbeteckning:<br><input type="text" name="fastighetsbeteckning"></label><br>
+      <label>E-post:<br><input type="email" name="epost"></label><br>
+      <label>Telefon:<br><input type="text" name="telefon"></label><br>
+      <label>Projektbeskrivning:<br><textarea name="projektbeskrivning"></textarea></label><br>
+      <label>Kontrollansvarig:<br><input type="text" name="kontrollansvarig"></label><br>
+      <label>KA kontaktuppgifter:<br><input type="text" name="ka_kontakt"></label><br>
+      <label>Bygglovstyp:<br>
+        <select name="bygglovstyp">
+          <option value="Nybyggnad">Nybyggnad</option>
+          <option value="Tillbyggnad">Tillbyggnad</option>
+          <option value="Ändring">Ändring</option>
+        </select>
+      </label><br><br>
+      <button type="submit">Generera kontrollplan (PDF)</button>
     </form>
-  </main>
-</body>
+  </body>
 </html>
