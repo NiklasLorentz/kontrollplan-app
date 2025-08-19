@@ -1,54 +1,22 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Skapa kontrollplan</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>Skapa kontrollplan</h1>
-  <form action="/result" method="post" class="card">
-    <div class="grid grid-one">
-      <label>Bygglov/åtgärdstyp
-        <select name="bygglovstyp" required>
-          {% for t in typer %}
-            <option value="{{ t }}" {% if (data or {}).get('bygglovstyp','') == t %}selected{% endif %}>{{ t }}</option>
-          {% endfor %}
-        </select>
-      </label>
-      <label>Byggherre
-        <input type="text" name="byggherre" placeholder="Namn Efternamn" value="{{ (data or {}).get('byggherre','') }}" required>
-      </label>
-      <label>Telefonnummer
-        <input type="tel" name="telefon" placeholder="070-000 00 00" value="{{ (data or {}).get('telefon','') }}" required>
-      </label>
-      <label>E-post
-        <input type="email" name="epost" placeholder="namn@example.com" value="{{ (data or {}).get('epost','') }}" required>
-      </label>
-      <label>Fastighetsbeteckning
-        <input type="text" name="fastighetsbeteckning" placeholder="Kommun X 1:23" value="{{ (data or {}).get('fastighetsbeteckning','') }}" required>
-      </label>
-      <label>Fastighetsadress
-        <input type="text" name="fastighetsadress" placeholder="Gatuvägen 1, Ort" value="{{ (data or {}).get('fastighetsadress','') }}" required>
-      </label>
-      <label>Kontrollansvarig (namn)
-        <input type="text" name="ka_namn" placeholder="(om utsedd)" value="{{ (data or {}).get('ka_namn','') }}">
-      </label>
-      <label>Kontrollansvarig (kontaktuppgifter)
-        <input type="text" name="ka_kontakt" placeholder="tel/e-post (om utsedd)" value="{{ (data or {}).get('ka_kontakt','') }}">
-      </label>
-      <label>Projektbeskrivning
-        <textarea name="projektbeskrivning" rows="4" placeholder="Kort beskrivning av åtgärden...">{{ (data or {}).get('projektbeskrivning','') }}</textarea>
-      </label>
-    </div>
-    <div class="actions">
-      <a class="button secondary" href="/">Avbryt</a>
-      <button type="submit">Nästa</button>
-    </div>
+  <h1>Fyll i dina uppgifter</h1>
+  <form action="/result" method="POST">
+    <label>Byggherre (namn):</label><br>
+    <input type="text" name="namn" required><br><br>
+    <label>Fastighetsadress:</label><br>
+    <input type="text" name="adress" required><br><br>
+    <label>Fastighetsbeteckning:</label><br>
+    <input type="text" name="fastighet" required><br><br>
+    <label>Projektbeskrivning:</label><br>
+    <textarea name="projektbeskrivning"></textarea><br><br>
+    <button type="submit">Generera kontrollplan</button>
   </form>
-
-  {% include "_footer.html" %}
 </body>
 </html>
