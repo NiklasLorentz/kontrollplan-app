@@ -1,2 +1,2 @@
-# Fixpaket – url_for
-Ersätt befintliga filer och deploya igen.
+# Kontrollplaner.com
+Senaste kompletta kod med Flask, kontrollplansgenerator, PDF-export och SEO.
