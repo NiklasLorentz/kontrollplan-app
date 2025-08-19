@@ -1,4 +1,31 @@
-body { font-family: Arial, sans-serif; margin: 20px; }
-header { background: #f4f4f4; padding: 20px; text-align: center; }
-.cta-button { display: inline-block; padding: 10px 20px; background: #0077cc; color: white; text-decoration: none; border-radius: 5px; }
-.cta-button:hover { background: #005fa3; }
+
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f8fafc;color:#111827;margin:0}
+.site-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:#ffffff;border-bottom:1px solid #e5e7eb;position:sticky;top:0}
+.site-header a{color:#0b57d0;text-decoration:none;font-weight:600;margin-left:12px}
+.brand{font-weight:800}
+.hero{background:#0b57d0;color:#fff;border-radius:16px;padding:32px;margin:18px}
+.hero .cta{display:inline-block;background:#22c55e;color:#111827;padding:12px 18px;border-radius:10px;font-weight:700;text-decoration:none}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.grid{display:grid;gap:12px}
+.grid-one{grid-template-columns:1fr}
+label{font-size:12px;color:#555;display:flex;flex-direction:column;gap:6px}
+input,select,textarea{padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;background:#fff}
+textarea{min-height:100px;resize:vertical}
+.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:12px}
+.button{display:inline-block;background:#0b57d0;color:#fff;border:0;padding:10px 14px;border-radius:10px;font-weight:600;text-decoration:none;text-align:center}
+button{background:#0b57d0;color:#fff;border:0;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+button.secondary,.button.secondary{background:#6b7280}
+button.danger{background:#d9534f}
+table{width:calc(100% - 36px);margin:0 18px 18px 18px;border-collapse:collapse;font-size:14px}
+th,td{border:1px solid #e5e7eb;padding:8px;vertical-align:top}
+th{background:#f0f3f7;text-align:left}
+tr.category>td{background:#e8f1ff;font-weight:700}
+tr.locked td{background:#f9fafb}
+.editable{display:inline-block;min-width:80px}
+.info-table{width:100%;margin:0}
+.info-table th{width:240px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding:0 18px 18px 18px}
+.actions-under{align-items:center}
+.flex-spacer{flex:1}
+footer.footer{padding:16px;text-align:center;color:#6b7280}

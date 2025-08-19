@@ -1,11 +1,4 @@
 
-function makeEditableCell(value=''){
-  const s=document.createElement('span');
-  s.contentEditable='true';
-  s.className='editable';
-  s.textContent=value||'';
-  return s;
-}
 function buttonDanger(label='Ta bort'){
   const b=document.createElement('button');
   b.type='button'; b.textContent=label; b.className='danger';
@@ -79,15 +72,20 @@ function undoLastRemove(){
   const tbody=document.querySelector('#kontroll-tabell tbody');
   const tmp=document.createElement('tbody'); tmp.innerHTML=(lastRemoved.html||'').trim();
   const restored=tmp.firstElementChild; const rows=Array.from(tbody.children);
-  if(lastRemoved.index>=0&&lastRemoved.index<=rows.length){ if(lastRemoved.index===rows.length) tbody.appendChild(restored); else tbody.insertBefore(restored, rows[lastRemoved.index]); }
-  else tbody.appendChild(restored);
+  if(lastRemoved.index>=0&&lastRemoved.index<=rows.length){
+    if(lastRemoved.index===rows.length) tbody.appendChild(restored);
+    else tbody.insertBefore(restored, rows[lastRemoved.index]);
+  } else tbody.appendChild(restored);
   attachRemoveHandler(restored); lastRemoved=null; document.getElementById('undo-remove').disabled=true; rebuildHidden();
 }
 function init(){
   document.querySelectorAll('#kontroll-tabell tbody tr').forEach(tr=>attachRemoveHandler(tr));
   document.getElementById('add-category').onclick=()=>addCategoryRow('Ny rubrik');
   document.getElementById('add-row').onclick=()=>addDataRow({vem:'BH', hur:'Egenkontroll', mot:'Ritningar', nar:'Under arbetet'});
-  document.getElementById('clear-all').onclick=()=>{ document.querySelector('#kontroll-tabell tbody').innerHTML=''; lastRemoved=null; document.getElementById('undo-remove').disabled=true; rebuildHidden(); };
+  document.getElementById('clear-all').onclick=()=>{
+    document.querySelector('#kontroll-tabell tbody').innerHTML='';
+    lastRemoved=null; document.getElementById('undo-remove').disabled=true; rebuildHidden();
+  };
   document.getElementById('undo-remove').onclick=undoLastRemove;
   document.querySelector('#kontroll-tabell').addEventListener('input', e=>{ if(e.target.matches('.editable')) rebuildHidden(); });
   document.getElementById('pdf-form').addEventListener('submit', rebuildHidden);
