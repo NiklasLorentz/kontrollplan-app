@@ -1,3 +1,4 @@
+
 import os
 from datetime import datetime, timezone
 from flask import Flask, render_template, request, send_file, make_response, Response
@@ -10,26 +11,6 @@ from xml.sax.saxutils import escape
 
 app = Flask(__name__)
 
-# ===== Analytics config via env (valfritt) =====
-app.config["GA_ID"] = os.environ.get("GA_ID", "")
-app.config["MATOMO_URL"] = os.environ.get("MATOMO_URL", "")
-app.config["MATOMO_SITE_ID"] = os.environ.get("MATOMO_SITE_ID", "")
-
-@app.context_processor
-def inject_analytics_config():
-    return {
-        "GA_ID": app.config.get("GA_ID", ""),
-        "MATOMO_URL": app.config.get("MATOMO_URL", ""),
-        "MATOMO_SITE_ID": app.config.get("MATOMO_SITE_ID", ""),
-    }
-
-@app.context_processor
-def inject_now():
-    return {'now': datetime.utcnow}
-
-# ===========================
-# Hälsa & Ping (för Render)
-# ===========================
 @app.route("/health")
 def health():
     return {"ok": True}, 200
@@ -38,9 +19,6 @@ def health():
 def ping():
     return "pong", 200
 
-# ===========================
-# LANDNING + FORM
-# ===========================
 @app.route('/')
 def landing():
     return render_template('landing.html')
@@ -68,15 +46,10 @@ def result():
     rows = plan_rows(form["bygglovstyp"])
     return render_template('result.html', rows=rows, **form)
 
-# ===========================
-# Kontrollplansdata
-# ===========================
 def plan_rows(bygglovstyp: str):
     t = (bygglovstyp or "").lower()
-
     def cat(name):
         return {"is_category": True, "kategori": name, "obligatorisk": False}
-
     def row(kp, vem, hur, mot, nar="Under arbetet", sign="", oblig=False):
         return {
             "is_category": False,
@@ -88,7 +61,6 @@ def plan_rows(bygglovstyp: str):
             "signatur": sign,
             "obligatorisk": oblig,
         }
-
     if "nybygg" in t:
         return [
             cat("Mark och grund"),
@@ -110,7 +82,6 @@ def plan_rows(bygglovstyp: str):
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med beviljat bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Innan slutbesked", oblig=True),
         ]
-
     if "tillbygg" in t:
         return [
             cat("Mark och grund"),
@@ -131,7 +102,6 @@ def plan_rows(bygglovstyp: str):
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Innan slutbesked", oblig=True),
         ]
-
     if "attefall" in t or "komplement" in t:
         return [
             cat("Läge och mått"),
@@ -151,7 +121,6 @@ def plan_rows(bygglovstyp: str):
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med startbesked", "BH", "Granskning, intyg", "Startbesked", "Innan slutbesked", oblig=True),
         ]
-
     if "fasad" in t:
         return [
             cat("Fasadåtgärd"),
@@ -165,7 +134,6 @@ def plan_rows(bygglovstyp: str):
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Efter arbetet", oblig=True),
         ]
-
     if "vent" in t:
         return [
             cat("Installation"),
@@ -178,7 +146,6 @@ def plan_rows(bygglovstyp: str):
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Efter arbetet", oblig=True),
         ]
-
     if "riv" in t:
         return [
             cat("Förberedelser"),
@@ -191,7 +158,6 @@ def plan_rows(bygglovstyp: str):
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med startbesked", "BH", "Intyg", "Startbesked", "Efter rivning", oblig=True),
         ]
-
     if "eldstad" in t or "skorsten" in t:
         return [
             cat("Installation"),
@@ -202,7 +168,6 @@ def plan_rows(bygglovstyp: str):
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Intyg", "Startbesked", "Efter installation", oblig=True),
         ]
-
     if "planlös" in t or "planlos" in t:
         return [
             cat("Bärande och bygg"),
@@ -217,7 +182,6 @@ def plan_rows(bygglovstyp: str):
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med startbesked", "BH", "Intyg", "Startbesked", "Efter arbetet", oblig=True),
         ]
-
     if "våtrum" in t or "vatrum" in t or "badrum" in t:
         return [
             cat("Rivning och förberedelse"),
@@ -232,12 +196,8 @@ def plan_rows(bygglovstyp: str):
             row("Slutkontroll av färdigt våtrum", "BH", "Visuell kontroll", "Ritningar, branschregler"),
             row("Utförandet överensstämmer med startbesked", "BH", "Intyg", "Startbesked", "Efter arbetet", oblig=True),
         ]
-
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
-# ===========================
-# PDF-generering
-# ===========================
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
     form = {k: request.form.get(k, '') for k in [
@@ -253,10 +213,7 @@ def generate_pdf():
     sign = request.form.getlist('signatur[]')
 
     buf = BytesIO()
-    doc = SimpleDocTemplate(
-        buf, pagesize=landscape(A4),
-        leftMargin=18, rightMargin=18, topMargin=18, bottomMargin=18
-    )
+    doc = SimpleDocTemplate(buf, pagesize=landscape(A4), leftMargin=18, rightMargin=18, topMargin=18, bottomMargin=18)
     styles = getSampleStyleSheet()
     small = ParagraphStyle('small', parent=styles['Normal'], fontSize=8, leading=10)
     head = ParagraphStyle('head', parent=styles['Heading1'], fontSize=16, leading=18, spaceAfter=6)
@@ -336,20 +293,16 @@ def generate_pdf():
     buf.seek(0)
     return send_file(buf, as_attachment=True, download_name="kontrollplan.pdf", mimetype="application/pdf")
 
-# ===========================
-# DYNAMISK SITEMAP & ROBOTS
-# ===========================
+from flask import request
 @app.route("/sitemap.xml")
 def sitemap_xml():
     host = request.host or "www.kontrollplaner.com"
     base = f"https://{host}"
     today = datetime.now(timezone.utc).date().isoformat()
-
     pages = [
         {"loc": base + "/", "changefreq": "weekly", "priority": "1.0"},
         {"loc": base + "/skapa", "changefreq": "weekly", "priority": "0.9"},
     ]
-
     xml_items = []
     for p in pages:
         xml_items.append(
@@ -360,7 +313,6 @@ def sitemap_xml():
     <priority>{p['priority']}</priority>
   </url>"""
         )
-
     xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {chr(10).join(xml_items)}
@@ -379,17 +331,11 @@ Sitemap: {base}/sitemap.xml
 """
     return Response(body, mimetype="text/plain")
 
-# ===========================
-# Cookie JS (templated)
-# ===========================
 @app.route('/cookie.js')
 def cookie_js():
-    resp = make_response(render_template('cookie.js'))
+    resp = make_response("/* enkel cookie js placeholder */")
     resp.headers['Content-Type'] = 'application/javascript; charset=utf-8'
     return resp
 
-# ===========================
-# Lokalt
-# ===========================
 if __name__ == '__main__':
     app.run(debug=True)

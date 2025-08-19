@@ -1,5 +1,4 @@
 
-// Helpers
 function makeEditableCell(value=''){
   const s=document.createElement('span');
   s.contentEditable='true';
@@ -12,9 +11,7 @@ function buttonDanger(label='Ta bort'){
   b.type='button'; b.textContent=label; b.className='danger';
   return b;
 }
-
 let lastRemoved=null;
-
 function attachRemoveHandler(tr){
   const btn = tr.querySelector('button.danger');
   if(!btn) return;
@@ -27,7 +24,6 @@ function attachRemoveHandler(tr){
     rebuildHidden();
   };
 }
-
 function addCategoryRow(title='Ny rubrik'){
   const tbody = document.querySelector('#kontroll-tabell tbody');
   const tr = document.createElement('tr');
@@ -45,22 +41,23 @@ function addCategoryRow(title='Ny rubrik'){
   attachRemoveHandler(tr);
   rebuildHidden();
 }
-
 function addDataRow(data={}){
   const tbody = document.querySelector('#kontroll-tabell tbody');
   const tr = document.createElement('tr');
   if (data.obligatorisk) tr.classList.add('locked');
   ['kontrollpunkt','vem','hur','mot','nar','signatur'].forEach(k=>{
-    const td=document.createElement('td'); td.appendChild(makeEditableCell(data[k]||'')); tr.appendChild(td);
+    const td=document.createElement('td'); 
+    const val=(data[k]||'');
+    const span=document.createElement('span'); span.contentEditable='true'; span.className='editable'; span.textContent=val;
+    td.appendChild(span); tr.appendChild(td);
   });
   const tdRemove=document.createElement('td');
-  if (data.obligatorisk){ tdRemove.textContent='Låst'; tdRemove.title='Obligatorisk rad – kan inte tas bort'; tdRemove.style.color='#6b7280'; }
+  if (data.obligatorisk){ tdRemove.textContent='Låst'; tdRemove.title='Obligatorisk rad – kan inte tas bort'; }
   else { const btn=buttonDanger(); tdRemove.appendChild(btn); }
   tr.appendChild(tdRemove); tbody.appendChild(tr);
   if (!data.obligatorisk) attachRemoveHandler(tr);
   rebuildHidden();
 }
-
 function rebuildHidden(){
   const cont=document.getElementById('hidden-rows'); cont.innerHTML='';
   const rows=Array.from(document.querySelectorAll('#kontroll-tabell tbody tr'));
@@ -77,7 +74,6 @@ function rebuildHidden(){
     }
   });
 }
-
 function undoLastRemove(){
   if(!lastRemoved) return;
   const tbody=document.querySelector('#kontroll-tabell tbody');
@@ -87,7 +83,6 @@ function undoLastRemove(){
   else tbody.appendChild(restored);
   attachRemoveHandler(restored); lastRemoved=null; document.getElementById('undo-remove').disabled=true; rebuildHidden();
 }
-
 function init(){
   document.querySelectorAll('#kontroll-tabell tbody tr').forEach(tr=>attachRemoveHandler(tr));
   document.getElementById('add-category').onclick=()=>addCategoryRow('Ny rubrik');

@@ -1,2 +1,2 @@
-# Kontrollplaner.com
-Flask-app för att skapa kontrollplaner för bygglov.
+# Fixpaket – url_for
+Ersätt befintliga filer och deploya igen.

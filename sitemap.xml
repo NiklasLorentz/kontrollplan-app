@@ -1,14 +1,31 @@
+from flask import Response, request
+from datetime import datetime, timezone
 
-<?xml version="1.0" encoding="UTF-8"?>
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    host = request.host or "www.kontrollplaner.com"
+    base = f"https://{host}"
+    today = datetime.now(timezone.utc).date().isoformat()
+
+    # Hårdkodade paths i stället för url_for
+    pages = [
+        {"loc": base + "/",        "changefreq": "weekly", "priority": "1.0"},
+        {"loc": base + "/skapa",   "changefreq": "weekly", "priority": "0.9"},
+    ]
+
+    xml_items = [
+        f"""  <url>
+    <loc>{p['loc']}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>{p['changefreq']}</changefreq>
+    <priority>{p['priority']}</priority>
+  </url>"""
+        for p in pages
+    ]
+
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.kontrollplaner.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.kontrollplaner.com/skapa</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+{chr(10).join(xml_items)}
 </urlset>
+"""
+    return Response(xml, mimetype="application/xml")

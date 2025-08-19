@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <title>Kontrollplan – resultat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/script.js"></script>
 </head>
 <body>
   <h1>Kontrollplan – {{ bygglovstyp }}</h1>
@@ -24,7 +24,7 @@
       </tbody>
     </table>
     <div class="actions">
-      <form action="{{ url_for('skapa') }}" method="post">
+      <form action="/skapa" method="post">
         {% for k,v in {"bygglovstyp":bygglovstyp,"byggherre":byggherre,"telefon":telefon,"epost":epost,"fastighetsbeteckning":fastighetsbeteckning,"fastighetsadress":fastighetsadress,"ka_namn":ka_namn,"ka_kontakt":ka_kontakt,"projektbeskrivning":projektbeskrivning}.items() %}
         <input type="hidden" name="{{k}}" value="{{v}}">
         {% endfor %}
@@ -34,7 +34,7 @@
   </div>
 
   <section class="card">
-    <form id="pdf-form" action="{{ url_for('generate_pdf') }}" method="post">
+    <form id="pdf-form" action="/generate_pdf" method="post">
       {% for k,v in {"bygglovstyp":bygglovstyp,"byggherre":byggherre,"telefon":telefon,"epost":epost,"fastighetsbeteckning":fastighetsbeteckning,"fastighetsadress":fastighetsadress,"ka_namn":ka_namn,"ka_kontakt":ka_kontakt,"projektbeskrivning":projektbeskrivning}.items() %}
       <input type="hidden" name="{{k}}" value="{{v}}">
       {% endfor %}
@@ -94,7 +94,5 @@
   </section>
 
   {% include "_footer.html" %}
-  {% include "_cookie_banner.html" %}
-  <script src="{{ url_for('cookie_js') }}"></script>
 </body>
 </html>
