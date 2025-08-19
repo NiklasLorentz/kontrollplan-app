@@ -8,6 +8,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="https://www.kontrollplaner.com/om">
   <link rel="stylesheet" href="/static/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Hem",
+        "item": "https://www.kontrollplaner.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Om",
+        "item": "https://www.kontrollplaner.com/om"
+      } if "/om" != "/" else null
+    ]
+  }
+  </script>
+
 </head>
 <body>
   <header class="site-header">
@@ -23,8 +45,18 @@
     <h1>Om Kontrollplaner.com</h1>
     <p>Vi gör det enkelt att ta fram en kontrollplan som uppfyller kommunens krav. Vår tjänst är framtagen för privatpersoner och bygger på tydliga, praktiska kontrollpunkter.</p>
   </main>
-  <footer class="footer">
-    <p>© 2025 Kontrollplaner.com</p>
-  </footer>
+  
+<footer class="footer">
+  <p>
+    <a href="/">Hem</a> · 
+    <a href="/skapa">Skapa kontrollplan</a> · 
+    <a href="/om">Om</a> · 
+    <a href="/faq">FAQ</a> · 
+    <a href="/privacy">Integritetspolicy</a> · 
+    <a href="/terms">Villkor</a>
+  </p>
+  <p>© 2025 Kontrollplaner.com</p>
+</footer>
+
 </body>
 </html>
