@@ -1,13 +1,143 @@
 <!doctype html>
 <html lang="sv">
-  <head>
-    <meta charset="utf-8">
-    <title>Kontrollplaner.com</title>
-    <link rel="stylesheet" href="/static/style.css">
-  </head>
-  <body>
-    <h1>Välkommen till Kontrollplaner.com</h1>
-    <p>Skapa enkelt en kontrollplan för ditt bygglov eller din bygganmälan.</p>
-    <a href="/skapa" class="button">Skapa kontrollplan</a>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>Kontrollplan för bygglov – Skapa gratis online på några minuter | Kontrollplaner.com</title>
+  <meta name="description" content="Skapa en komplett kontrollplan för bygglov eller anmälan på några minuter. Enkelt för privatpersoner. Välj åtgärd, fyll i uppgifter och ladda ner som PDF.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://www.kontrollplaner.com/">
+
+  <!-- Open Graph (delningar) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kontrollplan för bygglov – Skapa gratis online">
+  <meta property="og:description" content="Gratis verktyg för privatpersoner. Välj åtgärd, fyll i uppgifter, ladda ner PDF.">
+  <meta property="og:url" content="https://www.kontrollplaner.com/">
+  <meta property="og:site_name" content="Kontrollplaner.com">
+
+  <!-- Schema.org – WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"Kontrollplaner.com",
+    "url":"https://www.kontrollplaner.com/",
+    "potentialAction":{
+      "@type":"SearchAction",
+      "target":"https://www.kontrollplaner.com/skapa?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Schema.org – FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"Vad är en kontrollplan?",
+        "acceptedAnswer":{"@type":"Answer","text":"En kontrollplan beskriver vilka kontroller som ska göras under byggprojektet, av vem och hur de dokumenteras. Den bifogas normalt i bygglov eller anmälan och följs upp innan slutbesked."}
+      },
+      {
+        "@type":"Question",
+        "name":"När behöver jag en kontrollplan?",
+        "acceptedAnswer":{"@type":"Answer","text":"Vid de flesta lov- och anmälningspliktiga åtgärder, till exempel nybyggnad, tillbyggnad, fasadändring, rivning, ändrad planlösning och våtrum. Kommunen bedömer i startbeskedet vad som krävs."}
+      },
+      {
+        "@type":"Question",
+        "name":"Vad kostar det att skapa en kontrollplan här?",
+        "acceptedAnswer":{"@type":"Answer","text":"Det är gratis att skapa och ladda ner en grundläggande kontrollplan i PDF."}
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">Kontrollplaner</div>
+    <nav>
+      <a href="{{ url_for('landing') }}">Hem</a>
+      <a href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
+    </nav>
+  </header>
+
+  <!-- Hero / primär H1 -->
+  <section class="hero">
+    <h1>Skapa din kontrollplan för bygglov – gratis och enkelt</h1>
+    <p>Vårt verktyg hjälper privatpersoner att ta fram en korrekt och begriplig kontrollplan. Välj åtgärd, fyll i dina uppgifter och ladda ner som PDF – redo att skicka in till kommunen.</p>
+    <a class="cta" href="{{ url_for('skapa') }}">Skapa kontrollplan</a>
+  </section>
+
+  <!-- Sektion: Vad är en kontrollplan -->
+  <section class="card">
+    <h2>Vad är en kontrollplan?</h2>
+    <p>En kontrollplan är en plan för hur byggåtgärden följer lagar, regler och beslut. Den listar
+      <strong>kontrollpunkter</strong>, vem som kontrollerar (t.ex. BH, KA eller E), vilken <strong>kontrollmetod</strong> som används och när kontrollen sker.
+      Kommunen använder kontrollplanen som underlag för <strong>startbesked</strong> och <strong>slutbesked</strong>.</p>
+  </section>
+
+  <!-- Sektion: Så fungerar det -->
+  <section class="card">
+    <h2>Så fungerar Kontrollplaner.com</h2>
+    <ol class="ol">
+      <li><strong>Välj åtgärd</strong> – nybyggnad, tillbyggnad, fasadändring, rivning, ventilation, ändrad planlösning eller våtrum.</li>
+      <li><strong>Fyll i uppgifter</strong> – byggherre, fastighetsadress/beteckning, projektbeskrivning och (om utsedd) KA.</li>
+      <li><strong>Granska punkterna</strong> – låsta obligatoriska rader ligger alltid kvar; andra kan du anpassa.</li>
+      <li><strong>Ladda ner PDF</strong> – spara och bifoga i din ansökan till kommunen.</li>
+    </ol>
+    <p><a class="button" href="{{ url_for('skapa') }}">Kom igång nu</a></p>
+  </section>
+
+  <!-- Sektion: Vilka projekt täcker vi -->
+  <section class="card">
+    <h2>Vilka åtgärder kan du skapa kontrollplan för?</h2>
+    <div class="grid-ex">
+      <div class="ex"><h3>Nybyggnad</h3><p>Mark, grund, stomme, installationer, energikrav och slutkontroll.</p></div>
+      <div class="ex"><h3>Tillbyggnad</h3><p>Anslutningar mot befintligt hus, klimatskal, el/VVS och brandskydd.</p></div>
+      <div class="ex"><h3>Fasadändring</h3><p>Material, kulör, fuktskydd, fönster/dörrar och utförande.</p></div>
+      <div class="ex"><h3>Rivning</h3><p>Avstängningar, sortering, farligt avfall och säkerhet.</p></div>
+      <div class="ex"><h3>Ventilation</h3><p>Montering, brandskydd vid genomföringar, injustering och funktionsprov.</p></div>
+      <div class="ex"><h3>Ändrad planlösning</h3><p>Bärande delar, nya öppningar, el/VVS och brandskydd vid ändring.</p></div>
+      <div class="ex"><h3>Våtrum</h3><p>Tätskikt, golvbrunn, rörgenomföringar och el i våtrum.</p></div>
+    </div>
+  </section>
+
+  <!-- Sektion: Varför välja oss (nyckelord + fördelar) -->
+  <section class="card">
+    <h2>Varför använda Kontrollplaner.com?</h2>
+    <ul class="ol">
+      <li><strong>För privatpersoner</strong> – tydliga texter och färdiga förslag på kontrollpunkter.</li>
+      <li><strong>Snabbt</strong> – kontrollplan på några minuter, direkt i webbläsaren.</li>
+      <li><strong>Gratis</strong> – ladda ner PDF utan kostnad.</li>
+      <li><strong>Rätt innehåll</strong> – obligatoriska punkter är låsta enligt god praxis.</li>
+      <li><strong>SEO-vänligt</strong> – sidan är byggd för att hittas på Google.</li>
+    </ul>
+  </section>
+
+  <!-- Sektion: FAQ (matchar FAQ Schema) -->
+  <section class="card">
+    <h2>Vanliga frågor</h2>
+    <h3>Behöver alla åtgärder en kontrollplan?</h3>
+    <p>De flesta lov- och anmälningspliktiga åtgärder behöver en kontrollplan. Kommunen avgör i startbeskedet vad som krävs.</p>
+
+    <h3>Kan jag ändra kontrollpunkterna?</h3>
+    <p>Ja, du kan anpassa punkterna efter ditt projekt. Vissa rader är låsta eftersom de normalt krävs för en komplett plan.</p>
+
+    <h3>Får jag en PDF?</h3>
+    <p>Ja, efter att du fyllt i uppgifter och granskat punkterna kan du ladda ner en PDF som du bifogar till ansökan.</p>
+  </section>
+
+  <!-- Call to action -->
+  <section class="card" style="text-align:center">
+    <a class="cta" href="{{ url_for('skapa') }}">Skapa din kontrollplan nu</a>
+  </section>
+
+  {% include "_footer.html" %}
+  {% include "_cookie_banner.html" %}
+  <script src="{{ url_for('cookie_js') }}"></script>
+</body>
 </html>
