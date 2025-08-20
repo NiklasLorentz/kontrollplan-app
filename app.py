@@ -33,6 +33,14 @@ def om():
 def faq():
     return render_template("faq.html")
 
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+@app.route("/terms")
+def terms():
+    return render_template("terms.html")
+
 @app.route("/skapa", methods=["GET","POST"])
 def skapa():
     fields = [
@@ -334,6 +342,8 @@ def sitemap_xml():
         {"loc": base + "/skapa", "changefreq": "weekly", "priority": "0.9"},
         {"loc": base + "/om", "changefreq": "monthly", "priority": "0.6"},
         {"loc": base + "/faq", "changefreq": "monthly", "priority": "0.6"},
+        {"loc": base + "/privacy", "changefreq": "yearly", "priority": "0.3"},
+        {"loc": base + "/terms", "changefreq": "yearly", "priority": "0.3"},
     ]
     xml_items = []
     for p in pages:
@@ -360,16 +370,6 @@ Disallow:
 Sitemap: {base}/sitemap.xml
 """
     return Response(body, mimetype="text/plain")
-
-
-
-@app.route("/privacy")
-def privacy():
-    return render_template("privacy.html")
-
-@app.route("/terms")
-def terms():
-    return render_template("terms.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

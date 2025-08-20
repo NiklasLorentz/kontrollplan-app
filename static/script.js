@@ -1,4 +1,3 @@
-
 function buttonDanger(label='Ta bort'){
   const b=document.createElement('button');
   b.type='button'; b.textContent=label; b.className='danger';
@@ -88,7 +87,18 @@ function init(){
   };
   document.getElementById('undo-remove').onclick=undoLastRemove;
   document.querySelector('#kontroll-tabell').addEventListener('input', e=>{ if(e.target.matches('.editable')) rebuildHidden(); });
-  document.getElementById('pdf-form').addEventListener('submit', rebuildHidden);
+  document.getElementById('pdf-form').addEventListener('submit', function(){
+    rebuildHidden();
+    try {
+      const rows = document.querySelectorAll('#kontroll-tabell tbody tr:not(.category)').length;
+      const title = (document.querySelector('h1')?.textContent || '').replace('Kontrollplan – ', '');
+      gtag('event', 'pdf_nedladdad', {
+        event_category: 'kontrollplan',
+        event_label: title,
+        value: rows
+      });
+    } catch(e){}
+  });
   rebuildHidden();
 }
 document.addEventListener('DOMContentLoaded', init);

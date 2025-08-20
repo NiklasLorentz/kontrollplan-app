@@ -1,16 +1,22 @@
 
-# Kontrollplaner.com – Privatpersoner (inkl. Attefallsåtgärder)
+# Kontrollplaner.com – Komplett projekt med GA4
 
-- Flask-app med landningssida, Om, FAQ, Skapa, Resultat
-- Kontrollplan-generator för:
-  - Nybyggnad (villa/småhus), Tillbyggnad, Fasadändring, Takomläggning,
-    Garage/Komplementbyggnad, Altan/Uterum, Pool, Attefallsåtgärder
-- Låsta obligatoriska rader + redigerbara övriga
-- Lägg till rubrik/rad, rensa, ångra
-- PDF (liggande A4) med info-block, tabell, intygsrad och legend (BH/KA/E)
-- SEO: /sitemap.xml och /robots.txt
-- Health endpoints: /health och /ping
+- Flask-app med landningssida, Om, FAQ, Privacy, Terms
+- Kontrollplan-generator för privatpersoner (8 åtgärder)
+- Redigera/radera/lägg till rader + låsta obligatoriska rader
+- PDF i liggande A4 med intygsrad och legend
+- SEO: canonical, OG/Twitter, sitemap/robots
+- Health: /health, /ping
+- GA4: templates/_ga.html (G-FP97MP64VT) + events
+  - uppgifter_skickade (index)
+  - kontrollplan_skapad (result)
+  - pdf_nedladdad (result/script.js)
 
-## Kör lokalt
+## Lokalt
 pip install -r requirements.txt
 python app.py
+
+## Render
+git add -A
+git commit -m "Fullt projekt med GA4 events"
+git push origin main

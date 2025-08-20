@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="sv">
 <head>
@@ -6,8 +5,8 @@
   <title>Kontrollplan – resultat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/style.css">
-  <script defer src="/static/script.js"></script>
   {% include "_ga.html" %}
+  <script defer src="/static/script.js"></script>
 </head>
 <body>
   <h1>Kontrollplan – {{ bygglovstyp }}</h1>
@@ -85,5 +84,19 @@
       </div>
     </form>
   </section>
+
+  <script>
+    // GA event: kontrollplan_skapad
+    window.addEventListener('DOMContentLoaded', function () {
+      try {
+        const antalRader = document.querySelectorAll('#kontroll-tabell tbody tr:not(.category)').length;
+        gtag('event', 'kontrollplan_skapad', {
+          event_category: 'kontrollplan',
+          event_label: '{{ bygglovstyp|e }}',
+          value: antalRader
+        });
+      } catch (e) {}
+    });
+  </script>
 </body>
 </html>

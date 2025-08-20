@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="sv">
 <head>
@@ -10,7 +9,7 @@
 </head>
 <body>
   <h1>Skapa kontrollplan</h1>
-  <form action="/result" method="post" class="card">
+  <form id="start-form" action="/result" method="post" class="card">
     <div class="grid grid-one">
       <label>Bygglov/åtgärdstyp
         <select name="bygglovstyp" required>
@@ -49,5 +48,23 @@
       <button type="submit">Nästa</button>
     </div>
   </form>
+
+  <script>
+    // GA event: uppgifter_skickade
+    (function(){
+      const form = document.getElementById('start-form');
+      if(!form) return;
+      form.addEventListener('submit', function(){
+        try {
+          const select = form.querySelector('select[name="bygglovstyp"]');
+          const typ = select ? select.value : '';
+          gtag('event', 'uppgifter_skickade', {
+            event_category: 'form',
+            event_label: typ
+          });
+        } catch(e){}
+      });
+    })();
+  </script>
 </body>
 </html>
