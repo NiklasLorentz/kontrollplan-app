@@ -16,13 +16,26 @@
   <meta name="twitter:description" content="Skapa en komplett kontrollplan på några minuter. Ladda ner PDF.">
   <link rel="stylesheet" href="/static/style.css">
   {% include "_ga.html" %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Kontrollplaner.com",
+    "url": "https://www.kontrollplaner.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.kontrollplaner.com/skapa?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="brand">Kontrollplaner</div>
     <nav>
       <a href="/">Hem</a>
-      <a href="/skapa">Skapa kontrollplan</a>
+      <a href="/skapa" aria-label="Skapa kontrollplan">Skapa kontrollplan</a>
       <a href="/om">Om</a>
       <a href="/faq">FAQ</a>
     </nav>
