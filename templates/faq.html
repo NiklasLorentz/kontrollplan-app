@@ -3,11 +3,13 @@
 <head>
   <meta charset="utf-8">
   <title>FAQ – Kontrollplan för bygglov</title>
-  <meta name="description" content="Svar på vanliga frågor om kontrollplan för bygglov och anmälan.">
+  <meta name="description" content="Svar på vanliga frågor om kontrollplan för bygglov och anmälan. Enkelt verktyg för privatpersoner att skapa och ladda ner kontrollplan som PDF.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="https://www.kontrollplaner.com/faq">
   <link rel="stylesheet" href="/static/style.css">
   {% include "_ga.html" %}
+
+  <!-- FAQPage JSON-LD (validerad) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -15,38 +17,112 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Behöver jag en kontrollplan?",
+        "name": "Vad är en kontrollplan?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "De flesta lov- och anmälningspliktiga åtgärder kräver kontrollplan. Kommunen preciserar kraven i startbeskedet."
+          "text": "En kontrollplan listar vilka kontroller som ska göras under byggprojektet, av vem (BH/KA/E), hur kontrollen ska utföras och när den ska göras. Kommunen preciserar kraven i startbeskedet."
         }
       },
       {
         "@type": "Question",
-        "name": "Kostar det något?",
+        "name": "Måste jag alltid lämna in en kontrollplan vid bygglov?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Nej, vårt verktyg är gratis att använda."
+          "text": "De flesta lov- och anmälningspliktiga åtgärder kräver kontrollplan. Vissa mycket enkla åtgärder kan ha förenklade krav. Kontrollera alltid kommunens besked."
         }
       },
       {
         "@type": "Question",
-        "name": "Kan jag ändra kontrollpunkter?",
+        "name": "Behöver jag en kontrollansvarig (KA)?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Ja. Obligatoriska rader är låsta, övriga kan du ändra, ta bort eller lägga till."
+          "text": "KA krävs för många åtgärder men inte alla. Mindre ändringar kan ofta göras utan KA. Kommunen anger om KA krävs i startbeskedet."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vad kostar det om en kontrollansvarig (KA) tar fram kontrollplanen?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kostnaden varierar med projektets omfattning. För enklare åtgärder kan priset börja från cirka 3 000–7 000 kr. Större eller mer komplexa projekt kostar mer. Begär gärna offert från flera KA."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vad är skillnaden mellan bygglov och anmälan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Bygglov krävs vid åtgärder som påverkar omgivningen eller byggnadens utseende/funktion i större grad. Anmälan gäller när åtgärden inte är lovpliktig men ändå måste prövas, t.ex. planlösningsändring, installationer eller vissa Attefallsåtgärder."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kan jag göra min kontrollplan själv som privatperson?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ja, det går bra. Vårt verktyg hjälper dig skapa en tydlig och komplett kontrollplan som du kan ladda ner som PDF och skicka in till kommunen."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vilka uppgifter ska alltid finnas i en kontrollplan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Uppgifter om byggherre och kontakt, fastighetsbeteckning och adress, kort projektbeskrivning samt tabell med kontrollpunkter: Vem (BH/KA/E), Hur (metod), Kontroll mot (t.ex. ritningar/BBR), När och Signatur."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vad händer om kontrollplanen inte blir godkänd av kommunen?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kommunen kan begära komplettering. Ofta räcker det att förtydliga kontrollpunkter eller lägga till obligatoriska moment innan du får startbesked/slutbesked."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kostar det något att lämna in en kontrollplan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kommunens handläggningsavgifter varierar. Själva kontrollplanen via vårt verktyg är gratis att skapa och ladda ner som PDF."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Gäller kontrollplanen även för Attefallsåtgärder?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ja, flera Attefallsåtgärder kräver anmälan och kontrollplan. Välj rätt åtgärdstyp i verktyget så får du relevanta kontrollpunkter."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kan jag ändra kontrollplanen efter att den skickats in?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ja, om förutsättningarna ändras kan du ta fram en uppdaterad version och skicka in till kommunen. Kontrollera med din handläggare hur de vill att du gör ändringen."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vilka förkortningar används (BH/KA/E)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "BH = Byggherre, KA = Kontrollansvarig, E = Entreprenör."
         }
       }
     ]
   }
   </script>
+
+  <!-- Breadcrumbs (validerad) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type":"ListItem","position":1,"name":"Hem","item":"https://www.kontrollplaner.com/" },
-      { "@type":"ListItem","position":2,"name":"FAQ","item":"https://www.kontrollplaner.com/faq" }
+      { "@type": "ListItem", "position": 1, "name": "Hem", "item": "https://www.kontrollplaner.com/" },
+      { "@type": "ListItem", "position": 2, "name": "FAQ", "item": "https://www.kontrollplaner.com/faq" }
     ]
   }
   </script>
@@ -61,15 +137,47 @@
       <a href="/faq" aria-current="page">FAQ</a>
     </nav>
   </header>
+
   <main class="card" style="margin:18px">
     <h1>Vanliga frågor</h1>
-    <h3>Behöver jag en kontrollplan?</h3>
-    <p>De flesta lov- och anmälningspliktiga åtgärder kräver kontrollplan. Kommunen preciserar kraven i startbeskedet.</p>
-    <h3>Kostar det något?</h3>
-    <p>Nej, vårt verktyg är gratis att använda.</p>
-    <h3>Kan jag ändra kontrollpunkter?</h3>
-    <p>Ja. Obligatoriska rader är låsta, övriga kan du ändra, ta bort eller lägga till.</p>
+
+    <h3>Vad är en kontrollplan?</h3>
+    <p>En kontrollplan listar vilka kontroller som ska göras under byggprojektet, av vem (BH/KA/E), hur kontrollen ska utföras och när den ska göras. Kommunen preciserar kraven i startbeskedet.</p>
+
+    <h3>Måste jag alltid lämna in en kontrollplan vid bygglov?</h3>
+    <p>De flesta lov- och anmälningspliktiga åtgärder kräver kontrollplan. Vissa mycket enkla åtgärder kan ha förenklade krav. Kontrollera alltid kommunens besked.</p>
+
+    <h3>Behöver jag en kontrollansvarig (KA)?</h3>
+    <p>KA krävs för många åtgärder men inte alla. Mindre ändringar kan ofta göras utan KA. Kommunen anger om KA krävs i startbeskedet.</p>
+
+    <h3>Vad kostar det om en kontrollansvarig (KA) tar fram kontrollplanen?</h3>
+    <p>Kostnaden varierar med projektets omfattning. För enklare åtgärder kan priset börja från cirka 3&nbsp;000–7&nbsp;000 kr. Större eller mer komplexa projekt kostar mer. Begär gärna offert från flera KA.</p>
+
+    <h3>Vad är skillnaden mellan bygglov och anmälan?</h3>
+    <p>Bygglov krävs vid åtgärder som påverkar omgivningen eller byggnadens utseende/funktion i större grad. Anmälan gäller när åtgärden inte är lovpliktig men ändå måste prövas, t.ex. planlösningsändring, installationer eller vissa Attefallsåtgärder.</p>
+
+    <h3>Kan jag göra min kontrollplan själv som privatperson?</h3>
+    <p>Ja. Vårt verktyg hjälper dig att skapa en tydlig och komplett kontrollplan som du kan ladda ner som PDF och skicka in till kommunen.</p>
+
+    <h3>Vilka uppgifter ska alltid finnas i en kontrollplan?</h3>
+    <p>Byggherre och kontakt, fastighetsbeteckning och adress, kort projektbeskrivning samt tabell med kontrollpunkter: Vem (BH/KA/E), Hur (metod), Kontroll mot (t.ex. ritningar/BBR), När och Signatur.</p>
+
+    <h3>Vad händer om kontrollplanen inte blir godkänd av kommunen?</h3>
+    <p>Kommunen kan begära komplettering. Ofta räcker det att förtydliga kontrollpunkter eller lägga till obligatoriska moment innan startbesked/slutbesked ges.</p>
+
+    <h3>Kostar det något att lämna in en kontrollplan?</h3>
+    <p>Kommunens handläggningsavgifter varierar. Själva kontrollplanen via vårt verktyg är gratis att skapa och ladda ner som PDF.</p>
+
+    <h3>Gäller kontrollplanen även för Attefallsåtgärder?</h3>
+    <p>Ja, flera Attefallsåtgärder kräver anmälan och kontrollplan. Välj rätt åtgärdstyp i verktyget så får du relevanta kontrollpunkter.</p>
+
+    <h3>Kan jag ändra kontrollplanen efter att den skickats in?</h3>
+    <p>Ja, om förutsättningarna ändras kan du ta fram en uppdaterad version och skicka in till kommunen. Stäm av med din handläggare hur ändringen ska göras.</p>
+
+    <h3>Vilka förkortningar används (BH/KA/E)?</h3>
+    <p>BH = Byggherre, KA = Kontrollansvarig, E = Entreprenör.</p>
   </main>
+
   <footer class="footer">
     <p>
       <a href="/">Hem</a> · 
