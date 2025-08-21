@@ -5,7 +5,6 @@
   <title>Kontrollplan – resultat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/static/style.css">
-  {% include "_ga.html" %}
   <script defer src="/static/script.js"></script>
 </head>
 <body>
@@ -73,6 +72,30 @@
           {% endfor %}
         </tbody>
       </table>
+
+      {% if aktiviteter %}
+      <h3 style="margin:16px 18px 8px">Aktiviteter KA och byggnadsnämnd</h3>
+      <table style="margin-top:0">
+        <thead>
+          <tr>
+            <th>Kontroll</th>
+            <th>Ansvarig</th>
+            <th>Dokumentation/kommentar</th>
+            <th>Datum/sign</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in aktiviteter %}
+          <tr class="locked">
+            <td>{{ a.kontroll }}</td>
+            <td>{{ a.ansvarig }}</td>
+            <td>{{ a.dokumentation }}</td>
+            <td></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
 
       <div class="row actions-under">
         <button type="button" id="add-category">+ Lägg till rubrik</button>

@@ -10,6 +10,7 @@ from xml.sax.saxutils import escape
 
 app = Flask(__name__)
 
+# ---------- Health ----------
 @app.route("/health")
 def health():
     return {"ok": True}, 200
@@ -18,6 +19,7 @@ def health():
 def ping():
     return "pong", 200
 
+# ---------- Pages ----------
 @app.route("/")
 def landing():
     return render_template("landing.html")
@@ -84,7 +86,33 @@ def result():
         "ka_namn","ka_kontakt","projektbeskrivning"
     ]}
     rows = plan_rows(form.get("bygglovstyp",""))
-    return render_template("result.html", rows=rows, **form)
+    aktiviteter = activities_for(form.get("bygglovstyp",""))
+    return render_template("result.html", rows=rows, aktiviteter=aktiviteter, **form)
+
+# ---------- Data helpers ----------
+def activities_for(bygglovstyp: str):
+    """
+    Returnerar rader för 'Aktiviteter KA och byggnadsnämnd' för de åtgärder
+    där KA/BN-processen normalt gäller.
+    """
+    t = (bygglovstyp or "").lower()
+    applies = any(s in t for s in [
+        "nybygg",          # Nybyggnad (villa/småhus)
+        "tillbygg",        # Tillbyggnad
+        "komplementbostad",# Komplementbostadshus (om ni inför separat typ)
+        "ändrad användning",
+        "andrad anvandning",
+        "andrad användning"
+    ])
+    if not applies:
+        return []
+    return [
+        {"kontroll":"Tekniskt samråd", "ansvarig":"KA", "dokumentation":"Protokoll"},
+        {"kontroll":"Platsbesök BN", "ansvarig":"KA", "dokumentation":"Enl. samråd, protokoll"},
+        {"kontroll":"Byggplatsbesök KA", "ansvarig":"KA", "dokumentation":"Enligt ÖK"},
+        {"kontroll":"Utlåtande till BN (slutanmälan)", "ansvarig":"KA", "dokumentation":"Utlåtande, slutanmälan"},
+        {"kontroll":"Slutsamråd", "ansvarig":"KA", "dokumentation":"Slutbesked"},
+    ]
 
 def plan_rows(bygglovstyp: str):
     t = (bygglovstyp or "").lower()
@@ -96,10 +124,10 @@ def plan_rows(bygglovstyp: str):
         return {
             "is_category": False,
             "kontrollpunkt": kp,
-            "vem": vem,
-            "hur": hur,
-            "mot": mot,
-            "nar": nar,
+            "vem": vem,     # BH / KA / E
+            "hur": hur,     # metod
+            "mot": mot,     # kontroll mot
+            "nar": nar,     # när
             "signatur": sign,
             "obligatorisk": oblig,
         }
@@ -233,6 +261,7 @@ def plan_rows(bygglovstyp: str):
 
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
+# ---------- PDF ----------
 @app.route("/generate_pdf", methods=["POST"])
 def generate_pdf():
     form = {k: request.form.get(k, "") for k in [
@@ -321,6 +350,28 @@ def generate_pdf():
     table.setStyle(style)
     story.append(table)
 
+    # --- Aktiviteter KA/BN (endast för vissa åtgärder) ---
+    aktiviteter = activities_for(form.get("bygglovstyp",""))
+    if aktiviteter:
+        story.append(Spacer(1, 14))
+        story.append(Paragraph("Aktiviteter KA och byggnadsnämnd", ParagraphStyle('h2', parent=styles['Heading2'], spaceBefore=6, spaceAfter=6)))
+        akt_headers = ["Kontroll","Ansvarig","Dokumentation/kommentar","Datum/sign"]
+        akt_data = [[Paragraph("<b>"+h+"</b>", small) for h in akt_headers]]
+        for rad in aktiviteter:
+            akt_data.append([P(rad['kontroll']), P(rad['ansvarig']), P(rad['dokumentation']), P("")])
+        akt_table = Table(akt_data, colWidths=[220, 70, 260, 120])
+        akt_table.setStyle(TableStyle([
+            ('BACKGROUND',(0,0),(-1,0),'#eef2f7'),
+            ('GRID',(0,0),(-1,-1),0.5,colors.black),
+            ('VALIGN',(0,0),(-1,-1),'TOP'),
+            ('FONTSIZE',(0,0),(-1,-1),8),
+            ('LEFTPADDING',(0,0),(-1,-1),4),
+            ('RIGHTPADDING',(0,0),(-1,-1),4),
+            ('TOPPADDING',(0,0),(-1,-1),4),
+            ('BOTTOMPADDING',(0,0),(-1,-1),4)
+        ]))
+        story.append(akt_table)
+
     story.append(Spacer(1,12))
     story.append(P("Härmed intygas att kontrollpunkterna har utförts och samtliga angivna krav har uppfyllts"))
     story.append(Spacer(1,10))
@@ -332,6 +383,7 @@ def generate_pdf():
     buf.seek(0)
     return send_file(buf, as_attachment=True, download_name="kontrollplan.pdf", mimetype="application/pdf")
 
+# ---------- SEO ----------
 @app.route("/sitemap.xml")
 def sitemap_xml():
     host = request.host or "www.kontrollplaner.com"
