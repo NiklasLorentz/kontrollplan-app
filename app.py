@@ -1,3 +1,4 @@
+
 import os
 from datetime import datetime, timezone
 from flask import Flask, render_template, request, send_file, Response
@@ -52,7 +53,7 @@ def exempel_kontrollplan():
 def kontakt():
     sent = False
     if request.method == "POST":
-        sent = True
+        sent = True  # Hooka upp mot e-posttjänst senare (Formspree/SendGrid)
     return render_template("kontakt.html", sent=sent)
 
 @app.route("/skapa", methods=["GET","POST"])
@@ -72,6 +73,7 @@ def skapa():
         "Fasadändring",
         "Takomläggning",
         "Garage / Komplementbyggnad",
+        "Komplementbostadshus",
         "Altan / Uterum",
         "Pool",
         "Attefallsåtgärder"
@@ -92,27 +94,19 @@ def result():
 # ---------- Data helpers ----------
 def activities_for(bygglovstyp: str):
     """
-    Returnerar rader för 'Aktiviteter KA och byggnadsnämnd' för de åtgärder
-    där KA/BN-processen normalt gäller.
+    Returnerar rader för 'Aktiviteter KA och byggnadsnämnd'.
+    Gäller alltid för Nybyggnad, Tillbyggnad, Garage/Komplementbyggnad samt Komplementbostadshus.
     """
     t = (bygglovstyp or "").lower()
-    applies = any(s in t for s in [
-        "nybygg",          # Nybyggnad (villa/småhus)
-        "tillbygg",        # Tillbyggnad
-        "komplementbostad",# Komplementbostadshus (om ni inför separat typ)
-        "ändrad användning",
-        "andrad anvandning",
-        "andrad användning"
-    ])
-    if not applies:
-        return []
-    return [
-        {"kontroll":"Tekniskt samråd", "ansvarig":"KA", "dokumentation":"Protokoll"},
-        {"kontroll":"Platsbesök BN", "ansvarig":"KA", "dokumentation":"Enl. samråd, protokoll"},
-        {"kontroll":"Byggplatsbesök KA", "ansvarig":"KA", "dokumentation":"Enligt ÖK"},
-        {"kontroll":"Utlåtande till BN (slutanmälan)", "ansvarig":"KA", "dokumentation":"Utlåtande, slutanmälan"},
-        {"kontroll":"Slutsamråd", "ansvarig":"KA", "dokumentation":"Slutbesked"},
-    ]
+    if any(s in t for s in ["nybygg", "tillbygg", "garage", "komplement", "komplementbostad"]):
+        return [
+            {"kontroll":"Tekniskt samråd", "ansvarig":"KA", "dokumentation":"Protokoll"},
+            {"kontroll":"Platsbesök BN", "ansvarig":"KA", "dokumentation":"Enl. samråd, protokoll"},
+            {"kontroll":"Byggplatsbesök KA", "ansvarig":"KA", "dokumentation":"Enligt ÖK"},
+            {"kontroll":"Utlåtande till BN (slutanmälan)", "ansvarig":"KA", "dokumentation":"Utlåtande, slutanmälan"},
+            {"kontroll":"Slutsamråd", "ansvarig":"KA", "dokumentation":"Slutbesked"},
+        ]
+    return []
 
 def plan_rows(bygglovstyp: str):
     t = (bygglovstyp or "").lower()
@@ -211,6 +205,24 @@ def plan_rows(bygglovstyp: str):
             row("Dagvatten/avrinnning", "E", "Visuell kontroll", "Kommunens krav"),
             cat("Slutkontroll"),
             row("Utförandet överensstämmer med startbesked", "BH", "Granskning, intyg", "Startbesked", "Efter arbetet", oblig=True),
+        ]
+
+    if "komplementbostad" in t:
+        return [
+            cat("Läge och grund"),
+            row("Placering enligt situationsplan", "BH", "Kontrollmätning", "Situationsplan, startbesked", "Före byggstart", oblig=True),
+            row("Grundläggning (platta/plintar) med fuktskydd", "E", "Egenkontroll, foto", "Ritningar, BBR"),
+            cat("Stomme och klimatskal"),
+            row("Bärande stomme", "E", "Egenkontroll", "Ritningar"),
+            row("Ytterväggar och tak (isolering/täthet)", "E", "Egenkontroll, foto", "BBR"),
+            row("Fönster/dörrar – infästning/tätning", "E", "Egenkontroll", "Ritningar, BBR"),
+            cat("Installationer"),
+            row("Elinstallationer", "E", "Intyg", "Elsäkerhetslagen"),
+            row("VVS-installationer", "E", "Tryckprovning/intyg", "Branschregler"),
+            row("Ventilation", "E", "Injustering, funktionsprov", "BBR"),
+            row("Brandskydd i bostaden (brandvarnare/släckare/brandfilt)", "BH", "Egenkontroll", "BBR, MSB"),
+            cat("Slutkontroll"),
+            row("Utförandet överensstämmer med startbesked", "BH", "Granskning, intyg", "Startbesked", "Innan slutbesked", oblig=True),
         ]
 
     if "altan" in t or "uterum" in t:
@@ -350,7 +362,7 @@ def generate_pdf():
     table.setStyle(style)
     story.append(table)
 
-    # --- Aktiviteter KA/BN (endast för vissa åtgärder) ---
+    # --- Aktiviteter KA/BN (för Nybyggnad, Tillbyggnad, Garage/Komplementbyggnad, Komplementbostadshus) ---
     aktiviteter = activities_for(form.get("bygglovstyp",""))
     if aktiviteter:
         story.append(Spacer(1, 14))
