@@ -1,104 +1,84 @@
-function buttonDanger(label='Ta bort'){
-  const b=document.createElement('button');
-  b.type='button'; b.textContent=label; b.className='danger';
-  return b;
-}
-let lastRemoved=null;
-function attachRemoveHandler(tr){
-  const btn = tr.querySelector('button.danger');
-  if(!btn) return;
-  btn.onclick = () => {
-    const tbody = document.querySelector('#kontroll-tabell tbody');
-    const index = Array.from(tbody.children).indexOf(tr);
-    lastRemoved = { html: tr.outerHTML, index };
-    tr.remove();
-    document.getElementById('undo-remove').disabled = false;
-    rebuildHidden();
-  };
-}
-function addCategoryRow(title='Ny rubrik'){
-  const tbody = document.querySelector('#kontroll-tabell tbody');
-  const tr = document.createElement('tr');
-  tr.classList.add('category');
-  const tdTitle = document.createElement('td');
-  const span = document.createElement('span'); span.className='editable'; span.contentEditable='true'; span.textContent=title;
-  tdTitle.appendChild(span);
-  tr.appendChild(tdTitle);
-  for (let i=0;i<5;i++){ tr.appendChild(document.createElement('td')); }
-  const tdRemove = document.createElement('td');
-  const btn = buttonDanger();
-  tdRemove.appendChild(btn);
-  tr.appendChild(tdRemove);
-  tbody.appendChild(tr);
-  attachRemoveHandler(tr);
-  rebuildHidden();
-}
-function addDataRow(data={}){
-  const tbody = document.querySelector('#kontroll-tabell tbody');
-  const tr = document.createElement('tr');
-  if (data.obligatorisk) tr.classList.add('locked');
-  ['kontrollpunkt','vem','hur','mot','nar','signatur'].forEach(k=>{
-    const td=document.createElement('td'); 
-    const val=(data[k]||'');
-    const span=document.createElement('span'); span.contentEditable='true'; span.className='editable'; span.textContent=val;
-    td.appendChild(span); tr.appendChild(td);
-  });
-  const tdRemove=document.createElement('td');
-  if (data.obligatorisk){ tdRemove.textContent='Låst'; tdRemove.title='Obligatorisk rad – kan inte tas bort'; }
-  else { const btn=buttonDanger(); tdRemove.appendChild(btn); }
-  tr.appendChild(tdRemove); tbody.appendChild(tr);
-  if (!data.obligatorisk) attachRemoveHandler(tr);
-  rebuildHidden();
-}
-function rebuildHidden(){
-  const cont=document.getElementById('hidden-rows'); cont.innerHTML='';
-  const rows=Array.from(document.querySelectorAll('#kontroll-tabell tbody tr'));
-  rows.forEach(tr=>{
-    const isCat=tr.classList.contains('category')?'1':'0';
-    const cells=tr.querySelectorAll('td .editable'); const vals=Array.from(cells).map(c=>c.textContent.trim());
-    function hidden(n,v){ const i=document.createElement('input'); i.type='hidden'; i.name=n; i.value=v; cont.appendChild(i); }
-    if(isCat==='1'){ hidden('is_category[]','1'); hidden('kategori[]', vals[0]||''); }
-    else{
-      hidden('is_category[]','0'); hidden('kategori[]','');
-      const [kp,vem,hur,mot,nar,sign]=vals;
-      hidden('kp[]',kp||''); hidden('vem[]',vem||''); hidden('hur[]',hur||'');
-      hidden('mot[]',mot||''); hidden('nar[]',nar||''); hidden('signatur[]',sign||'');
+// Enkel editor för tabellen på resultatsidan
+(function(){
+  const table = document.getElementById('kontroll-tabell');
+  if(!table) return;
+
+  // Edit-in-place
+  table.addEventListener('click', function(e){
+    const span = e.target.closest('.editable');
+    if(span){
+      const current = span.textContent;
+      const input = document.createElement('input');
+      input.value = current;
+      span.replaceWith(input);
+      input.focus();
+      input.addEventListener('blur', () => {
+        const newSpan = document.createElement('span');
+        newSpan.className = 'editable';
+        newSpan.textContent = input.value;
+        input.replaceWith(newSpan);
+      });
+    }
+    const delBtn = e.target.closest('button.danger');
+    if(delBtn){
+      const tr = delBtn.closest('tr');
+      if(tr && !tr.classList.contains('locked')){
+        tr.remove();
+      }
     }
   });
-}
-function undoLastRemove(){
-  if(!lastRemoved) return;
-  const tbody=document.querySelector('#kontroll-tabell tbody');
-  const tmp=document.createElement('tbody'); tmp.innerHTML=(lastRemoved.html||'').trim();
-  const restored=tmp.firstElementChild; const rows=Array.from(tbody.children);
-  if(lastRemoved.index>=0&&lastRemoved.index<=rows.length){
-    if(lastRemoved.index===rows.length) tbody.appendChild(restored);
-    else tbody.insertBefore(restored, rows[lastRemoved.index]);
-  } else tbody.appendChild(restored);
-  attachRemoveHandler(restored); lastRemoved=null; document.getElementById('undo-remove').disabled=true; rebuildHidden();
-}
-function init(){
-  document.querySelectorAll('#kontroll-tabell tbody tr').forEach(tr=>attachRemoveHandler(tr));
-  document.getElementById('add-category').onclick=()=>addCategoryRow('Ny rubrik');
-  document.getElementById('add-row').onclick=()=>addDataRow({vem:'BH', hur:'Egenkontroll', mot:'Ritningar', nar:'Under arbetet'});
-  document.getElementById('clear-all').onclick=()=>{
-    document.querySelector('#kontroll-tabell tbody').innerHTML='';
-    lastRemoved=null; document.getElementById('undo-remove').disabled=true; rebuildHidden();
-  };
-  document.getElementById('undo-remove').onclick=undoLastRemove;
-  document.querySelector('#kontroll-tabell').addEventListener('input', e=>{ if(e.target.matches('.editable')) rebuildHidden(); });
-  document.getElementById('pdf-form').addEventListener('submit', function(){
-    rebuildHidden();
-    try {
-      const rows = document.querySelectorAll('#kontroll-tabell tbody tr:not(.category)').length;
-      const title = (document.querySelector('h1')?.textContent || '').replace('Kontrollplan – ', '');
-      gtag('event', 'pdf_nedladdad', {
-        event_category: 'kontrollplan',
-        event_label: title,
-        value: rows
+
+  // Lägg till rubrik
+  const addCategory = document.getElementById('add-category');
+  if(addCategory){
+    addCategory.addEventListener('click', () => {
+      const tr = document.createElement('tr');
+      tr.className = 'category';
+      tr.innerHTML = '<td><span class="editable">Ny rubrik</span></td><td></td><td></td><td></td><td></td><td></td><td><button type="button" class="danger">Ta bort</button></td>';
+      table.querySelector('tbody').appendChild(tr);
+    });
+  }
+
+  // Lägg till rad
+  const addRow = document.getElementById('add-row');
+  if(addRow){
+    addRow.addEventListener('click', () => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td><span class="editable">Ny kontrollpunkt</span></td><td><span class="editable">BH</span></td><td><span class="editable">Egenkontroll</span></td><td><span class="editable">Ritningar</span></td><td><span class="editable">Under arbetet</span></td><td><span class="editable"></span></td><td><button type="button" class="danger">Ta bort</button></td>';
+      table.querySelector('tbody').appendChild(tr);
+    });
+  }
+
+  // Vid submit – paketera rader i dolda inputs till PDF
+  const form = document.getElementById('pdf-form');
+  if(form){
+    form.addEventListener('submit', () => {
+      const hidden = document.getElementById('hidden-rows');
+      hidden.innerHTML = '';
+      const rows = table.querySelectorAll('tbody tr');
+      rows.forEach(tr => {
+        const tds = tr.querySelectorAll('td');
+        const isCat = tr.classList.contains('category') ? '1' : '0';
+        const add = (name, value) => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = name;
+          input.value = value;
+          hidden.appendChild(input);
+        };
+        add('is_category[]', isCat);
+        if(isCat === '1'){
+          const title = tds[0].innerText.trim();
+          add('kategori[]', title);
+        } else {
+          add('kp[]', tds[0].innerText.trim());
+          add('vem[]', tds[1].innerText.trim());
+          add('hur[]', tds[2].innerText.trim());
+          add('mot[]', tds[3].innerText.trim());
+          add('nar[]', tds[4].innerText.trim());
+          add('signatur[]', tds[5].innerText.trim());
+        }
       });
-    } catch(e){}
-  });
-  rebuildHidden();
-}
-document.addEventListener('DOMContentLoaded', init);
+    });
+  }
+})();

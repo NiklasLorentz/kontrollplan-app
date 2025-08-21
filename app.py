@@ -1,4 +1,3 @@
-
 import os
 from datetime import datetime, timezone
 from flask import Flask, render_template, request, send_file, Response
@@ -41,14 +40,6 @@ def privacy():
 def terms():
     return render_template("terms.html")
 
-@app.route("/kontrollplan-bygglov")
-def kontrollplan_bygglov():
-    return render_template("kontrollplan_bygglov.html")
-
-@app.route("/exempel-kontrollplan")
-def exempel_kontrollplan():
-    return render_template("exempel_kontrollplan.html")
-
 @app.route("/kontakt", methods=["GET","POST"])
 def kontakt():
     sent = False
@@ -56,6 +47,7 @@ def kontakt():
         sent = True  # Hooka upp mot e-posttjänst senare (Formspree/SendGrid)
     return render_template("kontakt.html", sent=sent)
 
+# Form för att skapa kontrollplan
 @app.route("/skapa", methods=["GET","POST"])
 def skapa():
     fields = [
@@ -274,7 +266,7 @@ def plan_rows(bygglovstyp: str):
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
 # ---------- PDF ----------
-@app.route("/generate_pdf", methods=["POST"])
+@app.route("/generate_pdf", methods=["POST"]]
 def generate_pdf():
     form = {k: request.form.get(k, "") for k in [
         "bygglovstyp","byggherre","telefon","epost",
@@ -404,8 +396,6 @@ def sitemap_xml():
     pages = [
         {"loc": base + "/", "changefreq": "weekly", "priority": "1.0"},
         {"loc": base + "/skapa", "changefreq": "weekly", "priority": "0.9"},
-        {"loc": base + "/kontrollplan-bygglov", "changefreq": "monthly", "priority": "0.7"},
-        {"loc": base + "/exempel-kontrollplan", "changefreq": "monthly", "priority": "0.7"},
         {"loc": base + "/kontakt", "changefreq": "monthly", "priority": "0.6"},
         {"loc": base + "/om", "changefreq": "monthly", "priority": "0.6"},
         {"loc": base + "/faq", "changefreq": "monthly", "priority": "0.6"},
@@ -414,15 +404,15 @@ def sitemap_xml():
     ]
     xml_items = []
     for p in pages:
-        xml_items.append("  <url>\n    <loc>" + p["loc"] + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>" + p["changefreq"] + "</changefreq>\n    <priority>" + p["priority"] + "</priority>\n  </url>")
-    xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" + "\n".join(xml_items) + "\n</urlset>\n"
+        xml_items.append("  <url>\\n    <loc>" + p["loc"] + "</loc>\\n    <lastmod>" + today + "</lastmod>\\n    <changefreq>" + p["changefreq"] + "</changefreq>\\n    <priority>" + p["priority"] + "</priority>\\n  </url>")
+    xml = "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>\\n<urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">\\n" + "\\n".join(xml_items) + "\\n</urlset>\\n"
     return Response(xml, mimetype="application/xml")
 
 @app.route("/robots.txt")
 def robots_txt():
     host = request.host or "www.kontrollplaner.com"
     base = "https://" + host
-    body = "User-agent: *\nDisallow:\n\nSitemap: " + base + "/sitemap.xml\n"
+    body = "User-agent: *\\nDisallow:\\n\\nSitemap: " + base + "/sitemap.xml\\n"
     return Response(body, mimetype="text/plain")
 
 if __name__ == "__main__":

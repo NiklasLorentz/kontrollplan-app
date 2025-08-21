@@ -8,6 +8,13 @@
   <script defer src="/static/script.js"></script>
 </head>
 <body>
+  <header class="no-print">
+    <div class="container">
+      <a class="logo" href="/">Kontrollplaner.com</a>
+    </div>
+  </header>
+
+  <main class="container">
   <h1>Kontrollplan – {{ bygglovstyp }}</h1>
 
   <div class="card">
@@ -97,7 +104,7 @@
       </table>
       {% endif %}
 
-      <div class="row actions-under">
+      <div class="row actions-under no-print">
         <button type="button" id="add-category">+ Lägg till rubrik</button>
         <button type="button" id="add-row">+ Lägg till rad</button>
         <button type="button" id="clear-all" class="danger">Rensa allt</button>
@@ -107,5 +114,6 @@
       </div>
     </form>
   </section>
+  </main>
 </body>
 </html>

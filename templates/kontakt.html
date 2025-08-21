@@ -1,65 +1,23 @@
-<!doctype html>
-<html lang="sv">
-<head>
-  <meta charset="utf-8">
-  <title>Kontakt – Kontrollplaner.com</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="canonical" href="https://www.kontrollplaner.com/kontakt">
-  <link rel="stylesheet" href="/static/style.css">
-  {% include "_ga.html" %}
-</head>
-<body>
-  <header class="site-header">
-    <div class="brand">Kontrollplaner</div>
-    <nav>
-      <a href="/">Hem</a>
-      <a href="/skapa">Skapa kontrollplan</a>
-      <a href="/kontrollplan-bygglov">Kontrollplan bygglov</a>
-      <a href="/exempel-kontrollplan">Exempel</a>
-      <a href="/kontakt" aria-current="page">Kontakt</a>
-      <a href="/om">Om</a>
-      <a href="/faq">FAQ</a>
-    </nav>
-  </header>
-
-  <main class="card" style="margin:18px">
-    <h1>Kontakt</h1>
-    {% if sent %}
-      <div class="card" style="background:#ecfdf5;border-color:#a7f3d0;">
-        Tack! Ditt meddelande är skickat.
-      </div>
-    {% else %}
-      <form method="post" class="grid grid-one" style="max-width:640px">
-        <label>Namn
-          <input type="text" name="namn" required>
-        </label>
-        <label>E‑post
-          <input type="email" name="epost" required>
-        </label>
-        <label>Meddelande
-          <textarea name="meddelande" rows="5" required></textarea>
-        </label>
-        <div class="actions">
-          <button type="submit">Skicka</button>
-        </div>
-      </form>
-      <p>Du kan också maila oss: <a href="mailto:info@kontrollplaner.com">info@kontrollplaner.com</a></p>
-    {% endif %}
-  </main>
-
-  <footer class="footer">
-    <p>
-      <a href="/">Hem</a> · 
-      <a href="/skapa">Skapa kontrollplan</a> · 
-      <a href="/kontrollplan-bygglov">Kontrollplan bygglov</a> · 
-      <a href="/exempel-kontrollplan">Exempel</a> · 
-      <a href="/kontakt">Kontakt</a> · 
-      <a href="/om">Om</a> · 
-      <a href="/faq">FAQ</a> · 
-      <a href="/privacy">Integritetspolicy</a> · 
-      <a href="/terms">Villkor</a>
-    </p>
-    <p>© 2025 Kontrollplaner.com</p>
-  </footer>
-</body>
-</html>
+{% extends "base.html" %}
+{% block meta %}
+<title>Kontakta oss – Kontrollplaner.com</title>
+<meta name="description" content="Har du frågor om kontrollplaner eller vårt verktyg? Kontakta oss enkelt via formuläret.">
+{% endblock %}
+{% block content %}
+<h1>Kontakta oss</h1>
+{% if sent %}
+  <div class="notice success">Tack! Ditt meddelande är skickat.</div>
+{% endif %}
+<form method="POST">
+  <label>Namn
+    <input name="namn" required>
+  </label>
+  <label>E‑post
+    <input type="email" name="email" required>
+  </label>
+  <label>Meddelande
+    <textarea name="message" rows="5" required></textarea>
+  </label>
+  <button class="btn" type="submit">Skicka</button>
+</form>
+{% endblock %}
