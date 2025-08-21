@@ -11,7 +11,6 @@ label{display:block;font-weight:600}.grid input,.grid textarea,.grid select{widt
 table{width:100%;border-collapse:collapse;margin-top:8px}th,td{border:1px solid #cfd8e3;padding:6px;text-align:left}thead th{background:#eef2f7}
 .category td{font-weight:700;background:#e8f1ff}.locked{opacity:.9}
 .row.actions-under{display:flex;gap:10px;align-items:center;padding:10px 0}.danger{background:#c62828;color:#fff;border:none;padding:6px 10px;border-radius:6px}
-.secondary{background:#607d8b;color:#fff;border:none;padding:6px 10px;border-radius:6px}
 .flex-spacer{flex:1}footer{margin-top:24px;background:#f5f7fb}.cookie-banner{position:fixed;left:0;right:0;bottom:0;background:#1f2937;color:#fff;padding:10px;text-align:center;z-index:9999}
 @media print{.no-print{display:none} body{color:#000} .card{border:none}}
 .notice.success{background:#e9fbe7;border:1px solid #b8e0b2;padding:10px;border-radius:6px}

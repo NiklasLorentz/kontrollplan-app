@@ -1,6 +1,7 @@
 
 import os
 from datetime import datetime, timezone
+from urllib.parse import urljoin
 from flask import Flask, render_template, request, send_file, Response
 from io import BytesIO
 from reportlab.lib.pagesizes import A4, landscape
@@ -11,7 +12,7 @@ from xml.sax.saxutils import escape
 
 app = Flask(__name__)
 
-# ---------- Health ----------
+# -------- Health --------
 @app.route("/health")
 def health():
     return {"ok": True}, 200
@@ -20,7 +21,7 @@ def health():
 def ping():
     return "pong", 200
 
-# ---------- Pages ----------
+# -------- Pages --------
 @app.route("/")
 def landing():
     return render_template("landing.html")
@@ -41,21 +42,15 @@ def privacy():
 def terms():
     return render_template("terms.html")
 
-@app.route("/kontrollplan-bygglov")
-def kontrollplan_bygglov():
-    return render_template("kontrollplan_bygglov.html")
-
-@app.route("/exempel-kontrollplan")
-def exempel_kontrollplan():
-    return render_template("exempel_kontrollplan.html")
-
 @app.route("/kontakt", methods=["GET","POST"])
 def kontakt():
     sent = False
     if request.method == "POST":
-        sent = True  # Hooka upp mot e-posttjänst senare (Formspree/SendGrid)
+        # TODO: Integrera mail-tjänst i produktion (Formspree/SendGrid)
+        sent = True
     return render_template("kontakt.html", sent=sent)
 
+# -------- Formulär --------
 @app.route("/skapa", methods=["GET","POST"])
 def skapa():
     fields = [
@@ -91,12 +86,8 @@ def result():
     aktiviteter = activities_for(form.get("bygglovstyp",""))
     return render_template("result.html", rows=rows, aktiviteter=aktiviteter, **form)
 
-# ---------- Data helpers ----------
+# -------- Data helpers --------
 def activities_for(bygglovstyp: str):
-    """
-    Returnerar rader för 'Aktiviteter KA och byggnadsnämnd'.
-    Gäller alltid för Nybyggnad, Tillbyggnad, Garage/Komplementbyggnad samt Komplementbostadshus.
-    """
     t = (bygglovstyp or "").lower()
     if any(s in t for s in ["nybygg", "tillbygg", "garage", "komplement", "komplementbostad"]):
         return [
@@ -273,7 +264,7 @@ def plan_rows(bygglovstyp: str):
 
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
-# ---------- PDF ----------
+# -------- PDF --------
 @app.route("/generate_pdf", methods=["POST"])
 def generate_pdf():
     form = {k: request.form.get(k, "") for k in [
@@ -362,7 +353,7 @@ def generate_pdf():
     table.setStyle(style)
     story.append(table)
 
-    # --- Aktiviteter KA/BN (för Nybyggnad, Tillbyggnad, Garage/Komplementbyggnad, Komplementbostadshus) ---
+    # Aktiviteter KA/BN
     aktiviteter = activities_for(form.get("bygglovstyp",""))
     if aktiviteter:
         story.append(Spacer(1, 14))
@@ -395,34 +386,44 @@ def generate_pdf():
     buf.seek(0)
     return send_file(buf, as_attachment=True, download_name="kontrollplan.pdf", mimetype="application/pdf")
 
-# ---------- SEO ----------
+# -------- SEO --------
 @app.route("/sitemap.xml")
 def sitemap_xml():
     host = request.host or "www.kontrollplaner.com"
-    base = "https://" + host
+    base = f"https://{host}/"
     today = datetime.now(timezone.utc).date().isoformat()
     pages = [
-        {"loc": base + "/", "changefreq": "weekly", "priority": "1.0"},
-        {"loc": base + "/skapa", "changefreq": "weekly", "priority": "0.9"},
-        {"loc": base + "/kontrollplan-bygglov", "changefreq": "monthly", "priority": "0.7"},
-        {"loc": base + "/exempel-kontrollplan", "changefreq": "monthly", "priority": "0.7"},
-        {"loc": base + "/kontakt", "changefreq": "monthly", "priority": "0.6"},
-        {"loc": base + "/om", "changefreq": "monthly", "priority": "0.6"},
-        {"loc": base + "/faq", "changefreq": "monthly", "priority": "0.6"},
-        {"loc": base + "/privacy", "changefreq": "yearly", "priority": "0.3"},
-        {"loc": base + "/terms", "changefreq": "yearly", "priority": "0.3"}
+        {"path": "",          "changefreq": "weekly",  "priority": "1.0"},
+        {"path": "skapa",     "changefreq": "weekly",  "priority": "0.9"},
+        {"path": "kontakt",   "changefreq": "monthly", "priority": "0.6"},
+        {"path": "om",        "changefreq": "monthly", "priority": "0.6"},
+        {"path": "faq",       "changefreq": "monthly", "priority": "0.6"},
+        {"path": "privacy",   "changefreq": "yearly",  "priority": "0.3"},
+        {"path": "terms",     "changefreq": "yearly",  "priority": "0.3"},
     ]
+    def loc_url(path): return urljoin(base, path)
     xml_items = []
     for p in pages:
-        xml_items.append("  <url>\n    <loc>" + p["loc"] + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>" + p["changefreq"] + "</changefreq>\n    <priority>" + p["priority"] + "</priority>\n  </url>")
-    xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" + "\n".join(xml_items) + "\n</urlset>\n"
+        xml_items.append(
+            f"""  <url>
+    <loc>{loc_url(p['path'])}</loc>
+    <lastmod>{today}</lastmod>
+    <changefreq>{p['changefreq']}</changefreq>
+    <priority>{p['priority']}</priority>
+  </url>"""
+        )
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{chr(10).join(xml_items)}
+</urlset>
+"""
     return Response(xml, mimetype="application/xml")
 
 @app.route("/robots.txt")
 def robots_txt():
     host = request.host or "www.kontrollplaner.com"
-    base = "https://" + host
-    body = "User-agent: *\nDisallow:\n\nSitemap: " + base + "/sitemap.xml\n"
+    base = f"https://{host}"
+    body = f"User-agent: *\nDisallow:\n\nSitemap: {base}/sitemap.xml\n"
     return Response(body, mimetype="text/plain")
 
 if __name__ == "__main__":

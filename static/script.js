@@ -1,9 +1,7 @@
-// Enkel editor för tabellen på resultatsidan
 (function(){
   const table = document.getElementById('kontroll-tabell');
   if(!table) return;
 
-  // Edit-in-place
   table.addEventListener('click', function(e){
     const span = e.target.closest('.editable');
     if(span){
@@ -28,7 +26,6 @@
     }
   });
 
-  // Lägg till rubrik
   const addCategory = document.getElementById('add-category');
   if(addCategory){
     addCategory.addEventListener('click', () => {
@@ -39,7 +36,6 @@
     });
   }
 
-  // Lägg till rad
   const addRow = document.getElementById('add-row');
   if(addRow){
     addRow.addEventListener('click', () => {
@@ -49,7 +45,6 @@
     });
   }
 
-  // Vid submit – paketera rader i dolda inputs till PDF
   const form = document.getElementById('pdf-form');
   if(form){
     form.addEventListener('submit', () => {

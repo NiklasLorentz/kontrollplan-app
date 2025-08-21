@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="{{ request.url_root.rstrip('/') ~ request.path }}">
   {% block meta %}{% endblock %}
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
@@ -38,7 +39,6 @@
     </div>
   </footer>
 
-  <!-- Cookie-banner -->
   <div id="cookie-banner" class="cookie-banner" style="display:none;">
     Vi använder cookies för att förbättra din upplevelse på sidan.
     <button onclick="acceptCookies()">OK</button>
