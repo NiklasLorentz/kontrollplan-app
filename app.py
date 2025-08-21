@@ -1,4 +1,3 @@
-
 import os
 from datetime import datetime, timezone
 from flask import Flask, render_template, request, send_file, Response
@@ -11,7 +10,6 @@ from xml.sax.saxutils import escape
 
 app = Flask(__name__)
 
-# ---------- Health ----------
 @app.route("/health")
 def health():
     return {"ok": True}, 200
@@ -20,7 +18,6 @@ def health():
 def ping():
     return "pong", 200
 
-# ---------- Pages ----------
 @app.route("/")
 def landing():
     return render_template("landing.html")
@@ -40,6 +37,21 @@ def privacy():
 @app.route("/terms")
 def terms():
     return render_template("terms.html")
+
+@app.route("/kontrollplan-bygglov")
+def kontrollplan_bygglov():
+    return render_template("kontrollplan_bygglov.html")
+
+@app.route("/exempel-kontrollplan")
+def exempel_kontrollplan():
+    return render_template("exempel_kontrollplan.html")
+
+@app.route("/kontakt", methods=["GET","POST"])
+def kontakt():
+    sent = False
+    if request.method == "POST":
+        sent = True
+    return render_template("kontakt.html", sent=sent)
 
 @app.route("/skapa", methods=["GET","POST"])
 def skapa():
@@ -74,7 +86,6 @@ def result():
     rows = plan_rows(form.get("bygglovstyp",""))
     return render_template("result.html", rows=rows, **form)
 
-# ---------- Kontrollplansdata (fokus privatpersoner) ----------
 def plan_rows(bygglovstyp: str):
     t = (bygglovstyp or "").lower()
 
@@ -85,15 +96,14 @@ def plan_rows(bygglovstyp: str):
         return {
             "is_category": False,
             "kontrollpunkt": kp,
-            "vem": vem,     # BH / KA / E
-            "hur": hur,     # metod
-            "mot": mot,     # kontroll mot
-            "nar": nar,     # när
+            "vem": vem,
+            "hur": hur,
+            "mot": mot,
+            "nar": nar,
             "signatur": sign,
             "obligatorisk": oblig,
         }
 
-    # ---- Nybyggnad (villa/småhus) ----
     if "nybygg" in t:
         return [
             cat("Mark och grund"),
@@ -115,7 +125,6 @@ def plan_rows(bygglovstyp: str):
             row("Utförandet överensstämmer med beviljat bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Innan slutbesked", oblig=True),
         ]
 
-    # ---- Tillbyggnad ----
     if "tillbygg" in t:
         return [
             cat("Mark och grund"),
@@ -134,7 +143,6 @@ def plan_rows(bygglovstyp: str):
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Innan slutbesked", oblig=True),
         ]
 
-    # ---- Fasadändring ----
     if "fasad" in t:
         return [
             cat("Fasadåtgärd"),
@@ -148,7 +156,6 @@ def plan_rows(bygglovstyp: str):
             row("Utförandet överensstämmer med bygglov/startbesked", "BH", "Granskning, intyg", "Bygglovsbeslut, startbesked", "Efter arbetet", oblig=True),
         ]
 
-    # ---- Takomläggning ----
     if "tak" in t:
         return [
             cat("Rivning och underlag"),
@@ -162,7 +169,6 @@ def plan_rows(bygglovstyp: str):
             row("Åtgärden stämmer med handling/startbesked", "BH", "Granskning, egenkontroll", "Startbesked", "Efter arbetet", oblig=True),
         ]
 
-    # ---- Garage / Komplementbyggnad ----
     if "garage" in t or "komplement" in t:
         return [
             cat("Läge och grund"),
@@ -179,7 +185,6 @@ def plan_rows(bygglovstyp: str):
             row("Utförandet överensstämmer med startbesked", "BH", "Granskning, intyg", "Startbesked", "Efter arbetet", oblig=True),
         ]
 
-    # ---- Altan / Uterum ----
     if "altan" in t or "uterum" in t:
         return [
             cat("Placering och grund"),
@@ -193,7 +198,6 @@ def plan_rows(bygglovstyp: str):
             row("Åtgärden stämmer med startbesked", "BH", "Granskning", "Startbesked", "Efter arbetet", oblig=True),
         ]
 
-    # ---- Pool ----
     if "pool" in t:
         return [
             cat("Mark och grund"),
@@ -208,7 +212,6 @@ def plan_rows(bygglovstyp: str):
             row("Åtgärden stämmer med eventuellt startbesked", "BH", "Granskning", "Startbesked/handling", "Efter arbetet", oblig=True),
         ]
 
-    # ---- Attefallsåtgärder ----
     if "attefall" in t:
         return [
             cat("Läge och mått"),
@@ -228,10 +231,8 @@ def plan_rows(bygglovstyp: str):
             row("Utförandet överensstämmer med startbesked", "BH", "Granskning, intyg", "Startbesked/anmälan", "Efter arbetet", oblig=True),
         ]
 
-    # Fallback
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
-# ---------- PDF ----------
 @app.route("/generate_pdf", methods=["POST"])
 def generate_pdf():
     form = {k: request.form.get(k, "") for k in [
@@ -260,7 +261,7 @@ def generate_pdf():
         return Paragraph(escape(x or ""), st)
 
     story = []
-    story.append(Paragraph(f"Kontrollplan – {escape(form['bygglovstyp'])}", head))
+    story.append(Paragraph("Kontrollplan – " + escape(form['bygglovstyp']), head))
 
     info = [
         ["Byggherre:", f"{form['byggherre']}"],
@@ -282,7 +283,7 @@ def generate_pdf():
     story.append(Spacer(1, 10))
 
     headers = ["Kategori/Kontrollpunkt","Vem","Hur","Kontroll mot","När","Signatur / Datum"]
-    data = [[Paragraph(f"<b>{h}</b>", small) for h in headers]]
+    data = [[Paragraph("<b>"+h+"</b>", small) for h in headers]]
     category_rows = []
     idx_cat = 0
     idx_data = 0
@@ -331,44 +332,33 @@ def generate_pdf():
     buf.seek(0)
     return send_file(buf, as_attachment=True, download_name="kontrollplan.pdf", mimetype="application/pdf")
 
-# ---------- SEO ----------
 @app.route("/sitemap.xml")
 def sitemap_xml():
     host = request.host or "www.kontrollplaner.com"
-    base = f"https://{host}"
+    base = "https://" + host
     today = datetime.now(timezone.utc).date().isoformat()
     pages = [
         {"loc": base + "/", "changefreq": "weekly", "priority": "1.0"},
         {"loc": base + "/skapa", "changefreq": "weekly", "priority": "0.9"},
+        {"loc": base + "/kontrollplan-bygglov", "changefreq": "monthly", "priority": "0.7"},
+        {"loc": base + "/exempel-kontrollplan", "changefreq": "monthly", "priority": "0.7"},
+        {"loc": base + "/kontakt", "changefreq": "monthly", "priority": "0.6"},
         {"loc": base + "/om", "changefreq": "monthly", "priority": "0.6"},
         {"loc": base + "/faq", "changefreq": "monthly", "priority": "0.6"},
         {"loc": base + "/privacy", "changefreq": "yearly", "priority": "0.3"},
-        {"loc": base + "/terms", "changefreq": "yearly", "priority": "0.3"},
+        {"loc": base + "/terms", "changefreq": "yearly", "priority": "0.3"}
     ]
     xml_items = []
     for p in pages:
-        xml_items.append(f"""  <url>
-    <loc>{p['loc']}</loc>
-    <lastmod>{today}</lastmod>
-    <changefreq>{p['changefreq']}</changefreq>
-    <priority>{p['priority']}</priority>
-  </url>""")
-    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{chr(10).join(xml_items)}
-</urlset>
-"""
+        xml_items.append("  <url>\n    <loc>" + p["loc"] + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>" + p["changefreq"] + "</changefreq>\n    <priority>" + p["priority"] + "</priority>\n  </url>")
+    xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n" + "\n".join(xml_items) + "\n</urlset>\n"
     return Response(xml, mimetype="application/xml")
 
 @app.route("/robots.txt")
 def robots_txt():
     host = request.host or "www.kontrollplaner.com"
-    base = f"https://{host}"
-    body = f"""User-agent: *
-Disallow:
-
-Sitemap: {base}/sitemap.xml
-"""
+    base = "https://" + host
+    body = "User-agent: *\nDisallow:\n\nSitemap: " + base + "/sitemap.xml\n"
     return Response(body, mimetype="text/plain")
 
 if __name__ == "__main__":

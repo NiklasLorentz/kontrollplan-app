@@ -84,19 +84,5 @@
       </div>
     </form>
   </section>
-
-  <script>
-    // GA event: kontrollplan_skapad
-    window.addEventListener('DOMContentLoaded', function () {
-      try {
-        const antalRader = document.querySelectorAll('#kontroll-tabell tbody tr:not(.category)').length;
-        gtag('event', 'kontrollplan_skapad', {
-          event_category: 'kontrollplan',
-          event_label: '{{ bygglovstyp|e }}',
-          value: antalRader
-        });
-      } catch (e) {}
-    });
-  </script>
 </body>
 </html>
