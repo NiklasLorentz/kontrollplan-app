@@ -266,7 +266,7 @@ def plan_rows(bygglovstyp: str):
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
 # ---------- PDF ----------
-@app.route("/generate_pdf", methods=["POST"]]
+@app.route("/generate_pdf", methods=["POST"])
 def generate_pdf():
     form = {k: request.form.get(k, "") for k in [
         "bygglovstyp","byggherre","telefon","epost",
