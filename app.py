@@ -50,6 +50,23 @@ def kontakt():
         sent = True
     return render_template("kontakt.html", sent=sent)
 
+@app.route("/kontrollplan-nybyggnad")
+def lp_nybyggnad():
+    return render_template("kontrollplan_nybyggnad.html")
+
+@app.route("/kontrollplan-attefall")
+def lp_attefall():
+    return render_template("kontrollplan_attefall.html")
+
+@app.route("/kontrollplan-tillbyggnad")
+def lp_tillbyggnad():
+    return render_template("kontrollplan_tillbyggnad.html")
+
+@app.route("/kontrollplan-garage")
+def lp_garage():
+    return render_template("kontrollplan_garage.html")
+
+
 # -------- Formulär --------
 @app.route("/skapa", methods=["GET","POST"])
 def skapa():
@@ -400,6 +417,11 @@ def sitemap_xml():
         {"path": "faq",       "changefreq": "monthly", "priority": "0.6"},
         {"path": "privacy",   "changefreq": "yearly",  "priority": "0.3"},
         {"path": "terms",     "changefreq": "yearly",  "priority": "0.3"},
+        {"path": "kontrollplan-nybyggnad",   "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-attefall",    "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-tillbyggnad", "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-garage",      "changefreq": "monthly", "priority": "0.8"},
+
     ]
     def loc_url(path): return urljoin(base, path)
     xml_items = []

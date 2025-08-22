@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block meta %}
+<title>Kontrollplan attefall – förenklad mall & PDF | Kontrollplaner.com</title>
+<meta name="description" content="Skapa en kontrollplan för attefallsåtgärder. Förenklat upplägg för privatpersoner: redigera punkter och ladda ner som PDF.">
+{% endblock %}
+
+{% block content %}
+<h1>Kontrollplan för attefallsåtgärder</h1>
+<p>Attefallsåtgärder (t.ex. komplementbyggnad/komplementbostadshus inom regelverket) kan kräva kontrollplan. Vår mall är anpassad för privatpersoner och går snabbt att justera.</p>
+
+<h2>Vad brukar ingå?</h2>
+<ul>
+  <li><b>Läge och mått</b> – placering på tomten samt kontroll mot attefallsregler (höjd/area)</li>
+  <li><b>Byggnation</b> – grundläggning, stomme, tak, fasad, fönster/dörrar</li>
+  <li><b>Installationer</b> (om aktuellt) – el, VVS</li>
+  <li><b>Slutkontroll</b> – överensstämmelse med handlingar/startbesked</li>
+</ul>
+
+<p>Vem som kontrollerar anges som BH, KA eller E. Du kan lätt justera ansvar och texter i vår tabell innan export till PDF.</p>
+
+<p><a class="btn" href="/skapa">Skapa kontrollplan nu</a></p>
+
+<h2>Vanliga frågor</h2>
+<p><b>Behövs KA?</b> Inte alltid för attefall. Kommunens besked styr – läs igenom startbesked/anmälansvar.</p>
+<p><b>Kan jag ta bort punkter?</b> Ja, irrelevanta rader kan raderas. Obligatoriska rader är låsta för att du inte ska tappa viktiga kontroller.</p>
+{% endblock %}
