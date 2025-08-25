@@ -1,9 +1,10 @@
-
 import os
 from datetime import datetime, timezone
 from urllib.parse import urljoin
 from flask import Flask, render_template, request, send_file, Response
 from io import BytesIO
+
+# ReportLab (PDF)
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib import colors
@@ -12,7 +13,9 @@ from xml.sax.saxutils import escape
 
 app = Flask(__name__)
 
-# -------- Health --------
+# -------------------------
+# Health & ping
+# -------------------------
 @app.route("/health")
 def health():
     return {"ok": True}, 200
@@ -21,7 +24,10 @@ def health():
 def ping():
     return "pong", 200
 
-# -------- Pages --------
+
+# -------------------------
+# Public pages
+# -------------------------
 @app.route("/")
 def landing():
     return render_template("landing.html")
@@ -46,10 +52,13 @@ def terms():
 def kontakt():
     sent = False
     if request.method == "POST":
-        # TODO: Integrera mail-tjänst i produktion (Formspree/SendGrid)
+        # Här kan du integrera e-posttjänst (Formspree/SendGrid) om/när du vill
         sent = True
     return render_template("kontakt.html", sent=sent)
 
+# -------------------------
+# SEO-landningssidor
+# -------------------------
 @app.route("/kontrollplan-nybyggnad")
 def lp_nybyggnad():
     return render_template("kontrollplan_nybyggnad.html")
@@ -67,7 +76,9 @@ def lp_garage():
     return render_template("kontrollplan_garage.html")
 
 
-# -------- Formulär --------
+# -------------------------
+# Form & result
+# -------------------------
 @app.route("/skapa", methods=["GET","POST"])
 def skapa():
     fields = [
@@ -103,8 +114,12 @@ def result():
     aktiviteter = activities_for(form.get("bygglovstyp",""))
     return render_template("result.html", rows=rows, aktiviteter=aktiviteter, **form)
 
-# -------- Data helpers --------
+
+# -------------------------
+# Data helpers (kontrollplan)
+# -------------------------
 def activities_for(bygglovstyp: str):
+    """Tabell 'Aktiviteter KA och byggnadsnämnd' – visas för större åtgärder."""
     t = (bygglovstyp or "").lower()
     if any(s in t for s in ["nybygg", "tillbygg", "garage", "komplement", "komplementbostad"]):
         return [
@@ -117,6 +132,7 @@ def activities_for(bygglovstyp: str):
     return []
 
 def plan_rows(bygglovstyp: str):
+    """Returnerar föreslagna rader (kategorier + kontrollpunkter) för vald åtgärd."""
     t = (bygglovstyp or "").lower()
 
     def cat(name):
@@ -257,7 +273,7 @@ def plan_rows(bygglovstyp: str):
             row("Elinstallationer (pumpar/belysning)", "E", "Intyg", "Elsäkerhetslagen"),
             row("Vattenbehandling/anslutningar", "E", "Egenkontroll", "Leverantörens anvisningar"),
             cat("Slutkontroll"),
-            row("Åtgärden stämmer med eventuellt startbesked", "BH", "Granskning", "Startbesked/handling", "Efter arbetet", oblig=True),
+            row("Åtgärden stämmer med ev. startbesked", "BH", "Granskning", "Startbesked/handling", "Efter arbetet", oblig=True),
         ]
 
     if "attefall" in t:
@@ -279,9 +295,28 @@ def plan_rows(bygglovstyp: str):
             row("Utförandet överensstämmer med startbesked", "BH", "Granskning, intyg", "Startbesked/anmälan", "Efter arbetet", oblig=True),
         ]
 
+    # fallback
     return [cat("Rubrik"), row("Ny kontrollpunkt", "BH", "Egenkontroll", "Ritningar")]
 
-# -------- PDF --------
+
+# -------------------------
+# PDF helpers (footer)
+# -------------------------
+def _draw_footer(canvas, doc):
+    """Ritar fotnot längst ned på varje sida."""
+    canvas.saveState()
+    try:
+        canvas.setFont("Helvetica", 8)
+    except:  # fallback
+        canvas.setFont("Times-Roman", 8)
+    page_width, _ = doc.pagesize
+    canvas.drawCentredString(page_width / 2.0, 12, "Skapad via www.kontrollplaner.com")
+    canvas.restoreState()
+
+
+# -------------------------
+# PDF generator
+# -------------------------
 @app.route("/generate_pdf", methods=["POST"])
 def generate_pdf():
     form = {k: request.form.get(k, "") for k in [
@@ -300,8 +335,12 @@ def generate_pdf():
     sign = request.form.getlist("signatur[]")
 
     buf = BytesIO()
-    doc = SimpleDocTemplate(buf, pagesize=landscape(A4),
-                            leftMargin=18, rightMargin=18, topMargin=18, bottomMargin=18)
+    doc = SimpleDocTemplate(
+        buf,
+        pagesize=landscape(A4),
+        leftMargin=18, rightMargin=18,
+        topMargin=18, bottomMargin=24  # luft för footer
+    )
     styles = getSampleStyleSheet()
     small = ParagraphStyle('small', parent=styles['Normal'], fontSize=8, leading=10)
     head = ParagraphStyle('head', parent=styles['Heading1'], fontSize=16, leading=18, spaceAfter=6)
@@ -312,10 +351,11 @@ def generate_pdf():
     story = []
     story.append(Paragraph("Kontrollplan – " + escape(form['bygglovstyp']), head))
 
+    # Uppgiftsruta
     info = [
         ["Byggherre:", f"{form['byggherre']}"],
         ["Telefon:", f"{form['telefon']}"],
-        ["E‑post:", f"{form['epost']}"],
+        ["E-post:", f"{form['epost']}"],
         ["Fastighetsbeteckning:", f"{form['fastighetsbeteckning']}"],
         ["Fastighetsadress:", f"{form['fastighetsadress']}"],
         ["Kontrollansvarig:", f"{form['ka_namn']} {form['ka_kontakt']}"],
@@ -331,6 +371,7 @@ def generate_pdf():
     story.append(info_table)
     story.append(Spacer(1, 10))
 
+    # Huvudtabell
     headers = ["Kategori/Kontrollpunkt","Vem","Hur","Kontroll mot","När","Signatur / Datum"]
     data = [[Paragraph("<b>"+h+"</b>", small) for h in headers]]
     category_rows = []
@@ -370,7 +411,7 @@ def generate_pdf():
     table.setStyle(style)
     story.append(table)
 
-    # Aktiviteter KA/BN
+    # Aktiviteter KA/BN (om aktuellt)
     aktiviteter = activities_for(form.get("bygglovstyp",""))
     if aktiviteter:
         story.append(Spacer(1, 14))
@@ -392,38 +433,45 @@ def generate_pdf():
         ]))
         story.append(akt_table)
 
+    # Signeringsrad + legend
     story.append(Spacer(1,12))
-    story.append(P("Härmed intygas att kontrollpunkterna har utförts och samtliga angivna krav har uppfyllts"))
+    story.append(Paragraph("Härmed intygas att kontrollpunkterna har utförts och samtliga angivna krav har uppfyllts", small))
     story.append(Spacer(1,10))
-    story.append(P("Datum: __________________________  Namnteckning: __________________________  Namnförtydligande: __________________________"))
+    story.append(Paragraph("Datum: __________________________  Namnteckning: __________________________  Namnförtydligande: __________________________", small))
     story.append(Spacer(1,12))
-    story.append(P("Förkortningar: BH = Byggherre • KA = Kontrollansvarig • E = Entreprenör"))
+    story.append(Paragraph("Förkortningar: BH = Byggherre • KA = Kontrollansvarig • E = Entreprenör", small))
 
-    doc.build(story)
+    # Bygg PDF (med footer på alla sidor)
+    doc.build(story, onFirstPage=_draw_footer, onLaterPages=_draw_footer)
     buf.seek(0)
     return send_file(buf, as_attachment=True, download_name="kontrollplan.pdf", mimetype="application/pdf")
 
-# -------- SEO --------
+
+# -------------------------
+# SEO: sitemap & robots
+# -------------------------
 @app.route("/sitemap.xml")
 def sitemap_xml():
     host = request.host or "www.kontrollplaner.com"
     base = f"https://{host}/"
     today = datetime.now(timezone.utc).date().isoformat()
     pages = [
-        {"path": "",          "changefreq": "weekly",  "priority": "1.0"},
-        {"path": "skapa",     "changefreq": "weekly",  "priority": "0.9"},
-        {"path": "kontakt",   "changefreq": "monthly", "priority": "0.6"},
-        {"path": "om",        "changefreq": "monthly", "priority": "0.6"},
-        {"path": "faq",       "changefreq": "monthly", "priority": "0.6"},
-        {"path": "privacy",   "changefreq": "yearly",  "priority": "0.3"},
-        {"path": "terms",     "changefreq": "yearly",  "priority": "0.3"},
-        {"path": "kontrollplan-nybyggnad",   "changefreq": "monthly", "priority": "0.8"},
-        {"path": "kontrollplan-attefall",    "changefreq": "monthly", "priority": "0.8"},
-        {"path": "kontrollplan-tillbyggnad", "changefreq": "monthly", "priority": "0.8"},
-        {"path": "kontrollplan-garage",      "changefreq": "monthly", "priority": "0.8"},
-
+        {"path": "",                        "changefreq": "weekly",  "priority": "1.0"},
+        {"path": "skapa",                   "changefreq": "weekly",  "priority": "0.9"},
+        {"path": "kontrollplan-nybyggnad",  "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-attefall",   "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-tillbyggnad","changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-garage",     "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontakt",                 "changefreq": "monthly", "priority": "0.6"},
+        {"path": "om",                      "changefreq": "monthly", "priority": "0.6"},
+        {"path": "faq",                     "changefreq": "monthly", "priority": "0.6"},
+        {"path": "privacy",                 "changefreq": "yearly",  "priority": "0.3"},
+        {"path": "terms",                   "changefreq": "yearly",  "priority": "0.3"},
     ]
-    def loc_url(path): return urljoin(base, path)
+
+    def loc_url(path): 
+        return urljoin(base, path)
+
     xml_items = []
     for p in pages:
         xml_items.append(
@@ -434,6 +482,7 @@ def sitemap_xml():
     <priority>{p['priority']}</priority>
   </url>"""
         )
+
     xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {chr(10).join(xml_items)}
@@ -448,5 +497,10 @@ def robots_txt():
     body = f"User-agent: *\nDisallow:\n\nSitemap: {base}/sitemap.xml\n"
     return Response(body, mimetype="text/plain")
 
+
+# -------------------------
+# Main
+# -------------------------
 if __name__ == "__main__":
+    # För lokal utveckling
     app.run(debug=True)
