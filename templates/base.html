@@ -32,9 +32,30 @@
     </div>
   </header>
 
-  <main class="container">
-    {% block content %}{% endblock %}
-  </main>
+<main class="container">
+
+  {% if request.path != '/' %}
+  <nav class="breadcrumb">
+    <a href="/">Hem</a>
+    ›
+    <span>
+      {% if request.path.startswith('/skapa') %}Skapa kontrollplan{% endif %}
+      {% if request.path.startswith('/om') %}Om{% endif %}
+      {% if request.path.startswith('/faq') %}FAQ{% endif %}
+      {% if request.path.startswith('/kontakt') %}Kontakt{% endif %}
+      {% if request.path.startswith('/kontrollplan-nybyggnad') %}Kontrollplan Nybyggnad{% endif %}
+      {% if request.path.startswith('/kontrollplan-attefall') %}Kontrollplan Attefall{% endif %}
+      {% if request.path.startswith('/kontrollplan-tillbyggnad') %}Kontrollplan Tillbyggnad{% endif %}
+      {% if request.path.startswith('/kontrollplan-garage') %}Kontrollplan Garage/Komplementbyggnad{% endif %}
+      {% if request.path.startswith('/privacy') %}Integritetspolicy{% endif %}
+      {% if request.path.startswith('/terms') %}Användarvillkor{% endif %}
+    </span>
+  </nav>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</main>
+
 
   <footer class="site-footer">
     <div class="container">
