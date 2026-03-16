@@ -2,59 +2,96 @@
 {% block meta %}
 <title>Skapa kontrollplan online – gratis mall & PDF | Kontrollplaner.com</title>
 <meta name="description" content="Skapa en kontrollplan på några minuter. Enkel mall för privatpersoner: redigera online, ladda ner som PDF. Stöd för nybyggnad, attefall, tillbyggnad och garage.">
+<link rel="canonical" href="https://www.kontrollplaner.com/">
 {% endblock %}
+
 {% block content %}
 
 <!-- Hero -->
 <section class="hero">
   <div class="hero-inner">
-    <h1>Skapa din kontrollplan – snabbt och enkelt</h1>
-    <p>Fyll i dina uppgifter, välj åtgärd och få en färdig kontrollplan som PDF. Anpassad för privatpersoner och småhusprojekt.</p>
+    <span class="hero-eyebrow">✓ Gratis &nbsp;·&nbsp; Redo på 5 minuter &nbsp;·&nbsp; PDF direkt</span>
+    <h1>Skapa din kontrollplan<br><em>snabbt och rätt</em></h1>
+    <p>Välj åtgärd, fyll i uppgifter och ladda ner en färdig PDF. Anpassad för privatpersoner med nybyggnad, attefall, tillbyggnad, garage och mer.</p>
     <div class="hero-actions">
-      <a class="btn btn-lg" href="/skapa" onclick="if(window.gtag){gtag('event','skapa_kontrollplan_click',{placement:'hero'});}">Skapa kontrollplan</a>
-      <a class="btn btn-ghost" href="/faq">Läs vanliga frågor</a>
+      <a class="btn btn-lg" href="/skapa" onclick="gtag('event','skapa_kontrollplan_click',{placement:'hero'})">Skapa kontrollplan</a>
+      <a class="btn btn-outline-inv" href="/faq">Vanliga frågor</a>
+    </div>
+    <div class="hero-trust">
+      <span class="trust-item"><span class="trust-icon">✓</span>Ingen registrering</span>
+      <span class="trust-item"><span class="trust-icon">✓</span>Liggande A4 PDF</span>
+      <span class="trust-item"><span class="trust-icon">✓</span>Redigera direkt i tabellen</span>
+      <span class="trust-item"><span class="trust-icon">✓</span>Fungerar i alla kommuner</span>
     </div>
   </div>
 </section>
 
-<!-- Snabblänkar (kort) -->
-<section class="cards">
-  <h2>Välj din åtgärd</h2>
+<!-- Åtgärdstyper -->
+<section class="section container">
+  <div class="section-title">
+    <h2>Välj din åtgärdstyp</h2>
+    <p>Vi har färdiga mallar med korrekta kontrollpunkter och lagreferenser för alla vanliga byggprojekt.</p>
+  </div>
   <div class="card-grid">
-    <a class="card" href="/kontrollplan-nybyggnad">
-      <h3>Nybyggnad (villa/småhus)</h3>
-      <p>Kontrollpunkter för mark/grund, stomme/klimatskal, installationer och slutkontroll.</p>
-      <span class="card-cta">Läs mer →</span>
+    <a class="action-card" href="/kontrollplan-nybyggnad">
+      <div class="action-card-icon">🏠</div>
+      <h3>Nybyggnad</h3>
+      <p>Villa eller småhus. Komplett plan med mark, stomme, installationer och slutkontroll.</p>
+      <span class="action-card-cta">Läs mer →</span>
     </a>
-    <a class="card" href="/kontrollplan-attefall">
+    <a class="action-card" href="/kontrollplan-attefall">
+      <div class="action-card-icon">🏡</div>
       <h3>Attefall</h3>
-      <p>Enkel mall för komplementbyggnad/komplementbostadshus enligt attefallsregler.</p>
-      <span class="card-cta">Läs mer →</span>
+      <p>Komplementbyggnad eller komplementbostadshus enligt attefallsreglerna.</p>
+      <span class="action-card-cta">Läs mer →</span>
     </a>
-    <a class="card" href="/kontrollplan-tillbyggnad">
+    <a class="action-card" href="/kontrollplan-tillbyggnad">
+      <div class="action-card-icon">📐</div>
       <h3>Tillbyggnad</h3>
-      <p>Färdiga punkter för anslutning mot befintligt hus, tak/väggar och installationer.</p>
-      <span class="card-cta">Läs mer →</span>
+      <p>Anslutning mot befintligt hus, stomme, klimatskal och installationer.</p>
+      <span class="action-card-cta">Läs mer →</span>
     </a>
-    <a class="card" href="/kontrollplan-garage">
-      <h3>Garage / Komplementbyggnad</h3>
-      <p>Tydliga kontroller för läge, grund, stomme och eventuella installationer.</p>
-      <span class="card-cta">Läs mer →</span>
+    <a class="action-card" href="/kontrollplan-garage">
+      <div class="action-card-icon">🚗</div>
+      <h3>Garage</h3>
+      <p>Garage eller komplementbyggnad – läge, grund, stomme och eventuell el.</p>
+      <span class="action-card-cta">Läs mer →</span>
     </a>
   </div>
+  <p style="margin-top:16px;font-size:14px;color:var(--text-muted);">
+    Verktyget stöder även: fasadändring, takomläggning, altan/uterum, pool och komplementbostadshus.
+    <a href="/skapa">Se alla åtgärder →</a>
+  </p>
 </section>
 
 <!-- Så funkar det -->
-<section class="how">
-  <h2>Så funkar det</h2>
-  <ol class="how-steps">
-    <li><b>Välj åtgärd</b> – t.ex. nybyggnad, attefall, tillbyggnad eller garage.</li>
-    <li><b>Fyll i uppgifter</b> – byggherre, kontakt, fastighet och kort projektbeskrivning.</li>
-    <li><b>Redigera tabellen</b> – lägg till/ta bort punkter och justera ansvar (BH/KA/E).</li>
-    <li><b>Ladda ner PDF</b> – liggande A4 med signeringsrad och tydliga rubriker.</li>
-  </ol>
-  <div class="how-cta">
-    <a class="btn btn-lg" href="/skapa" onclick="if(window.gtag){gtag('event','skapa_kontrollplan_click',{placement:'how'});}">Skapa kontrollplan</a>
+<section class="section section-tinted">
+  <div class="container">
+    <div class="section-title">
+      <h2>Så funkar det</h2>
+      <p>Från tomma händer till klar PDF på några minuter.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <h3>Välj åtgärd</h3>
+        <p>Nybyggnad, attefall, tillbyggnad, garage eller någon av de övriga 5 åtgärdstyperna.</p>
+      </div>
+      <div class="step">
+        <h3>Fyll i uppgifter</h3>
+        <p>Byggherre, fastighet, kontrollansvarig och en kort projektbeskrivning.</p>
+      </div>
+      <div class="step">
+        <h3>Redigera tabellen</h3>
+        <p>Lägg till eller ta bort kontrollpunkter. Justera ansvar (BH/KA/E) efter ditt projekt.</p>
+      </div>
+      <div class="step">
+        <h3>Ladda ner PDF</h3>
+        <p>Liggande A4 med signeringsrad, lagreferenser och (om aktuellt) KA/BN-aktiviteter.</p>
+      </div>
+    </div>
+    <div style="margin-top:32px;">
+      <a class="btn btn-lg" href="/skapa" onclick="gtag('event','skapa_kontrollplan_click',{placement:'how'})">Skapa kontrollplan</a>
+    </div>
   </div>
 </section>
 

@@ -1,63 +1,87 @@
-<!doctype html>
-<html lang="sv">
-<head>
-  <meta charset="utf-8">
-  <title>Kontrollplan – resultat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/static/style.css">
-  <script defer src="/static/script.js"></script>
-</head>
-<body>
-  <header class="no-print">
-    <div class="container">
-      <a class="logo" href="/">Kontrollplaner.com</a>
+{% extends "base.html" %}
+{% block title %}Kontrollplan – {{ bygglovstyp }} | Kontrollplaner.com{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top:24px; padding-bottom:60px;">
+
+  <h1 style="margin-bottom:6px;">Kontrollplan – {{ bygglovstyp }}</h1>
+  <p style="color:var(--text-muted);margin-bottom:24px;font-size:15px;">Granska och redigera kontrollpunkterna nedan. Klicka i en cell för att ändra texten. Ladda sedan ner som PDF.</p>
+
+  <!-- Projektuppgifter -->
+  <div class="result-meta">
+    <div class="result-meta-grid">
+      <div class="meta-item">
+        <span class="meta-label">Byggherre</span>
+        <span class="meta-value">{{ byggherre or '–' }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Telefon</span>
+        <span class="meta-value">{{ telefon or '–' }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">E-post</span>
+        <span class="meta-value">{{ epost or '–' }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Fastighetsbeteckning</span>
+        <span class="meta-value">{{ fastighetsbeteckning or '–' }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Fastighetsadress</span>
+        <span class="meta-value">{{ fastighetsadress or '–' }}</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Kontrollansvarig</span>
+        <span class="meta-value">
+          {% if ka_namn or ka_kontakt %}{{ ka_namn }} {{ ka_kontakt }}
+          {% else %}–{% endif %}
+        </span>
+      </div>
+      {% if projektbeskrivning %}
+      <div class="meta-item meta-desc">
+        <span class="meta-label">Projektbeskrivning</span>
+        <span class="meta-value">{{ projektbeskrivning }}</span>
+      </div>
+      {% endif %}
     </div>
-  </header>
-
-  <main class="container">
-  <h1>Kontrollplan – {{ bygglovstyp }}</h1>
-
-  <div class="card">
-    <table class="info-table">
-      <tbody>
-        <tr><th>Byggherre</th><td>{{ byggherre }}</td></tr>
-        <tr><th>Telefon</th><td>{{ telefon }}</td></tr>
-        <tr><th>E‑post</th><td>{{ epost }}</td></tr>
-        <tr><th>Fastighetsbeteckning</th><td>{{ fastighetsbeteckning }}</td></tr>
-        <tr><th>Fastighetsadress</th><td>{{ fastighetsadress }}</td></tr>
-        <tr><th>Kontrollansvarig</th><td>{{ ka_namn }} {{ ka_kontakt }}</td></tr>
-        <tr><th>Projektbeskrivning</th><td>{{ projektbeskrivning }}</td></tr>
-      </tbody>
-    </table>
   </div>
 
-  <section class="card">
-    <form id="pdf-form" action="/generate_pdf" method="post">
-      {% for k,v in {"bygglovstyp":bygglovstyp,"byggherre":byggherre,"telefon":telefon,"epost":epost,"fastighetsbeteckning":fastighetsbeteckning,"fastighetsadress":fastighetsadress,"ka_namn":ka_namn,"ka_kontakt":ka_kontakt,"projektbeskrivning":projektbeskrivning}.items() %}
-      <input type="hidden" name="{{k}}" value="{{v}}">
-      {% endfor %}
+  <!-- Kontrollplan-tabell -->
+  <form id="pdf-form" action="/generate_pdf" method="post">
+    <!-- Dolda projektfält -->
+    {% for k, v in {
+      "bygglovstyp": bygglovstyp,
+      "byggherre": byggherre,
+      "telefon": telefon,
+      "epost": epost,
+      "fastighetsbeteckning": fastighetsbeteckning,
+      "fastighetsadress": fastighetsadress,
+      "ka_namn": ka_namn,
+      "ka_kontakt": ka_kontakt,
+      "projektbeskrivning": projektbeskrivning
+    }.items() %}
+    <input type="hidden" name="{{ k }}" value="{{ v }}">
+    {% endfor %}
+    <div id="hidden-rows"></div>
 
-      <div id="hidden-rows"></div>
-
+    <div class="table-wrap">
       <table id="kontroll-tabell">
         <thead>
           <tr>
-            <th>Kategori / Kontrollpunkt</th>
-            <th>Vem</th>
-            <th>Hur</th>
-            <th>Kontroll mot</th>
-            <th>När</th>
-            <th>Signatur / Datum</th>
-            <th>Ta bort</th>
+            <th style="width:35%">Kontrollpunkt</th>
+            <th style="width:6%">Vem</th>
+            <th style="width:18%">Hur</th>
+            <th style="width:20%">Kontroll mot</th>
+            <th style="width:12%">När</th>
+            <th style="width:9%">Ta bort</th>
           </tr>
         </thead>
         <tbody>
           {% for r in rows %}
             {% if r.is_category %}
-              <tr class="category">
-                <td><span class="editable">{{ r.kategori }}</span></td>
-                <td></td><td></td><td></td><td></td><td></td>
-                <td><button type="button" class="danger">Ta bort</button></td>
+              <tr class="category-row">
+                <td colspan="5"><span class="editable">{{ r.kategori }}</span></td>
+                <td><button type="button" class="btn btn-danger btn-sm">Ta bort</button></td>
               </tr>
             {% else %}
               <tr {% if r.obligatorisk %}class="locked"{% endif %}>
@@ -66,12 +90,11 @@
                 <td><span class="editable">{{ r.hur }}</span></td>
                 <td><span class="editable">{{ r.mot }}</span></td>
                 <td><span class="editable">{{ r.nar }}</span></td>
-                <td><span class="editable">{{ r.signatur }}</span></td>
                 <td>
                   {% if r.obligatorisk %}
-                    Låst
+                    <span class="locked-label">🔒 Låst</span>
                   {% else %}
-                    <button type="button" class="danger">Ta bort</button>
+                    <button type="button" class="btn btn-danger btn-sm">Ta bort</button>
                   {% endif %}
                 </td>
               </tr>
@@ -80,39 +103,52 @@
         </tbody>
       </table>
 
-      {% if aktiviteter %}
-      <h3 style="margin:16px 18px 8px">Aktiviteter KA och byggnadsnämnd</h3>
-      <table style="margin-top:0">
-        <thead>
-          <tr>
-            <th>Kontroll</th>
-            <th>Ansvarig</th>
-            <th>Dokumentation/kommentar</th>
-            <th>Datum/sign</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for a in aktiviteter %}
-          <tr class="locked">
-            <td>{{ a.kontroll }}</td>
-            <td>{{ a.ansvarig }}</td>
-            <td>{{ a.dokumentation }}</td>
-            <td></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% endif %}
-
-      <div class="row actions-under no-print">
-        <button type="button" id="add-category">+ Lägg till rubrik</button>
-        <button type="button" id="add-row">+ Lägg till rad</button>
-        <button type="button" id="clear-all" class="danger">Rensa allt</button>
-        <span class="flex-spacer"></span>
-        <button type="submit">Ladda ner PDF</button>
+      <div class="table-actions">
+        <button type="button" id="add-category" class="btn-add">+ Rubrik</button>
+        <button type="button" id="add-row" class="btn-add">+ Kontrollpunkt</button>
+        <button type="button" id="clear-all" class="btn-clear">Rensa icke-låsta</button>
+        <span class="spacer"></span>
+        <button type="submit" class="btn">⬇ Ladda ner PDF</button>
       </div>
-    </form>
-  </section>
-  </main>
-</body>
-</html>
+    </div>
+
+    <!-- Aktiviteter KA / BN -->
+    {% if aktiviteter %}
+    <div class="aktiviteter-section">
+      <h3>Aktiviteter – Kontrollansvarig och byggnadsnämnd</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aktivitet / Kontroll</th>
+              <th>Ansvarig</th>
+              <th>Dokumentation</th>
+              <th>Datum / Sign.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in aktiviteter %}
+            <tr class="locked">
+              <td>{{ a.kontroll }}</td>
+              <td>{{ a.ansvarig }}</td>
+              <td>{{ a.dokumentation }}</td>
+              <td></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+  </form>
+
+  <p style="margin-top:20px;font-size:13px;color:var(--text-muted);">
+    <strong>Förkortningar:</strong> BH = Byggherre &nbsp;·&nbsp; KA = Kontrollansvarig &nbsp;·&nbsp; E = Entreprenör (behörig fackman)
+  </p>
+  <p style="font-size:13px;color:var(--text-muted);">
+    🔒 Låsta rader är typiskt obligatoriska minimikrav. Övriga punkter kan redigeras och tas bort fritt.
+  </p>
+
+</div>
+{% endblock %}

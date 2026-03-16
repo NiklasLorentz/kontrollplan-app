@@ -3,51 +3,71 @@
 <title>Skapa kontrollplan – formulär | Kontrollplaner.com</title>
 <meta name="description" content="Fyll i dina uppgifter och generera en kontrollplan för bygglov, tillbyggnad, attefall med mera.">
 {% endblock %}
+
 {% block content %}
-<h1>Skapa kontrollplan</h1>
-<form method="POST" action="/result" class="grid">
-  <label>Typ av åtgärd
-    <select name="bygglovstyp" required>
-      {% for t in typer %}
-      <option value="{{t}}" {% if data.bygglovstyp==t %}selected{% endif %}>{{t}}</option>
-      {% endfor %}
-    </select>
-  </label>
+<div class="container form-page">
+  <h1>Skapa kontrollplan</h1>
+  <p class="form-intro">Fyll i uppgifterna nedan. Alla fält med * är obligatoriska. Du kan redigera kontrollpunkterna i nästa steg.</p>
 
-  <label>Byggherre
-    <input name="byggherre" value="{{data.byggherre}}" required>
-  </label>
+  <form method="POST" action="/result" novalidate>
+    <div class="form-grid">
 
-  <label>Telefon
-    <input name="telefon" value="{{data.telefon}}" required>
-  </label>
+      <div class="form-group col-full">
+        <label for="bygglovstyp">Typ av åtgärd *</label>
+        <select name="bygglovstyp" id="bygglovstyp" required>
+          {% for t in typer %}
+          <option value="{{ t }}" {% if data.bygglovstyp == t %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+        <span class="hint">Välj den åtgärd som stämmer bäst med ditt projekt.</span>
+      </div>
 
-  <label>E‑post
-    <input type="email" name="epost" value="{{data.epost}}" required>
-  </label>
+      <div class="form-group">
+        <label for="byggherre">Byggherre *</label>
+        <input type="text" name="byggherre" id="byggherre" value="{{ data.byggherre }}" placeholder="För- och efternamn" required>
+      </div>
 
-  <label>Fastighetsbeteckning
-    <input name="fastighetsbeteckning" value="{{data.fastighetsbeteckning}}">
-  </label>
+      <div class="form-group">
+        <label for="telefon">Telefon *</label>
+        <input type="tel" name="telefon" id="telefon" value="{{ data.telefon }}" placeholder="070-000 00 00" required>
+      </div>
 
-  <label>Fastighetsadress
-    <input name="fastighetsadress" value="{{data.fastighetsadress}}">
-  </label>
+      <div class="form-group">
+        <label for="epost">E-post *</label>
+        <input type="email" name="epost" id="epost" value="{{ data.epost }}" placeholder="namn@exempel.se" required>
+      </div>
 
-  <label>Kontrollansvarig – namn
-    <input name="ka_namn" value="{{data.ka_namn}}">
-  </label>
+      <div class="form-group">
+        <label for="fastighetsbeteckning">Fastighetsbeteckning</label>
+        <input type="text" name="fastighetsbeteckning" id="fastighetsbeteckning" value="{{ data.fastighetsbeteckning }}" placeholder="t.ex. Björken 1:23">
+      </div>
 
-  <label>Kontrollansvarig – kontakt
-    <input name="ka_kontakt" value="{{data.ka_kontakt}}" placeholder="Telefon/E‑post">
-  </label>
+      <div class="form-group">
+        <label for="fastighetsadress">Fastighetsadress</label>
+        <input type="text" name="fastighetsadress" id="fastighetsadress" value="{{ data.fastighetsadress }}" placeholder="Gatuadress, postnummer, ort">
+      </div>
 
-  <label class="col-span">Kort projektbeskrivning
-    <textarea name="projektbeskrivning" rows="4">{{data.projektbeskrivning}}</textarea>
-  </label>
+      <div class="form-group">
+        <label for="ka_namn">Kontrollansvarig – namn</label>
+        <input type="text" name="ka_namn" id="ka_namn" value="{{ data.ka_namn }}" placeholder="Lämna tomt om ej aktuellt">
+      </div>
 
-  <div class="col-span actions">
-    <button class="btn" type="submit">Generera kontrollplan</button>
-  </div>
-</form>
+      <div class="form-group">
+        <label for="ka_kontakt">Kontrollansvarig – kontakt</label>
+        <input type="text" name="ka_kontakt" id="ka_kontakt" value="{{ data.ka_kontakt }}" placeholder="Telefon eller e-post">
+      </div>
+
+      <div class="form-group col-full">
+        <label for="projektbeskrivning">Kort projektbeskrivning</label>
+        <textarea name="projektbeskrivning" id="projektbeskrivning" rows="4" placeholder="Beskriv kortfattat vad projektet innebär, t.ex. nybyggnad av enbostadshus om ca 120 m²...">{{ data.projektbeskrivning }}</textarea>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-lg" type="submit">Generera kontrollplan →</button>
+        <span style="font-size:13px;color:var(--text-muted);">Du kan redigera och ta bort punkter i nästa steg.</span>
+      </div>
+
+    </div>
+  </form>
+</div>
 {% endblock %}

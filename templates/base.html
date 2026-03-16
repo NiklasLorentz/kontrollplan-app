@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Kontrollplaner.com{% endblock %}</title>
   {% block meta %}{% endblock %}
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232d6b3d'/><path d='M8 16l5 5 11-11' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-
   <!-- GA4 -->
-  <!-- Ersätt ID nedan med ditt GA4 ID om annat -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FP97MP64VT"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -23,55 +17,69 @@
   </script>
 </head>
 <body>
+
   <header class="site-header">
-    <div class="container header-inner">
+    <div class="header-inner">
       <a class="logo" href="/">Kontrollplaner.com</a>
-      <nav class="main-nav">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Öppna meny">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" id="main-nav">
         <a href="/" class="{% if request.path == '/' %}active{% endif %}">Hem</a>
-        <a href="/skapa" class="{% if request.path.startswith('/skapa') %}active{% endif %}">Skapa</a>
         <a href="/om" class="{% if request.path.startswith('/om') %}active{% endif %}">Om</a>
         <a href="/faq" class="{% if request.path.startswith('/faq') %}active{% endif %}">FAQ</a>
         <a href="/kontakt" class="{% if request.path.startswith('/kontakt') %}active{% endif %}">Kontakt</a>
+        <a href="/skapa" class="nav-cta {% if request.path.startswith('/skapa') %}active{% endif %}">Skapa kontrollplan</a>
       </nav>
-
     </div>
   </header>
 
-<main class="container">
+  <main>
+    {% if request.path != '/' %}
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Brödsmula">
+        <a href="/">Hem</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">
+          {% if request.path.startswith('/skapa') %}Skapa kontrollplan
+          {% elif request.path.startswith('/result') %}Resultat
+          {% elif request.path.startswith('/om') %}Om oss
+          {% elif request.path.startswith('/faq') %}Vanliga frågor
+          {% elif request.path.startswith('/kontakt') %}Kontakt
+          {% elif request.path.startswith('/kontrollplan-nybyggnad') %}Kontrollplan nybyggnad
+          {% elif request.path.startswith('/kontrollplan-attefall') %}Kontrollplan attefall
+          {% elif request.path.startswith('/kontrollplan-tillbyggnad') %}Kontrollplan tillbyggnad
+          {% elif request.path.startswith('/kontrollplan-garage') %}Kontrollplan garage
+          {% elif request.path.startswith('/privacy') %}Integritetspolicy
+          {% elif request.path.startswith('/terms') %}Användarvillkor
+          {% else %}Sida{% endif %}
+        </span>
+      </nav>
+    </div>
+    {% endif %}
 
-  {% if request.path != '/' %}
-  <nav class="breadcrumb">
-    <a href="/">Hem</a>
-    ›
-    <span>
-      {% if request.path.startswith('/skapa') %}Skapa kontrollplan{% endif %}
-      {% if request.path.startswith('/om') %}Om{% endif %}
-      {% if request.path.startswith('/faq') %}FAQ{% endif %}
-      {% if request.path.startswith('/kontakt') %}Kontakt{% endif %}
-      {% if request.path.startswith('/kontrollplan-nybyggnad') %}Kontrollplan Nybyggnad{% endif %}
-      {% if request.path.startswith('/kontrollplan-attefall') %}Kontrollplan Attefall{% endif %}
-      {% if request.path.startswith('/kontrollplan-tillbyggnad') %}Kontrollplan Tillbyggnad{% endif %}
-      {% if request.path.startswith('/kontrollplan-garage') %}Kontrollplan Garage/Komplementbyggnad{% endif %}
-      {% if request.path.startswith('/privacy') %}Integritetspolicy{% endif %}
-      {% if request.path.startswith('/terms') %}Användarvillkor{% endif %}
-    </span>
-  </nav>
-  {% endif %}
-
-  {% block content %}{% endblock %}
-</main>
-
+    {% block content %}{% endblock %}
+  </main>
 
   <footer class="site-footer">
-    <div class="container">
-      <p>&copy; {{ 2025 }} Kontrollplaner.com • <a href="/privacy">Integritet</a> • <a href="/terms">Villkor</a></p>
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="/">Hem</a>
+        <a href="/skapa">Skapa kontrollplan</a>
+        <a href="/faq">FAQ</a>
+        <a href="/om">Om oss</a>
+        <a href="/kontakt">Kontakt</a>
+        <a href="/privacy">Integritet</a>
+        <a href="/terms">Villkor</a>
+      </div>
+      <span class="footer-copy">&copy; {{ now.year }} Kontrollplaner.com</span>
     </div>
   </footer>
 
-  <!-- Cookie banner -->
+  <!-- Cookie-banner -->
   <div id="cookie-banner" class="cookie-banner" style="display:none;">
     <div class="cookie-inner">
-      <p>Vi använder cookies för att förbättra upplevelsen och analysera trafik. Genom att använda sidan godkänner du detta.</p>
+      <p style="margin:0;color:var(--green-200);">Vi använder cookies för att förbättra upplevelsen och analysera trafik.</p>
       <div class="cookie-actions">
         <button id="cookie-accept" class="btn">OK</button>
         <a href="/privacy" class="link">Läs mer</a>
@@ -81,23 +89,29 @@
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
   <script>
-    // Enkel cookie-consent
+    // Cookie-consent
     (function(){
       try {
         var key = 'kp_cookie_consent';
-        var consent = localStorage.getItem(key);
         var banner = document.getElementById('cookie-banner');
-        if(!consent && banner){
+        if(!localStorage.getItem(key) && banner){
           banner.style.display = 'block';
-          var btn = document.getElementById('cookie-accept');
-          if(btn){
-            btn.addEventListener('click', function(){
-              localStorage.setItem(key, '1');
-              banner.style.display = 'none';
-            });
-          }
+          document.getElementById('cookie-accept').addEventListener('click', function(){
+            localStorage.setItem(key,'1');
+            banner.style.display = 'none';
+          });
         }
-      } catch(e) { /* no-op */ }
+      } catch(e){}
+    })();
+    // Hamburger
+    (function(){
+      var btn = document.getElementById('nav-toggle');
+      var nav = document.getElementById('main-nav');
+      if(btn && nav){
+        btn.addEventListener('click', function(){
+          nav.classList.toggle('open');
+        });
+      }
     })();
   </script>
 </body>

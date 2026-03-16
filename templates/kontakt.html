@@ -3,21 +3,51 @@
 <title>Kontakta oss – Kontrollplaner.com</title>
 <meta name="description" content="Har du frågor om kontrollplaner eller vårt verktyg? Kontakta oss enkelt via formuläret.">
 {% endblock %}
+
 {% block content %}
-<h1>Kontakta oss</h1>
-{% if sent %}
-  <div class="notice success">Tack! Ditt meddelande är skickat.</div>
-{% endif %}
-<form method="POST">
-  <label>Namn
-    <input name="namn" required>
-  </label>
-  <label>E‑post
-    <input type="email" name="email" required>
-  </label>
-  <label>Meddelande
-    <textarea name="message" rows="5" required></textarea>
-  </label>
-  <button class="btn" type="submit">Skicka</button>
-</form>
+<div class="container prose-page">
+  <h1>Kontakta oss</h1>
+  <p>Har du frågor, feedback eller vill dela med dig av erfarenheter från ditt byggprojekt? Vi svarar normalt inom 1–2 arbetsdagar.</p>
+
+  {% if sent %}
+  <div class="notice success">
+    ✓ Tack! Ditt meddelande är skickat till info@kontrollplaner.com. Vi återkommer så snart vi kan.
+  </div>
+  {% else %}
+
+  {% if error %}
+  <div class="notice" style="background:#fdf0f0;color:#7b2020;border:1px solid #f0b0b0;padding:14px 18px;border-radius:10px;margin-bottom:20px;">
+    ✗ Något gick fel – meddelandet kunde inte skickas just nu. Försök igen eller maila direkt på
+    <a href="mailto:info@kontrollplaner.com" style="color:#7b2020;font-weight:600;">info@kontrollplaner.com</a>.
+  </div>
+  {% endif %}
+
+  <form method="POST" action="/kontakt" class="contact-grid" style="margin-top:24px;">
+    <div class="form-group">
+      <label for="namn">Namn *</label>
+      <input type="text" name="namn" id="namn" placeholder="För- och efternamn" required>
+    </div>
+    <div class="form-group">
+      <label for="email">E-post *</label>
+      <input type="email" name="email" id="email" placeholder="namn@exempel.se" required>
+    </div>
+    <div class="form-group col-full">
+      <label for="message">Meddelande *</label>
+      <textarea name="message" id="message" rows="6" placeholder="Beskriv din fråga eller ditt ärende..." required></textarea>
+    </div>
+    <div class="col-full">
+      <button class="btn btn-lg" type="submit">Skicka meddelande</button>
+    </div>
+  </form>
+
+  {% endif %}
+
+  <div class="contact-info">
+    <p style="font-weight:600;color:var(--text-primary);margin-bottom:8px;">Vanliga frågor</p>
+    <p>Kolla gärna vår <a href="/faq">FAQ</a> innan du skriver – de flesta frågor besvaras där.</p>
+    <p style="margin-top:8px;">Du kan också maila oss direkt på
+      <a href="mailto:info@kontrollplaner.com">info@kontrollplaner.com</a>.
+    </p>
+  </div>
+</div>
 {% endblock %}

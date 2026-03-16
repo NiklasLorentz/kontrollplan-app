@@ -1,72 +1,88 @@
 {% extends "base.html" %}
 {% block meta %}
 <title>Vanliga frågor om kontrollplan (FAQ) | Kontrollplaner.com</title>
-<meta name="description" content="Vanliga frågor och svar om kontrollplaner för privatpersoner: när behövs kontrollplan, vem ansvarar, behöver man KA, hur många kontrollpunkter, energikrav, brandskydd m.m.">
+<meta name="description" content="Vanliga frågor och svar om kontrollplaner: när behövs kontrollplan, vem ansvarar, behöver man KA, energikrav, brandskydd och hur man laddar ner PDF.">
 {% endblock %}
 
 {% block content %}
-<h1>Vanliga frågor om kontrollplan</h1>
+<div class="container prose-page">
+  <h1>Vanliga frågor</h1>
+  <p style="margin-bottom:32px;">Allt du behöver veta om kontrollplaner för privatpersoner. <strong>BH</strong> = Byggherre, <strong>KA</strong> = Kontrollansvarig, <strong>E</strong> = Entreprenör.</p>
 
-<p><b>Kort om begrepp:</b> BH = Byggherre (du som söker), KA = Kontrollansvarig, E = Entreprenör.</p>
+  <div class="faq-list">
 
-<div class="faq">
+    {% set faqs = [
+      ("Vad är en kontrollplan?",
+       "En kontrollplan beskriver vilka kontroller som ska göras i projektet, av vem (BH/KA/E), hur de utförs och mot vilka krav (ritningar, BBR, startbesked) de kontrolleras. Den är en obligatorisk handling som kommunen kräver för att ge startbesked."),
 
-  <p><b>Vad är en kontrollplan?</b><br>
-  En kontrollplan beskriver vilka kontroller som ska göras i projektet, av vem (BH/KA/E), hur de utförs (metod) och mot vilka krav (ritningar, BBR, beslut) de kontrolleras. Den ligger till grund för kommunens startbesked.</p>
+      ("När behövs en kontrollplan?",
+       "Nästan alla bygglovs- och anmälningspliktiga åtgärder kräver en kontrollplan – t.ex. nybyggnad, tillbyggnad, komplementbyggnad, fasadändring, takomläggning, uterum/altan som kräver lov, samt attefallsåtgärder."),
 
-  <p><b>När behövs en kontrollplan?</b><br>
-  Nästan alla bygglovs- och anmälningspliktiga åtgärder kräver en kontrollplan (t.ex. nybyggnad, tillbyggnad, komplementbyggnad, fasadändring, takomläggning, uterum/altan som kräver lov samt vissa attefallsåtgärder).</p>
+      ("Vem ansvarar för kontrollplanen?",
+       "Byggherren (BH) ansvarar alltid för att det finns en korrekt kontrollplan och att kontrollerna utförs. För mer komplexa projekt hjälper en kontrollansvarig (KA) till att ta fram, följa upp och intyga."),
 
-  <p><b>Vem ansvarar för kontrollplanen?</b><br>
-  <b>BH</b> ansvarar alltid för att det finns en korrekt kontrollplan och att kontrollerna utförs. I många fall hjälper en <b>KA</b> till att ta fram, följa upp och intyga.</p>
+      ("Behöver jag en kontrollansvarig (KA)?",
+       "Inte alltid. Mindre åtgärder kan vara undantagna. För nybyggnad av villa, större tillbyggnader och komplementbostadshus krävs ofta KA. Kommunen anger kravet i startbeskedet."),
 
-  <p><b>Behöver jag en kontrollansvarig (KA)?</b><br>
-  Inte alltid. Mindre åtgärder kan vara undantagna. För nybyggnad av villa/småhus, större tillbyggnader och komplementbostadshus krävs ofta KA. Kommunen anger kravet i bygglov/startbesked.</p>
+      ("Vad ska en kontrollplan innehålla?",
+       "Tydliga kontrollpunkter, ansvarig roll (BH/KA/E), hur kontrollen görs (metod), vad den kontrolleras mot (t.ex. ritningar, BBR), när kontrollen utförs samt plats för signatur och datum. Vår generator fyller i detta åt dig."),
 
-  <p><b>Vad ska en kontrollplan innehålla?</b><br>
-  Tydliga kontrollpunkter, ansvarig (BH/KA/E), hur kontrollen görs (metod), vad den kontrolleras mot (t.ex. ritningar, BBR), när kontrollen utförs samt plats för signatur/datum. Vår generator fyller detta åt dig – du kan lägga till, ändra och ta bort punkter.</p>
+      ("Kan jag ändra eller ta bort kontrollpunkter?",
+       "Ja. Du redigerar texten direkt i tabellen, lägger till egna rader och rubriker, och tar bort irrelevanta punkter. Vissa rader är låsta (markerade med 🔒) eftersom de är typiska minimikrav som kommunerna brukar efterfråga."),
 
-  <p><b>Hur många kontrollpunkter behöver jag?</b><br>
-  Det varierar med åtgärden. Vår generator ger ett förslag anpassat för privatprojekt (nybyggnad, tillbyggnad, garage/komplementbyggnad, komplementbostadshus, fasad, tak, altan/uterum, pool och attefall). Du kan justera för att passa just ditt projekt.</p>
+      ("Varför är vissa rader låsta?",
+       "För att du inte ska råka ta bort viktiga kontroller, t.ex. att åtgärden överensstämmer med bygglov och startbesked. Dessa är vanliga minimikrav som kommunerna brukar efterfråga och som KA behöver kunna intyga."),
 
-  <p><b>Vad betyder BH, KA och E i tabellen?</b><br>
-  <b>BH</b> = Byggherre, <b>KA</b> = Kontrollansvarig, <b>E</b> = Entreprenör. Dessa anger vem som ansvarar för respektive kontrollpunkt.</p>
+      ("Behövs energikrav och täthetsprovning?",
+       "Vid nybyggnad av småhus är täthetsprovning vanligt och kan krävas av kommunen i startbeskedet. Därför finns en obligatorisk punkt för detta i nybyggnadstypen."),
 
-  <p><b>Behöver villor uppfylla energikrav och täthetsprovning?</b><br>
-  Ofta ja vid nybyggnad av småhus (kommunen anger vad som krävs i startbeskedet). Därför finns punkter för energikrav/täthet i nybyggnadstypen i vår kontrollplan.</p>
+      ("Hur laddar jag ner PDF:en?",
+       "När du är nöjd med tabellen klickar du på 'Ladda ner PDF'. Filen genereras direkt i liggande A4 med signeringsrad och – för större åtgärder – en tabell för aktiviteter KA och byggnadsnämnd."),
 
-  <p><b>Görs OVK i villor med självdrag?</b><br>
-  Normalt krävs ingen återkommande OVK för småhus/villor med självdrag. Vår kontrollplan inkluderar inte OVK som krav för sådana fall.</p>
+      ("Fungerar mallen i alla kommuner?",
+       "Ja, mallen följer det upplägg som kommuner generellt förväntar sig. Om din kommun har särskilda krav (framgår av startbeskedet) kan du lägga till egna punkter innan nedladdning."),
 
-  <p><b>Brandskydd – vad förväntas i bostad?</b><br>
-  För privatbostäder handlar det ofta om fungerande brandvarnare, släckutrustning och brandfilt. Vi har med en sammanslagen egenkontrollpunkt för detta där det är relevant.</p>
+      ("Vad händer efter att jag skickat in till kommunen?",
+       "Kommunen prövar handlingarna och ger startbesked när kraven uppfylls. Under byggprojektet kan KA och byggnadsnämnden ha platsbesök. Därefter lämnas slutanmälan och kommunen beslutar om slutbesked."),
 
-  <p><b>Kan jag ändra eller ta bort kontrollpunkter i ert verktyg?</b><br>
-  Ja. Du kan redigera texter direkt i tabellen, lägga till egna rader/rubriker och ta bort irrelevanta punkter. Vissa rader kan vara låsta om de typiskt är obligatoriska för den valda åtgärden.</p>
+      ("Behöver personnummer stå i kontrollplanen?",
+       "Nej. Vi tar inte med personnummer i mallen. Kontaktuppgifter och fastighetsdata räcker normalt."),
 
-  <p><b>Varför är vissa rader låsta?</b><br>
-  För att hjälpa dig undvika att råka ta bort viktiga kontroller (t.ex. att åtgärden överensstämmer med bygglov/startbesked). Låsta rader är vanliga minimikrav som kommunerna brukar efterfråga.</p>
+      ("Jag behöver mer hjälp – vad gör jag?",
+       "Kontakta oss via sidan Kontakt. Om ditt projekt är mer komplext rekommenderar vi att du anlitar en certifierad kontrollansvarig (KA).")
+    ] %}
 
-  <p><b>Vilka dokument ska jag spara/koppla till kontrollplanen?</b><br>
-  Exempel: bygglovsbeslut/startbesked, situationsplan/ritningar, egenkontroller/intyg från entreprenör, mät- och provningsprotokoll (t.ex. täthet), samt eventuellt KA:s utlåtande.</p>
+    {% for q, a in faqs %}
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        {{ q }}
+        <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="faq-answer">
+        <p>{{ a }}</p>
+      </div>
+    </div>
+    {% endfor %}
 
-  <p><b>Hur laddar jag ner kontrollplanen som PDF?</b><br>
-  När du är nöjd med tabellen klickar du på <i>Ladda ner PDF</i>. PDF:en genereras i liggande A4 med plats för signatur och – där det är aktuellt – en tabell för ”Aktiviteter KA och byggnadsnämnd”.</p>
+  </div>
 
-  <p><b>Vad händer efter att jag skickat in till kommunen?</b><br>
-  Kommunen prövar handlingarna och kan, när kraven är uppfyllda, ge <b>startbesked</b>. Under bygget kan KA/BN ha platsbesök enligt överenskommelse. Därefter lämnas slutanmälan/utlåtande och kommunen fattar beslut om <b>slutbesked</b>.</p>
-
-  <p><b>Behöver personnummer stå i kontrollplanen?</b><br>
-  Nej. Vi tar inte med personnummer i vår mall. Kontakt- och fastighetsuppgifter räcker normalt i kontrollplanen.</p>
-
-  <p><b>Min PDF-text går utanför kanten – vad gör jag?</b><br>
-  Försök korta ner ovanligt långa texter/rubriker. Vår mall radbryter automatiskt, men extremt långa rader kan bli svårlästa. Du kan även dela upp en lång punkt i två.</p>
-
-  <p><b>Kan jag använda kontrollplanen för olika kommuner?</b><br>
-  Ja, den fungerar generellt. Om kommunen har särskilda krav (framgår av startbesked/kommunens anvisningar) lägger du till eller justerar punkter innan du sparar PDF.</p>
-
-  <p><b>Jag behöver hjälp med innehållet – hur gör jag?</b><br>
-  Vårt förslag är anpassat för privatpersoner. Om ditt projekt är mer komplext, kontakta gärna en KA. Du kan också skriva till oss via sidan <a href="/kontakt">Kontakt</a>.</p>
-
+  <div style="margin-top:40px;">
+    <a class="btn btn-lg" href="/skapa">Skapa kontrollplan</a>
+    <a class="btn btn-ghost" href="/kontakt" style="margin-left:12px;">Ställ en fråga</a>
+  </div>
 </div>
+
+<script>
+document.querySelectorAll('.faq-question').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var item = btn.closest('.faq-item');
+    var isOpen = item.classList.contains('open');
+    // Stäng alla
+    document.querySelectorAll('.faq-item.open').forEach(function(el){ el.classList.remove('open'); });
+    if(!isOpen) item.classList.add('open');
+  });
+});
+</script>
 {% endblock %}
