@@ -1,77 +1,126 @@
-(function(){
-  const table = document.getElementById('kontroll-tabell');
-  if(!table) return;
+(function () {
+  'use strict';
 
-  table.addEventListener('click', function(e){
+  const table = document.getElementById('kontroll-tabell');
+  if (!table) return;
+
+  const tbody = table.querySelector('tbody');
+
+  /* ── Inline-redigering ─────────────────────────────────── */
+  table.addEventListener('click', function (e) {
+    // Klick på .editable → gör om till input
     const span = e.target.closest('.editable');
-    if(span){
-      const current = span.textContent;
+    if (span && !span.querySelector('input')) {
+      const val = span.textContent;
       const input = document.createElement('input');
-      input.value = current;
-      span.replaceWith(input);
+      input.type = 'text';
+      input.value = val;
+      span.textContent = '';
+      span.appendChild(input);
       input.focus();
-      input.addEventListener('blur', () => {
-        const newSpan = document.createElement('span');
-        newSpan.className = 'editable';
-        newSpan.textContent = input.value;
-        input.replaceWith(newSpan);
+      input.select();
+
+      const commit = () => {
+        const newVal = input.value;
+        span.textContent = newVal;
+      };
+      input.addEventListener('blur', commit);
+      input.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') { ev.preventDefault(); input.blur(); }
+        if (ev.key === 'Escape') { span.textContent = val; }
       });
     }
-    const delBtn = e.target.closest('button.danger');
-    if(delBtn){
+
+    // Klick på Ta bort-knapp
+    const delBtn = e.target.closest('button.btn-danger');
+    if (delBtn) {
       const tr = delBtn.closest('tr');
-      if(tr && !tr.classList.contains('locked')){
+      if (tr && !tr.classList.contains('locked')) {
         tr.remove();
       }
     }
   });
 
-  const addCategory = document.getElementById('add-category');
-  if(addCategory){
-    addCategory.addEventListener('click', () => {
+  /* ── Lägg till rubrik ──────────────────────────────────── */
+  const addCategoryBtn = document.getElementById('add-category');
+  if (addCategoryBtn) {
+    addCategoryBtn.addEventListener('click', function () {
       const tr = document.createElement('tr');
-      tr.className = 'category';
-      tr.innerHTML = '<td><span class="editable">Ny rubrik</span></td><td></td><td></td><td></td><td></td><td></td><td><button type="button" class="danger">Ta bort</button></td>';
-      table.querySelector('tbody').appendChild(tr);
+      tr.className = 'category-row';
+      tr.innerHTML =
+        '<td colspan="5"><span class="editable">Ny rubrik – klicka för att ändra</span></td>' +
+        '<td><button type="button" class="btn btn-danger btn-sm">Ta bort</button></td>';
+      tbody.appendChild(tr);
+      // Trigga direkt redigering
+      tr.querySelector('.editable').click();
     });
   }
 
-  const addRow = document.getElementById('add-row');
-  if(addRow){
-    addRow.addEventListener('click', () => {
+  /* ── Lägg till kontrollpunkt ───────────────────────────── */
+  const addRowBtn = document.getElementById('add-row');
+  if (addRowBtn) {
+    addRowBtn.addEventListener('click', function () {
       const tr = document.createElement('tr');
-      tr.innerHTML = '<td><span class="editable">Ny kontrollpunkt</span></td><td><span class="editable">BH</span></td><td><span class="editable">Egenkontroll</span></td><td><span class="editable">Ritningar</span></td><td><span class="editable">Under arbetet</span></td><td><span class="editable"></span></td><td><button type="button" class="danger">Ta bort</button></td>';
-      table.querySelector('tbody').appendChild(tr);
+      tr.innerHTML =
+        '<td><span class="editable">Ny kontrollpunkt</span></td>' +
+        '<td><span class="editable">BH</span></td>' +
+        '<td><span class="editable">Egenkontroll</span></td>' +
+        '<td><span class="editable">Ritningar</span></td>' +
+        '<td><span class="editable">Under arbetet</span></td>' +
+        '<td><button type="button" class="btn btn-danger btn-sm">Ta bort</button></td>';
+      tbody.appendChild(tr);
+      tr.querySelector('.editable').click();
     });
   }
 
+  /* ── Rensa icke-låsta rader ────────────────────────────── */
+  const clearBtn = document.getElementById('clear-all');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+      if (!confirm('Ta bort alla icke-låsta rader och rubriker?')) return;
+      Array.from(tbody.querySelectorAll('tr:not(.locked)')).forEach(tr => tr.remove());
+    });
+  }
+
+  /* ── Serialisera tabellen till hidden inputs vid PDF ────── */
   const form = document.getElementById('pdf-form');
-  if(form){
-    form.addEventListener('submit', () => {
-      const hidden = document.getElementById('hidden-rows');
-      hidden.innerHTML = '';
-      const rows = table.querySelectorAll('tbody tr');
-      rows.forEach(tr => {
+  if (form) {
+    form.addEventListener('submit', function () {
+      // Commit eventuella pågående redigeringar
+      tbody.querySelectorAll('.editable input').forEach(function (input) {
+        const span = input.parentElement;
+        span.textContent = input.value;
+      });
+
+      let container = document.getElementById('hidden-rows');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'hidden-rows';
+        form.insertBefore(container, form.firstChild);
+      }
+      container.innerHTML = '';
+
+      const addHidden = (name, value) => {
+        const inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = name;
+        inp.value = value;
+        container.appendChild(inp);
+      };
+
+      tbody.querySelectorAll('tr').forEach(function (tr) {
         const tds = tr.querySelectorAll('td');
-        const isCat = tr.classList.contains('category') ? '1' : '0';
-        const add = (name, value) => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = name;
-          input.value = value;
-          hidden.appendChild(input);
-        };
-        add('is_category[]', isCat);
-        if(isCat === '1'){
-          const title = tds[0].innerText.trim();
-          add('kategori[]', title);
+        const isCat = tr.classList.contains('category-row') ? '1' : '0';
+        addHidden('is_category[]', isCat);
+        if (isCat === '1') {
+          addHidden('kategori[]', tds[0].innerText.trim());
         } else {
-          add('kp[]', tds[0].innerText.trim());
-          add('vem[]', tds[1].innerText.trim());
-          add('hur[]', tds[2].innerText.trim());
-          add('mot[]', tds[3].innerText.trim());
-          add('nar[]', tds[4].innerText.trim());
-          add('signatur[]', tds[5].innerText.trim());
+          addHidden('kp[]',       tds[0].innerText.trim());
+          addHidden('vem[]',      tds[1].innerText.trim());
+          addHidden('hur[]',      tds[2].innerText.trim());
+          addHidden('mot[]',      tds[3].innerText.trim());
+          addHidden('nar[]',      tds[4].innerText.trim());
+          addHidden('signatur[]', '');
         }
       });
     });
