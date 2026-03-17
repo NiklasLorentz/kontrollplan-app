@@ -157,6 +157,22 @@ def lp_tillbyggnad():
 def lp_garage():
     return render_template("kontrollplan_garage.html")
 
+@app.route("/kontrollplan-pool")
+def lp_pool():
+    return render_template("kontrollplan_pool.html")
+
+@app.route("/kontrollplan-altan")
+def lp_altan():
+    return render_template("kontrollplan_altan.html")
+
+@app.route("/kontrollplan-fasad")
+def lp_fasad():
+    return render_template("kontrollplan_fasad.html")
+
+@app.route("/kontrollplan-tak")
+def lp_tak():
+    return render_template("kontrollplan_tak.html")
+
 
 # ── Formulär & resultat ───────────────────────────────────────
 @app.route("/skapa", methods=["GET", "POST"])
@@ -598,6 +614,10 @@ def sitemap_xml():
         {"path": "kontrollplan-attefall",    "changefreq": "monthly", "priority": "0.8"},
         {"path": "kontrollplan-tillbyggnad", "changefreq": "monthly", "priority": "0.8"},
         {"path": "kontrollplan-garage",      "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-pool",        "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-altan",       "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-fasad",       "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-tak",         "changefreq": "monthly", "priority": "0.8"},
         {"path": "faq",                      "changefreq": "monthly", "priority": "0.7"},
         {"path": "kontakt",                  "changefreq": "monthly", "priority": "0.5"},
         {"path": "om",                       "changefreq": "monthly", "priority": "0.5"},
