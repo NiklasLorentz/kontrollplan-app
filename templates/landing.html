@@ -15,7 +15,10 @@
     <p>Välj åtgärd, fyll i uppgifter och ladda ner en färdig PDF. Anpassad för privatpersoner med nybyggnad, attefall, tillbyggnad, garage och mer.</p>
     <div class="hero-actions">
       <a class="btn btn-lg" href="/skapa" onclick="gtag('event','skapa_kontrollplan_click',{placement:'hero'})">Skapa kontrollplan</a>
-      <a class="btn btn-outline-inv" href="/faq">Vanliga frågor</a>
+      <button class="btn btn-outline-inv btn-lg" onclick="openExempel()" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><rect x="1.5" y="1.5" width="13" height="13" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M4.5 5.5h7M4.5 8h5M4.5 10.5h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Se ett exempel
+      </button>
     </div>
     <div class="hero-trust">
       <span class="trust-item"><span class="trust-icon">✓</span>Ingen registrering</span>
@@ -25,6 +28,68 @@
     </div>
   </div>
 </section>
+
+<!-- ── Exempel-modal ──────────────────────────────────────── -->
+<div id="exempel-backdrop" onclick="closeExempelOutside(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;padding:16px;">
+  <div id="exempel-modal" style="background:#fff;border-radius:16px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.35);">
+
+    <!-- Modal header -->
+    <div style="background:#1a3822;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-radius:16px 16px 0 0;position:sticky;top:0;z-index:10;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="color:#ddf0e3;font-size:15px;font-weight:600;">Exempelplan</span>
+        <span style="background:#2d6b3d;color:#fff;font-size:11px;font-weight:600;padding:2px 10px;border-radius:20px;">Förhandsgranskning</span>
+      </div>
+      <button onclick="closeExempel()" style="background:rgba(255,255,255,.12);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+
+    <!-- Åtgärdsväljare -->
+    <div style="padding:16px 20px 0;">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">Välj åtgärdstyp för att se ett relevant exempelutdrag:</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="ex-type-btn sel" onclick="setExType('nybyggnad',this)">🏠 Nybyggnad</button>
+        <button class="ex-type-btn" onclick="setExType('attefall',this)">🏡 Attefall</button>
+        <button class="ex-type-btn" onclick="setExType('tillbyggnad',this)">📐 Tillbyggnad</button>
+        <button class="ex-type-btn" onclick="setExType('garage',this)">🚗 Garage</button>
+        <button class="ex-type-btn" onclick="setExType('altan',this)">🌿 Altan</button>
+      </div>
+    </div>
+
+    <!-- PDF-tabell -->
+    <div style="margin:16px 20px;border:1.5px solid var(--line, #d4e6d9);border-radius:12px;overflow:hidden;">
+      <div style="background:#1a3822;padding:12px 16px;">
+        <div id="ex-title" style="color:#ddf0e3;font-size:13px;font-weight:600;">Kontrollplan – Nybyggnad (villa/småhus)</div>
+        <div style="color:#7dc492;font-size:12px;margin-top:2px;">Byggherre: Anna Andersson &nbsp;·&nbsp; Björken 1:23, Exempelstaden</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="border-collapse:collapse;width:100%;min-width:500px;font-size:12px;">
+          <thead>
+            <tr>
+              <th style="background:#132a1a;color:#b2ddbf;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;width:38%">Kontrollpunkt</th>
+              <th style="background:#132a1a;color:#b2ddbf;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;width:7%">Vem</th>
+              <th style="background:#132a1a;color:#b2ddbf;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;width:20%">Hur</th>
+              <th style="background:#132a1a;color:#b2ddbf;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;width:22%">Kontroll mot</th>
+              <th style="background:#132a1a;color:#b2ddbf;padding:8px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;width:13%">När</th>
+            </tr>
+          </thead>
+          <tbody id="ex-tbody"></tbody>
+        </table>
+      </div>
+      <div id="ex-more" style="padding:9px 14px;font-size:12px;color:var(--text-muted,#6b8474);background:#f6faf7;border-top:1px solid #d4e6d9;text-align:center;font-style:italic;"></div>
+    </div>
+
+    <!-- CTA-box -->
+    <div style="margin:0 20px 20px;background:#f2faf4;border:1.5px solid #b2ddbf;border-radius:12px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div>
+        <p style="font-size:15px;font-weight:600;color:var(--text-primary,#111);margin-bottom:3px;">Ser det bra ut? Skapa din egna på 5 minuter.</p>
+        <span style="font-size:13px;color:var(--text-muted,#6b8474);">Fyll i dina uppgifter och anpassa kontrollpunkterna fritt.</span>
+      </div>
+      <a href="/skapa" class="btn btn-lg" onclick="gtag('event','skapa_kontrollplan_click',{placement:'exempel_modal'})" style="white-space:nowrap;flex-shrink:0;">
+        Skapa min plan →
+      </a>
+    </div>
+
+  </div>
+</div>
 
 <!-- Åtgärdstyper -->
 <section class="section container">
@@ -99,5 +164,140 @@
     </div>
   </div>
 </section>
+
+<!-- ── Exempel-modal CSS + JS ─────────────────────────────── -->
+<style>
+.ex-type-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--line, #d4e6d9);
+  border-radius: 20px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body, sans-serif);
+  color: var(--text-secondary, #3d5244);
+  transition: all .15s;
+}
+.ex-type-btn:hover { border-color: #3a8850; color: #1a3822; }
+.ex-type-btn.sel   { background: #1a3822; color: #fff; border-color: #1a3822; }
+.ex-cat-row td { background: #ddf0e3 !important; font-weight: 600; font-size: 11px; color: #1a3822; padding: 6px 12px; }
+.ex-data-row td { padding: 7px 12px; border-bottom: 1px solid #e8f2ea; color: #111; vertical-align: top; background: #fff; }
+.ex-data-row:last-child td { border-bottom: none; }
+.ex-locked td:first-child { border-left: 3px solid #c8a84b; background: #fffbf0 !important; }
+</style>
+
+<script>
+var exData = {
+  nybyggnad: {
+    title: 'Kontrollplan – Nybyggnad (villa/småhus)',
+    rows: [
+      {cat: 'Mark och utsättning'},
+      {kp:'Utsättning av byggnad på tomten', vem:'BH', hur:'Kontrollmätning', mot:'Situationsplan, bygglovsbeslut', nar:'Före byggstart', locked:true},
+      {kp:'Markarbete, schakt och fyllning', vem:'E', hur:'Egenkontroll, foto', mot:'Ritningar', nar:'Under arbetet'},
+      {kp:'Grundläggning (platta/plintar)', vem:'E', hur:'Egenkontroll, foto', mot:'Konstruktionsritningar, BBR', nar:'Under arbetet'},
+      {cat: 'Stomme och bärande konstruktion'},
+      {kp:'Bärande väggar, pelare och balkar', vem:'E', hur:'Egenkontroll, foto', mot:'Konstruktionsritningar', nar:'Under arbetet'},
+      {kp:'Takstolar och takresning', vem:'E', hur:'Egenkontroll, foto', mot:'Konstruktionsritningar', nar:'Under arbetet'},
+    ],
+    more: 16
+  },
+  attefall: {
+    title: 'Kontrollplan – Attefallsåtgärder',
+    rows: [
+      {cat: 'Anmälan och förberedelse'},
+      {kp:'Anmälan inlämnad och startbesked erhållet', vem:'BH', hur:'Kontroll av handling', mot:'PBL 9 kap. 16 §', nar:'Före byggstart', locked:true},
+      {kp:'Placering: min. 4,5 m till tomtgräns', vem:'BH', hur:'Kontrollmätning', mot:'PBL 9 kap. 4 a §', nar:'Före byggstart', locked:true},
+      {cat: 'Grund och stomme'},
+      {kp:'Grundläggning med fuktskydd', vem:'E', hur:'Egenkontroll, foto', mot:'Ritningar, BBR', nar:'Under arbetet'},
+      {kp:'Bärande stomme', vem:'E', hur:'Egenkontroll', mot:'Ritningar', nar:'Under arbetet'},
+    ],
+    more: 8
+  },
+  tillbyggnad: {
+    title: 'Kontrollplan – Tillbyggnad',
+    rows: [
+      {cat: 'Mark och utsättning'},
+      {kp:'Utsättning av tillbyggnaden', vem:'BH', hur:'Kontrollmätning', mot:'Situationsplan, bygglovsbeslut', nar:'Före byggstart', locked:true},
+      {cat: 'Stomme och klimatskal'},
+      {kp:'Bärande stomme', vem:'E', hur:'Egenkontroll, foto', mot:'Konstruktionsritningar', nar:'Under arbetet'},
+      {kp:'Anslutning mot befintlig byggnad', vem:'E', hur:'Egenkontroll, foto', mot:'BBR avsnitt 6 och 9', nar:'Under arbetet'},
+      {kp:'Ytterväggar inkl. isolering', vem:'E', hur:'Egenkontroll', mot:'BBR avsnitt 6', nar:'Under arbetet'},
+    ],
+    more: 9
+  },
+  garage: {
+    title: 'Kontrollplan – Garage / Komplementbyggnad',
+    rows: [
+      {cat: 'Läge och utsättning'},
+      {kp:'Placering på tomten enligt situationsplan', vem:'BH', hur:'Kontrollmätning', mot:'Situationsplan, startbesked', nar:'Före byggstart', locked:true},
+      {kp:'Avstånd till tomtgräns kontrolleras', vem:'BH', hur:'Mätning', mot:'PBL 9 kap.', nar:'Före byggstart', locked:true},
+      {cat: 'Grund och stomme'},
+      {kp:'Grundläggning (betongplatta, plintar)', vem:'E', hur:'Egenkontroll, foto', mot:'Ritningar', nar:'Under arbetet'},
+      {kp:'Bärande stomme', vem:'E', hur:'Egenkontroll', mot:'Konstruktionsritningar', nar:'Under arbetet'},
+    ],
+    more: 7
+  },
+  altan: {
+    title: 'Kontrollplan – Altan / Uterum',
+    rows: [
+      {cat: 'Placering och dimensioner'},
+      {kp:'Höjd, utbredning och placering stämmer', vem:'BH', hur:'Mätning', mot:'Situationsplan, startbesked', nar:'Före byggstart', locked:true},
+      {cat: 'Byggnation'},
+      {kp:'Stomme, reglar och bärande delar', vem:'E', hur:'Egenkontroll', mot:'Konstruktionsritningar', nar:'Under arbetet'},
+      {kp:'Räcken och fallskydd (min. 1,0 m)', vem:'E', hur:'Måttkontroll', mot:'BBR avsnitt 8:9', nar:'Under arbetet', locked:true},
+      {kp:'Dagvatten och avrinning', vem:'E', hur:'Visuell kontroll', mot:'Kommunens krav', nar:'Under arbetet'},
+    ],
+    more: 5
+  }
+};
+
+function openExempel() {
+  var bd = document.getElementById('exempel-backdrop');
+  bd.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  gtag('event', 'exempel_modal_open', {placement: 'hero'});
+}
+function closeExempel() {
+  document.getElementById('exempel-backdrop').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function closeExempelOutside(e) {
+  if (e.target === document.getElementById('exempel-backdrop')) closeExempel();
+}
+function setExType(key, btn) {
+  document.querySelectorAll('.ex-type-btn').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+  var d = exData[key];
+  document.getElementById('ex-title').textContent = d.title;
+  var tbody = document.getElementById('ex-tbody');
+  tbody.innerHTML = '';
+  d.rows.forEach(function(r) {
+    var tr = document.createElement('tr');
+    if (r.cat) {
+      tr.className = 'ex-cat-row';
+      tr.innerHTML = '<td colspan="5">' + r.cat + '</td>';
+    } else {
+      tr.className = 'ex-data-row' + (r.locked ? ' ex-locked' : '');
+      tr.innerHTML =
+        '<td>' + r.kp + (r.locked ? ' <span style="font-size:10px;color:#c8a84b;">🔒</span>' : '') + '</td>' +
+        '<td>' + r.vem + '</td>' +
+        '<td>' + r.hur + '</td>' +
+        '<td>' + r.mot + '</td>' +
+        '<td>' + r.nar + '</td>';
+    }
+    tbody.appendChild(tr);
+  });
+  document.getElementById('ex-more').textContent =
+    '+ ' + d.more + ' kontrollpunkter till i din egna plan';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  setExType('nybyggnad', document.querySelector('.ex-type-btn.sel'));
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeExempel();
+});
+</script>
 
 {% endblock %}
