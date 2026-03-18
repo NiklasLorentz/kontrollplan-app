@@ -1,6 +1,46 @@
 {% extends "base.html" %}
 {% block meta %}
 <title>Kontrollplan attefall – enkel mall & PDF | Kontrollplaner.com</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Behöver attefallsåtgärder en kontrollplan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja, attefallsåtgärder som kräver anmälan behöver en kontrollplan. Den lämnas in tillsammans med anmälan för att kommunen ska kunna ge startbesked."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Behöver jag kontrollansvarig för attefallsåtgärder?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Normalt inte. För de flesta attefallsåtgärder kan byggherren själv ta ansvar utan KA, men kommunen anger kravet i startbeskedet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hur stort får ett attefallshus vara?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ett komplementbostadshus (attefallshus) får vara max 30 m² bruttoarea och max 4,0 m nockhöjd. Det ska placeras minst 4,5 m från tomtgräns om inte grannen medger annat."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Fungerar mallen i alla kommuner?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Om kommunen kräver något extra kan du lägga till egna kontrollpunkter innan du laddar ner PDF:en."
+      }
+    }
+  ]
+}
+</script>
 <meta name="description" content="Skapa kontrollplan för attefallsåtgärder (komplementbyggnad/komplementbostadshus). Enkel mall för privatpersoner. Redigera online, ladda ner PDF.">
 {% endblock %}
 
@@ -31,6 +71,45 @@
 <p><b>Går mallen att använda i alla kommuner?</b> Ja. Om kommunen kräver något extra kan du lägga till en punkt eller bilaga innan nedladdning.</p>
 <p><b>Vad innebär BH/KA/E?</b> BH = byggherre, KA = kontrollansvarig, E = entreprenör. De visar vem som ansvarar för kontrollen.</p>
 
-<p><a class="btn" href="/skapa" onclick="gtag('event', 'skapa_kontrollplan_click', { 'event_category': 'CTA', 'event_label': 'Landing Button' });">
-  Skapa kontrollplan</a></p>
+
+<div class="lp-cta-box">
+  <div>
+    <p>Redo att skapa din kontrollplan?</p>
+    <span class="sub">Gratis, ingen registrering, klar PDF på 5 minuter.</span>
+  </div>
+  <a class="btn btn-lg" href="/skapa" onclick="gtag('event','skapa_kontrollplan_click',{'event_category':'CTA','event_label':'attefall-landing'})">Skapa kontrollplan</a>
+</div>
+
+<div style="margin-top:40px;padding-top:28px;border-top:1.5px solid var(--line);">
+  <h2 style="font-size:18px;margin-bottom:8px;">Relaterade kontrollplaner</h2>
+  <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">Bygger du ett <a href='/kontrollplan-garage'>garage</a> som inte faller under attefallsreglerna? Eller ska du bygga till befintligt hus – se mallen för <a href='/kontrollplan-tillbyggnad'>tillbyggnad</a>. Ska du även lägga om taket? Vi har en mall för <a href='/kontrollplan-tak'>takomläggning</a>.</p>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+    <a href="/kontrollplan-garage" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg);border:1.5px solid var(--line);border-radius:var(--radius-md);text-decoration:none;font-size:14px;color:var(--text-primary);font-weight:500;transition:border-color .15s;" onmouseover="this.style.borderColor='#3a8850'" onmouseout="this.style.borderColor='var(--line)'">
+      <span style="font-size:18px;">🚗</span>Garage / Komplementbyggnad →
+    </a>
+    <a href="/kontrollplan-nybyggnad" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg);border:1.5px solid var(--line);border-radius:var(--radius-md);text-decoration:none;font-size:14px;color:var(--text-primary);font-weight:500;transition:border-color .15s;" onmouseover="this.style.borderColor='#3a8850'" onmouseout="this.style.borderColor='var(--line)'">
+      <span style="font-size:18px;">🏠</span>Nybyggnad (villa/småhus) →
+    </a>
+    <a href="/kontrollplan-tillbyggnad" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg);border:1.5px solid var(--line);border-radius:var(--radius-md);text-decoration:none;font-size:14px;color:var(--text-primary);font-weight:500;transition:border-color .15s;" onmouseover="this.style.borderColor='#3a8850'" onmouseout="this.style.borderColor='var(--line)'">
+      <span style="font-size:18px;">📐</span>Tillbyggnad →
+    </a>
+    <a href="/kontrollplan-tak" style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg);border:1.5px solid var(--line);border-radius:var(--radius-md);text-decoration:none;font-size:14px;color:var(--text-primary);font-weight:500;transition:border-color .15s;" onmouseover="this.style.borderColor='#3a8850'" onmouseout="this.style.borderColor='var(--line)'">
+      <span style="font-size:18px;">🏗️</span>Takomläggning →
+    </a>
+  </div>
+</div>
+
+<div style="margin-top:32px;padding:18px 20px;background:var(--bg-subtle);border:1.5px solid var(--line);border-radius:var(--radius-lg);">
+  <p style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:10px;">Alla kontrollplansmallar</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px 16px;">
+    <a href="/kontrollplan-nybyggnad" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Nybyggnad</a>
+<a href="/kontrollplan-tillbyggnad" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Tillbyggnad</a>
+<a href="/kontrollplan-fasad" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Fasadändring</a>
+<a href="/kontrollplan-tak" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Takomläggning</a>
+<a href="/kontrollplan-garage" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Garage / Komplementbyggnad</a>
+<a href="/kontrollplan-attefall" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Attefallsåtgärder</a>
+<a href="/kontrollplan-altan" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Altan / Uterum</a>
+<a href="/kontrollplan-pool" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Pool</a>
+  </div>
+</div>
 {% endblock %}
