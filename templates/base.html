@@ -28,6 +28,7 @@
         <a href="/" class="{% if request.path == '/' %}active{% endif %}">Hem</a>
         <a href="/om" class="{% if request.path.startswith('/om') %}active{% endif %}">Om</a>
         <a href="/faq" class="{% if request.path.startswith('/faq') %}active{% endif %}">FAQ</a>
+        <a href="/guide" class="{% if request.path.startswith('/guide') %}active{% endif %}">Guider</a>
         <a href="/kontakt" class="{% if request.path.startswith('/kontakt') %}active{% endif %}">Kontakt</a>
         <a href="/skapa" class="nav-cta {% if request.path.startswith('/skapa') %}active{% endif %}">Skapa kontrollplan</a>
       </nav>
@@ -45,6 +46,7 @@
           {% elif request.path.startswith('/result') %}Resultat
           {% elif request.path.startswith('/om') %}Om oss
           {% elif request.path.startswith('/faq') %}Vanliga frågor
+          {% elif request.path.startswith('/guide') %}Guider
           {% elif request.path.startswith('/kontakt') %}Kontakt
           {% elif request.path.startswith('/kontrollplan-nybyggnad') %}Kontrollplan nybyggnad
           {% elif request.path.startswith('/kontrollplan-attefall') %}Kontrollplan attefall
@@ -67,6 +69,7 @@
         <a href="/">Hem</a>
         <a href="/skapa">Skapa kontrollplan</a>
         <a href="/faq">FAQ</a>
+        <a href="/guide">Guider</a>
         <a href="/om">Om oss</a>
         <a href="/kontakt">Kontakt</a>
         <a href="/privacy">Integritet</a>
