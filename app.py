@@ -174,6 +174,22 @@ def lp_tak():
     return render_template("kontrollplan_tak.html")
 
 
+@app.route("/guide")
+def guide_index():
+    return render_template("guide.html")
+
+@app.route("/guide/vad-ar-en-kontrollplan")
+def guide_vad_ar():
+    return render_template("guide_vad_ar_kontrollplan.html")
+
+@app.route("/guide/vad-hander-om-jag-saknar-kontrollplan")
+def guide_saknar():
+    return render_template("guide_saknar_kontrollplan.html")
+
+@app.route("/guide/startbesked-och-slutbesked")
+def guide_startbesked():
+    return render_template("guide_startbesked_slutbesked.html")
+
 # ── Formulär & resultat ───────────────────────────────────────
 @app.route("/skapa", methods=["GET", "POST"])
 def skapa():
@@ -618,6 +634,10 @@ def sitemap_xml():
         {"path": "kontrollplan-altan",       "changefreq": "monthly", "priority": "0.8"},
         {"path": "kontrollplan-fasad",       "changefreq": "monthly", "priority": "0.8"},
         {"path": "kontrollplan-tak",         "changefreq": "monthly", "priority": "0.8"},
+        {"path": "guide",                        "changefreq": "monthly", "priority": "0.7"},
+        {"path": "guide/vad-ar-en-kontrollplan", "changefreq": "monthly", "priority": "0.8"},
+        {"path": "guide/vad-hander-om-jag-saknar-kontrollplan", "changefreq": "monthly", "priority": "0.8"},
+        {"path": "guide/startbesked-och-slutbesked", "changefreq": "monthly", "priority": "0.8"},
         {"path": "faq",                      "changefreq": "monthly", "priority": "0.7"},
         {"path": "kontakt",                  "changefreq": "monthly", "priority": "0.5"},
         {"path": "om",                       "changefreq": "monthly", "priority": "0.5"},
