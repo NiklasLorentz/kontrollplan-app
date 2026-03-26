@@ -64,7 +64,8 @@
     {% endfor %}
     <div id="hidden-rows"></div>
 
-    <div class="table-wrap">
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:6px;display:none" id="scroll-hint">← Skrolla för att se hela tabellen</p>
+    <div class="table-wrap" id="main-table-wrap">
       <table id="kontroll-tabell">
         <thead>
           <tr>
@@ -73,7 +74,7 @@
             <th style="width:18%">Hur</th>
             <th style="width:20%">Kontroll mot</th>
             <th style="width:12%">När</th>
-            <th style="width:9%">Ta bort</th>
+            <th style="width:9%" class="col-delete">Ta bort</th>
           </tr>
         </thead>
         <tbody>
