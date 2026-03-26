@@ -249,7 +249,7 @@ li { margin-bottom: 6px; }
   border-color: rgba(255,255,255,.4);
 }
 .btn-outline-inv:hover { background: rgba(255,255,255,.1); color: #fff; border-color: rgba(255,255,255,.7); }
-.btn-danger { background: #c0392b; border-color: #c0392b; font-size: 12px; padding: 4px 10px; }
+.btn-danger { background: #c0392b; border-color: #c0392b; font-size: 12px; padding: 4px 10px; min-height: 36px; }
 .btn-danger:hover { background: #a93226; border-color: #a93226; }
 .btn-sm { padding: 6px 12px; font-size: 13px; }
 .btn-secondary {
@@ -510,8 +510,10 @@ li { margin-bottom: 6px; }
 .meta-desc { grid-column: 1 / -1; margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--line-soft); }
 
 /* ── Tabell (kontrollplan) ────────────────────────────────── */
-.table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1.5px solid var(--line); box-shadow: var(--shadow-sm); }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-lg); border: 1.5px solid var(--line); box-shadow: var(--shadow-sm); }
+table { border-collapse: collapse; width: 100%; min-width: 600px; }
 table { border-collapse: collapse; width: 100%; min-width: 700px; }
+/* Tabell – min-width satt på table-wrap ovan */
 thead th {
   background: var(--green-900);
   color: var(--green-100);
@@ -751,6 +753,53 @@ td input[type=text]:focus { outline: none; }
   .contact-grid { grid-template-columns: 1fr; }
   .contact-grid .col-full { grid-column: 1; }
   .footer-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+  /* ── Mobiloptimering tabell ── */
+  .table-wrap { border-radius: var(--radius-md); }
+  thead th { font-size: 10px; padding: 8px 8px; }
+  tbody td { font-size: 13px; padding: 8px 8px; }
+  .table-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 12px;
+  }
+  .table-actions .spacer { display: none; }
+  .pdf-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    font-size: 16px;
+  }
+  .btn-add { justify-content: center; padding: 10px; min-height: 44px; }
+  .btn-clear { justify-content: center; padding: 10px; min-height: 44px; }
+  .btn-danger { min-height: 44px; padding: 8px 10px; }
+
+  /* ── Mobiloptimering formulär ── */
+  .form-grid { gap: 12px; }
+  .fg input, .fg select, .fg textarea { font-size: 16px; } /* 16px hindrar iOS zoom */
+  .form-actions { flex-direction: column; align-items: stretch; }
+  .form-actions .btn { width: 100%; justify-content: center; padding: 14px; }
+  .form-hint { text-align: center; }
+
+  /* ── Mobiloptimering result-sida ── */
+  .result-page h1 { font-size: 22px; }
+  .result-sub { font-size: 13px; }
+  .meta-box { padding: 14px; }
+
+  /* ── Mobiloptimering hero ── */
+  .hero-trust { gap: 12px; }
+  .trust-item { font-size: 12px; }
+
+  /* ── Mobiloptimering artiklar ── */
+  .article-hero { padding: 32px 0 28px; }
+  .article-hero h1 { font-size: 26px; }
+  .article-cta { padding: 20px; }
+  .article-cta p { font-size: 16px; }
+
+  /* ── Mobiloptimering exempel-modal ── */
+  #exempel-backdrop { padding: 8px; align-items: flex-end; }
+  #exempel-modal { border-radius: 16px 16px 0 0; max-height: 92vh; }
 }
 
 /* ── Artiklar / Guide ─────────────────────────────────────── */
@@ -1023,4 +1072,11 @@ td input[type=text]:focus { outline: none; }
 @media (max-width: 600px) {
   .article-grid { grid-template-columns: 1fr; }
   .article-cta { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 400px) {
+  .col-delete { display: none; }
+  tbody td:last-child { display: none; }
+  .table-actions { gap: 6px; }
+  .btn-add { font-size: 12px; padding: 8px; }
 }
