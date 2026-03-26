@@ -190,6 +190,10 @@ def guide_saknar():
 def guide_startbesked():
     return render_template("guide_startbesked_slutbesked.html")
 
+@app.route("/guide/nar-behovs-kontrollansvarig")
+def guide_ka():
+    return render_template("guide_nar_behovs_ka.html")
+
 # ── Formulär & resultat ───────────────────────────────────────
 @app.route("/skapa", methods=["GET", "POST"])
 def skapa():
@@ -638,6 +642,7 @@ def sitemap_xml():
         {"path": "guide/vad-ar-en-kontrollplan", "changefreq": "monthly", "priority": "0.8"},
         {"path": "guide/vad-hander-om-jag-saknar-kontrollplan", "changefreq": "monthly", "priority": "0.8"},
         {"path": "guide/startbesked-och-slutbesked", "changefreq": "monthly", "priority": "0.8"},
+        {"path": "guide/nar-behovs-kontrollansvarig", "changefreq": "monthly", "priority": "0.8"},
         {"path": "faq",                      "changefreq": "monthly", "priority": "0.7"},
         {"path": "kontakt",                  "changefreq": "monthly", "priority": "0.5"},
         {"path": "om",                       "changefreq": "monthly", "priority": "0.5"},
