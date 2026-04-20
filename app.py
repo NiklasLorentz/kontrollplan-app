@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime, timezone
 from urllib.parse import urljoin
-from flask import Flask, render_template, request, send_file, Response
+from flask import Flask, render_template, request, send_file, Response, redirect
 from io import BytesIO
 
 from reportlab.lib.pagesizes import A4, landscape
@@ -15,6 +15,17 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from xml.sax.saxutils import escape
 
 app = Flask(__name__)
+
+# ── Redirect HTTP → HTTPS och utan www → med www ──────────────
+@app.before_request
+def redirect_to_www_https():
+    host  = request.host
+    url   = request.url
+    proto = request.headers.get('X-Forwarded-Proto', 'https')
+    # Alltid redirect till https://www oavsett kombination
+    if host == 'kontrollplaner.com' or proto == 'http':
+        canonical = 'https://www.kontrollplaner.com' + request.full_path.rstrip('?')
+        return redirect(canonical, code=301)
 
 # Injicera 'now' i alla templates (används i footer för årstal)
 @app.context_processor
