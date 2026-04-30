@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Kontrollplan garage – gratis mall & PDF | Kontrollplaner.com{% endblock %}
+{% block title %}Kontrollplan garage – ladda ner gratis mall (PDF) | Kontrollplaner.com{% endblock %}
 {% block meta %}
 <script type="application/ld+json">
 {
@@ -11,15 +11,31 @@
       "name": "Behövs bygglov för garage?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja, i de flesta fall. Garage kräver bygglov om de inte faller under attefallsreglerna (max 15 m² i vissa fall). Kontrollera med din byggnadsnämnd."
+        "text": "Ja, i de flesta fall kräver ett garage bygglov. Undantaget är om garaget faller under attefallsreglerna – då räcker en anmälan. Kontrollera alltid med din byggnadsnämnd vad som gäller för just ditt projekt."
       }
     },
     {
       "@type": "Question",
-      "name": "Behöver jag KA för ett garage?",
+      "name": "Vad är skillnaden mellan garage och attefallsbyggnad?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Det beror på kommunen och projektets storlek. Kommunen anger kravet i startbeskedet."
+        "text": "Ett attefallsgarage är en komplementbyggnad som faller under attefallsreglerna – max 15 m² och max 4,0 m nockhöjd, placerat minst 4,5 m från tomtgräns. Det kräver anmälan men inte bygglov. Ett vanligt garage som överskrider dessa mått kräver bygglov."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Behöver jag kontrollansvarig (KA) för ett garage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Normalt inte för enklare garage och komplementbyggnader. Kommunen anger i startbeskedet om KA krävs. För större garage eller om el ska dras in kan kommunen ställa krav på KA."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Vad ska en kontrollplan för garage innehålla?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En kontrollplan för garage ska innehålla punkter för läge och utsättning, grundläggning, stomme och klimatskal, installationer (el, dagvatten) och slutkontroll. Varje punkt ska ange vem som ansvarar (BH/KA/E), hur kontrollen utförs och mot vad den kontrolleras."
       }
     },
     {
@@ -27,52 +43,78 @@
       "name": "Fungerar mallen i alla kommuner?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ja. Om din kommun har särskilda krav kan du lägga till dem i tabellen innan du laddar ner PDF:en."
+        "text": "Ja, mallen är generell och följer det upplägg som kommuner förväntar sig. Om din kommun har särskilda krav kan du enkelt lägga till egna kontrollpunkter innan du laddar ner PDF:en."
       }
     }
   ]
 }
 </script>
-<meta name="description" content="Gratis kontrollplan för garage och komplementbyggnad. Färdiga punkter för läge, grund, stomme och el. Redigera online och ladda ner PDF direkt på 5 minuter.">
-</div>
+<meta name="description" content="Ladda ner gratis kontrollplan för garage och komplementbyggnad som PDF. Färdiga kontrollpunkter för läge, grund, stomme och el. Redigera online, klar på 5 minuter – ingen registrering.">
+<link rel="canonical" href="https://www.kontrollplaner.com/kontrollplan-garage">
 {% endblock %}
 
 {% block content %}
 <div class="container lp-page">
-<h1>Kontrollplan för garage/komplementbyggnad</h1>
+<h1>Kontrollplan garage – gratis mall att ladda ner</h1>
 
-<p>Garage och komplementbyggnader kräver ofta bygglov eller anmälan. En tydlig kontrollplan underlättar kommunens prövning och minskar risken för kompletteringskrav. Vår mall är framtagen för privatpersoner och följer ett upplägg som kommuner brukar godta.</p>
+<p>Ska du bygga garage eller komplementbyggnad? Kommunen kräver en kontrollplan för att ge dig startbesked. Vår gratis mall har färdiga kontrollpunkter anpassade för garage – redigera direkt i webbläsaren och ladda ner en klar PDF på 5 minuter.</p>
 
-<h2>Vanliga kontrollpunkter</h2>
+<h2>Garage eller attefallsbyggnad – vad gäller?</h2>
+<p>Innan du skapar din kontrollplan är det viktigt att veta vilken typ av åtgärd du söker för:</p>
 <ul>
-  <li><b>Läge och grund</b> – placering enligt situationsplan/startbesked samt grundläggning.</li>
-  <li><b>Stomme och klimatskal</b> – bärande stomme, tak och väggar, portar, dörrar och fönster.</li>
-  <li><b>Installationer</b> – om aktuellt el (intyg) och dagvatten/avrinning enligt lokala krav.</li>
-  <li><b>Slutkontroll</b> – att utförandet stämmer med startbesked innan byggnaden tas i bruk.</li>
+  <li><strong>Bygglovspliktigt garage</strong> – kräver bygglov och kontrollplan. Gäller de flesta garage som överskrider attefallsmåtten.</li>
+  <li><strong>Attefallsgarage</strong> – max 15 m² och max 4,0 m nockhöjd. Kräver anmälan (inte bygglov) men ändå en kontrollplan. Se vår mall för <a href="/kontrollplan-attefall">attefallsåtgärder</a> om ditt garage faller under dessa regler.</li>
+</ul>
+<p>Är du osäker? Kontrollera med din byggnadsnämnd innan du ansöker – det sparar tid och undviker onödiga kompletteringskrav.</p>
+
+<h2>Vanliga kontrollpunkter för garage</h2>
+<ul>
+  <li><strong>Läge och utsättning</strong> – placering på tomten stämmer med situationsplan och startbesked. Avstånd till tomtgräns kontrolleras.</li>
+  <li><strong>Grundläggning</strong> – betongplatta, plintar eller annan grund utförd enligt ritningar med korrekt fuktskydd.</li>
+  <li><strong>Stomme och klimatskal</strong> – bärande stomme, väggar, tak, portar, dörrar och fönster monterade korrekt.</li>
+  <li><strong>El-installation</strong> – om el dras in i garaget krävs intyg från behörig elinstallatör.</li>
+  <li><strong>Dagvatten och avrinning</strong> – hantering av regnvatten från tak och hårdgjorda ytor enligt lokala krav.</li>
+  <li><strong>Slutkontroll</strong> – att utförandet stämmer med bygglov och startbesked innan byggnaden tas i bruk.</li>
 </ul>
 
-<h2>BH, KA och E</h2>
-<p>Vår tabell anger ansvarig roll för varje kontrollpunkt: <b>BH</b> (byggherre), <b>KA</b> (kontrollansvarig) eller <b>E</b> (entreprenör). I många kommuner efterfrågas KA för denna typ av åtgärd – därför utgår mallen från att KA medverkar, men du kan anpassa.</p>
+<h2>BH, KA och E – vem ansvarar för vad?</h2>
+<p>I kontrollplanen anger du vem som ansvarar för varje kontrollpunkt:</p>
+<ul>
+  <li><strong>BH (Byggherre)</strong> – du som söker bygglovet. Ansvarar för att åtgärden stämmer med startbesked och bygglov.</li>
+  <li><strong>KA (Kontrollansvarig)</strong> – certifierad person som stödjer och följer upp. Krävs inte alltid för garage.</li>
+  <li><strong>E (Entreprenör)</strong> – den som utför arbetet och gör egenkontroller av sitt eget arbete.</li>
+</ul>
+<p>För de flesta garage kan byggherren (du) ta ansvar för kontrollerna utan KA. Kommunen anger i startbeskedet om KA krävs.</p>
 
-<h2>Så använder du vår mall</h2>
+<h2>Så skapar du kontrollplanen</h2>
 <ol>
-  <li>Välj “Garage/Komplementbyggnad” i verktyget och fyll i uppgifterna.</li>
-  <li>Justera kontrollpunkter (lägg till/ta bort) så de matchar ditt projekt och eventuella kommunala krav.</li>
-  <li>Ladda ner en liggande PDF med signeringsrader och tabell för KA/BN-aktiviteter (när det är relevant).</li>
+  <li>Klicka på "Skapa kontrollplan" nedan och välj <strong>Garage/Komplementbyggnad</strong>.</li>
+  <li>Fyll i uppgifter om byggherren och fastigheten.</li>
+  <li>Granska kontrollpunkterna och justera efter ditt projekts förutsättningar.</li>
+  <li>Ladda ner en liggande PDF med signeringsrader – klar att lämna in till kommunen.</li>
 </ol>
-
-<h2>Vanliga frågor</h2>
-<p><b>Fungerar mallen i alla kommuner?</b> Ja, den är generell. Om din kommun har särskilda krav kan du snabbt lägga till dem före nedladdning.</p>
-<p><b>Kan jag radera ej relevanta punkter?</b> Ja. Obligatoriska rader är låsta för att du inte ska tappa något väsentligt, men övrigt kan justeras fritt.</p>
-
 
 <div class="lp-cta-box">
   <div>
-    <p>Redo att skapa din kontrollplan?</p>
+    <p>Skapa din kontrollplan för garage</p>
     <span class="sub">Gratis, ingen registrering, klar PDF på 5 minuter.</span>
   </div>
   <a class="btn btn-lg" href="/skapa" onclick="gtag('event','skapa_kontrollplan_click',{'event_category':'CTA','event_label':'garage-landing'})">Skapa kontrollplan</a>
 </div>
+
+<h2>Vanliga frågor om kontrollplan för garage</h2>
+
+<p><strong>Kan jag använda samma mall för carport?</strong><br>
+Ja. En carport räknas som komplementbyggnad och kontrollpunkterna är i stort sett desamma som för garage. Anpassa punkter för klimatskal om carporten saknar väggar.</p>
+
+<p><strong>Behövs el-intyg om jag inte drar el till garaget?</strong><br>
+Nej. El-punkten i mallen är relevant bara om el installeras. Du kan ta bort den om ditt garage inte får elinstallation.</p>
+
+<p><strong>Hur detaljerad ska kontrollplanen vara?</strong><br>
+Det ska vara proportionerligt mot åtgärdens storlek. Ett enklare garage behöver inte lika detaljerad kontrollplan som en nybyggnad av villa. Vår mall har rätt detaljeringsnivå för ett typiskt garageprojekt.</p>
+
+<p><strong>Kan jag lämna in kontrollplanen digitalt?</strong><br>
+De flesta kommuner accepterar PDF per e-post eller via deras e-tjänst. Kontrollera med din byggnadsnämnd vilken inlämningsmetod de föredrar.</p>
 
 <div style="margin-top:40px;padding-top:28px;border-top:1.5px solid var(--line);">
   <h2 style="font-size:18px;margin-bottom:8px;">Relaterade kontrollplaner</h2>
@@ -97,13 +139,14 @@
   <p style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:10px;">Alla kontrollplansmallar</p>
   <div style="display:flex;flex-wrap:wrap;gap:8px 16px;">
     <a href="/kontrollplan-nybyggnad" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Nybyggnad</a>
-<a href="/kontrollplan-tillbyggnad" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Tillbyggnad</a>
-<a href="/kontrollplan-fasad" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Fasadändring</a>
-<a href="/kontrollplan-tak" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Takomläggning</a>
-<a href="/kontrollplan-garage" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Garage / Komplementbyggnad</a>
-<a href="/kontrollplan-attefall" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Attefallsåtgärder</a>
-<a href="/kontrollplan-altan" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Altan / Uterum</a>
-<a href="/kontrollplan-pool" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Pool</a>
+    <a href="/kontrollplan-tillbyggnad" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Tillbyggnad</a>
+    <a href="/kontrollplan-fasad" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Fasadändring</a>
+    <a href="/kontrollplan-tak" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Takomläggning</a>
+    <a href="/kontrollplan-garage" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Garage / Komplementbyggnad</a>
+    <a href="/kontrollplan-attefall" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Attefallsåtgärder</a>
+    <a href="/kontrollplan-altan" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Altan / Uterum</a>
+    <a href="/kontrollplan-pool" style="color:var(--brand);font-size:14px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Pool</a>
   </div>
+</div>
 </div>
 {% endblock %}
