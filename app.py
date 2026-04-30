@@ -19,6 +19,9 @@ app = Flask(__name__)
 # ── Redirect HTTP → HTTPS och utan www → med www ──────────────
 @app.before_request
 def redirect_to_www_https():
+    # Undanta robots.txt och sitemap – Googlebot följer inte redirects för dessa
+    if request.path in ('/robots.txt', '/sitemap.xml'):
+        return None
     host  = request.host
     url   = request.url
     proto = request.headers.get('X-Forwarded-Proto', 'https')
@@ -673,8 +676,7 @@ def sitemap_xml():
 
 @app.route("/robots.txt")
 def robots_txt():
-    host = request.host or "www.kontrollplaner.com"
-    return Response(f"User-agent: *\nDisallow:\n\nSitemap: https://{host}/sitemap.xml\n",
+    return Response("User-agent: *\nDisallow:\n\nSitemap: https://www.kontrollplaner.com/sitemap.xml\n",
                     mimetype="text/plain")
 
 if __name__ == "__main__":
