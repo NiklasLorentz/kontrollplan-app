@@ -1,4 +1,5 @@
 import os
+import json
 import unicodedata
 import smtplib
 from email.mime.text import MIMEText
@@ -35,6 +36,31 @@ def redirect_to_www_https():
 def inject_now():
     return {"now": datetime.now(timezone.utc)}
 
+
+
+# ── PDF-räknare ───────────────────────────────────────────────
+COUNTER_FILE = os.path.join(os.path.dirname(__file__), "pdf_counter.json")
+COUNTER_START = 127  # Startvärde baserat på historisk data
+
+def _get_count():
+    try:
+        with open(COUNTER_FILE, "r") as f:
+            return json.load(f).get("count", COUNTER_START)
+    except Exception:
+        return COUNTER_START
+
+def _increment_count():
+    count = _get_count() + 1
+    try:
+        with open(COUNTER_FILE, "w") as f:
+            json.dump({"count": count}, f)
+    except Exception:
+        pass
+    return count
+
+@app.route("/api/counter")
+def api_counter():
+    return {"count": _get_count()}
 
 # ── Health ────────────────────────────────────────────────────
 @app.route("/health")
@@ -632,6 +658,7 @@ def generate_pdf():
 
     doc.build(story, onFirstPage=_draw_footer, onLaterPages=_draw_footer)
     buf.seek(0)
+    _increment_count()
     return send_file(buf, as_attachment=True, download_name="kontrollplan.pdf", mimetype="application/pdf")
 
 
