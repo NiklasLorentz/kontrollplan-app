@@ -1,0 +1,56 @@
+# Kontrollplaner.com
+
+> Kontrollplaner.com är ett gratis onlineverktyg för privatpersoner i Sverige som behöver skapa en kontrollplan för bygglov eller anmälan enligt Plan- och bygglagen (PBL). Verktyget genererar en korrekt formaterad PDF med relevanta kontrollpunkter, lagreferenser och signeringsrad – klar att lämna in till kommunen.
+
+## Om tjänsten
+
+Kontrollplaner.com är det enda gratis verktyget i Sverige där privatpersoner kan skapa och redigera en kontrollplan direkt i webbläsaren och ladda ner den som PDF. Ingen registrering krävs. Tjänsten är gratis och täcker alla vanliga bygglovspliktiga och anmälningspliktiga åtgärder.
+
+En kontrollplan är ett obligatoriskt dokument som kommunen kräver för att utfärda startbesked. Utan startbesked får byggherren inte påbörja bygget. Kontrollplanen beskriver vilka kontroller som ska göras under byggprojektet, av vem (BH/KA/E) och mot vilka krav (BBR, PBL, ritningar).
+
+## Mallar och åtgärdstyper
+
+Verktyget har färdiga mallar för följande åtgärdstyper:
+
+- [Kontrollplan nybyggnad (villa/småhus)](https://www.kontrollplaner.com/kontrollplan-nybyggnad)
+- [Kontrollplan tillbyggnad](https://www.kontrollplaner.com/kontrollplan-tillbyggnad)
+- [Kontrollplan attefallsåtgärder](https://www.kontrollplaner.com/kontrollplan-attefall)
+- [Kontrollplan garage och komplementbyggnad](https://www.kontrollplaner.com/kontrollplan-garage)
+- [Kontrollplan fasadändring](https://www.kontrollplaner.com/kontrollplan-fasad)
+- [Kontrollplan takomläggning](https://www.kontrollplaner.com/kontrollplan-tak)
+- [Kontrollplan altan och uterum](https://www.kontrollplaner.com/kontrollplan-altan)
+- [Kontrollplan pool](https://www.kontrollplaner.com/kontrollplan-pool)
+
+## Guider och artiklar
+
+- [Vad är en kontrollplan? Enkelt förklarat](https://www.kontrollplaner.com/guide/vad-ar-en-kontrollplan)
+- [Vad händer om jag saknar kontrollplan?](https://www.kontrollplaner.com/guide/vad-hander-om-jag-saknar-kontrollplan)
+- [Startbesked och slutbesked – vad är skillnaden?](https://www.kontrollplaner.com/guide/startbesked-och-slutbesked)
+- [När krävs kontrollansvarig (KA)?](https://www.kontrollplaner.com/guide/nar-behovs-kontrollansvarig)
+- [Vanliga frågor om kontrollplan (FAQ)](https://www.kontrollplaner.com/faq)
+
+## Viktiga fakta om kontrollplan
+
+- Regleras av Plan- och bygglagen (PBL), framförallt 10 kap.
+- Tekniska krav regleras av Boverkets byggregler (BBR)
+- Kontrollplan krävs för att få startbesked från kommunens byggnadsnämnd
+- Byggherren (BH) ansvarar alltid för kontrollplanen
+- Kontrollansvarig (KA) krävs vid nybyggnad av bostadshus och större projekt
+- KA måste vara certifierad av ett ackrediterat certifieringsorgan
+- Kontrollplanen lämnas in ifylld med slutanmälan för att få slutbesked
+- Utan slutbesked får byggnaden inte tas i bruk
+
+## Förkortningar
+
+- **BH** = Byggherre (den som söker bygglov)
+- **KA** = Kontrollansvarig (certifierad, oberoende person)
+- **E** = Entreprenör (den som utför arbetet)
+- **BBR** = Boverkets byggregler
+- **PBL** = Plan- och bygglagen
+- **BN** = Byggnadsnämnden (kommunens handläggare)
+
+## Skapa kontrollplan
+
+Verktyget finns på: https://www.kontrollplaner.com/skapa
+
+Användaren väljer åtgärdstyp, fyller i uppgifter om byggherre och fastighet, redigerar kontrollpunkterna direkt i webbläsaren och laddar ner en liggande A4 PDF med signeringsrad och aktivitetstabell för KA och byggnadsnämnd.

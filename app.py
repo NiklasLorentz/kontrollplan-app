@@ -701,9 +701,15 @@ def sitemap_xml():
            + "\n".join(xml_items) + "\n</urlset>\n")
     return Response(xml, mimetype="application/xml")
 
+
+@app.route("/llms.txt")
+def llms_txt():
+    with open(os.path.join(os.path.dirname(__file__), "llms.txt"), "r", encoding="utf-8") as f:
+        return Response(f.read(), mimetype="text/plain; charset=utf-8")
+
 @app.route("/robots.txt")
 def robots_txt():
-    return Response("User-agent: *\nDisallow:\n\nSitemap: https://www.kontrollplaner.com/sitemap.xml\n",
+    return Response("User-agent: *\nDisallow:\n\nSitemap: https://www.kontrollplaner.com/sitemap.xml\nLLMs: https://www.kontrollplaner.com/llms.txt\n",
                     mimetype="text/plain")
 
 if __name__ == "__main__":
