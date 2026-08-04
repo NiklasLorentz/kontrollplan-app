@@ -32,7 +32,7 @@ Verktyget har färdiga mallar för följande åtgärdstyper:
 ## Viktiga fakta om kontrollplan
 
 - Regleras av Plan- och bygglagen (PBL), framförallt 10 kap.
-- Tekniska krav regleras av Boverkets byggregler (BBR)
+- Tekniska krav regleras av Boverkets nya byggregler (BFS 2024:4–13, gäller från 1 juli 2026, ersätter BBR och EKS)
 - Kontrollplan krävs för att få startbesked från kommunens byggnadsnämnd
 - Byggherren (BH) ansvarar alltid för kontrollplanen
 - Kontrollansvarig (KA) krävs vid nybyggnad av bostadshus och större projekt
@@ -45,7 +45,7 @@ Verktyget har färdiga mallar för följande åtgärdstyper:
 - **BH** = Byggherre (den som söker bygglov)
 - **KA** = Kontrollansvarig (certifierad, oberoende person)
 - **E** = Entreprenör (den som utför arbetet)
-- **BBR** = Boverkets byggregler
+- **Boverkets byggregler** = Sedan 1 juli 2026 ersatte nio nya föreskrifter (BFS 2024:4–13) de gamla BBR och EKS. Energikrav kvar i BBR 31 till oktober 2026.
 - **PBL** = Plan- och bygglagen
 - **BN** = Byggnadsnämnden (kommunens handläggare)
 
