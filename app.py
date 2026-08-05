@@ -106,11 +106,11 @@ def _send_contact_email(namn: str, avsandare: str, meddelande: str) -> bool:
         SMTP_PASS     ditt-lösenord
         CONTACT_TO    info@kontrollplaner.com
     """
-    smtp_host = os.environ.get("SMTP_HOST", "smtp.one.com")
+    smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
     smtp_port = int(os.environ.get("SMTP_PORT", 587))
-    smtp_user = os.environ.get("SMTP_USER", "info@kontrollplaner.com")
+    smtp_user = os.environ.get("SMTP_USER", "")
     smtp_pass = os.environ.get("SMTP_PASS", "")
-    to_addr   = os.environ.get("CONTACT_TO", "info@kontrollplaner.com")
+    to_addr   = os.environ.get("CONTACT_TO", os.environ.get("SMTP_USER", ""))
 
     if not smtp_pass:
         # Lösenord ej konfigurerat – logga men krascha inte
