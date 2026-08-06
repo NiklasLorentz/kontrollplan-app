@@ -107,7 +107,7 @@ def _send_contact_email(namn: str, avsandare: str, meddelande: str) -> bool:
         CONTACT_TO    kontrollplaner@gmail.com
     """
     smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
-    smtp_port = int(os.environ.get("SMTP_PORT", 587))
+    smtp_port = int(os.environ.get("SMTP_PORT", 465))
     smtp_user = os.environ.get("SMTP_USER", "")
     smtp_pass = os.environ.get("SMTP_PASS", "")
     to_addr   = os.environ.get("CONTACT_TO", os.environ.get("SMTP_USER", ""))
@@ -156,11 +156,20 @@ def _send_contact_email(namn: str, avsandare: str, meddelande: str) -> bool:
         msg.attach(MIMEText(text_body, "plain", "utf-8"))
         msg.attach(MIMEText(html_body, "html",  "utf-8"))
 
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
-            server.ehlo()
-            server.starttls()
-            server.login(smtp_user, smtp_pass)
-            server.sendmail(smtp_user, to_addr, msg.as_string())
+        # Försök port 465 (SSL) först, fallback till 587 (TLS)
+        try:
+            import ssl
+            ctx = ssl.create_default_context()
+            with smtplib.SMTP_SSL(smtp_host, 465, context=ctx, timeout=10) as server:
+                server.login(smtp_user, smtp_pass)
+                server.sendmail(smtp_user, to_addr, msg.as_string())
+        except OSError:
+            # Port 465 blockerad – försök 587 TLS
+            with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
+                server.ehlo()
+                server.starttls()
+                server.login(smtp_user, smtp_pass)
+                server.sendmail(smtp_user, to_addr, msg.as_string())
 
         return True
 
