@@ -95,92 +95,70 @@ def terms():
 
 def _send_contact_email(namn: str, avsandare: str, meddelande: str) -> bool:
     """
-    Skickar kontaktformulär-meddelande via Gmail SMTP.
-
-    Inställningar hämtas från miljövariabler så att lösenordet aldrig
-    finns i källkoden.  Sätt dessa i Render → Environment:
-
-        SMTP_HOST     smtp.gmail.com
-        SMTP_PORT     587
-        SMTP_USER     kontrollplaner@gmail.com
-        SMTP_PASS     ditt-google-applösenord (16 tecken)
-        CONTACT_TO    kontrollplaner@gmail.com
+    Skickar kontaktformulär-meddelande via SendGrid API.
+    Sätt dessa miljövariabler på Render:
+        SENDGRID_API_KEY   din-sendgrid-api-nyckel
+        CONTACT_TO         kontrollplaner@gmail.com
+        CONTACT_FROM       kontrollplaner@gmail.com
     """
-    smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
-    smtp_port = int(os.environ.get("SMTP_PORT", 465))
-    smtp_user = os.environ.get("SMTP_USER", "")
-    smtp_pass = os.environ.get("SMTP_PASS", "")
-    to_addr   = os.environ.get("CONTACT_TO", os.environ.get("SMTP_USER", ""))
+    import urllib.request
+    import json as _json
 
-    if not smtp_pass:
-        app.logger.warning("SMTP_PASS ej satt – e-post skickades ej.")
-        return False
-    if not smtp_user:
-        app.logger.warning("SMTP_USER ej satt – e-post skickades ej.")
+    api_key  = os.environ.get("SENDGRID_API_KEY", "")
+    to_addr  = os.environ.get("CONTACT_TO", "")
+    from_addr = os.environ.get("CONTACT_FROM", to_addr)
+
+    if not api_key:
+        app.logger.warning("SENDGRID_API_KEY ej satt – e-post skickades ej.")
         return False
     if not to_addr:
         app.logger.warning("CONTACT_TO ej satt – e-post skickades ej.")
         return False
-    app.logger.info(f"Försöker skicka e-post via {smtp_host}:{smtp_port} som {smtp_user}")
+
+    html_body = f"""
+    <div style="font-family:sans-serif;max-width:600px">
+      <h2 style="color:#1a3822">Nytt meddelande – kontrollplaner.com</h2>
+      <table style="border-collapse:collapse;width:100%">
+        <tr><td style="padding:6px 12px;background:#f2faf4;font-weight:600">Namn</td>
+            <td style="padding:6px 12px">{namn}</td></tr>
+        <tr><td style="padding:6px 12px;background:#f2faf4;font-weight:600">E-post</td>
+            <td style="padding:6px 12px"><a href="mailto:{avsandare}">{avsandare}</a></td></tr>
+      </table>
+      <div style="margin-top:16px;padding:16px;background:#f6faf7;border-left:4px solid #2d6b3d;border-radius:4px">
+        <p style="margin:0;white-space:pre-wrap">{meddelande}</p>
+      </div>
+      <p style="margin-top:16px;font-size:12px;color:#6b8474">
+        Skickat via kontaktformuläret på kontrollplaner.com
+      </p>
+    </div>
+    """
+
+    payload = _json.dumps({
+        "personalizations": [{"to": [{"email": to_addr}]}],
+        "from": {"email": from_addr, "name": "Kontrollplaner.com"},
+        "reply_to": {"email": avsandare, "name": namn},
+        "subject": f"Kontaktformulär – kontrollplaner.com ({namn})",
+        "content": [
+            {"type": "text/plain", "value": f"Namn: {namn}\nE-post: {avsandare}\n\n{meddelande}"},
+            {"type": "text/html",  "value": html_body}
+        ]
+    }).encode("utf-8")
 
     try:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = f"Kontaktformulär – kontrollplaner.com ({namn})"
-        msg["From"]    = smtp_user
-        msg["To"]      = to_addr
-        msg["Reply-To"] = avsandare
-
-        text_body = (
-            f"Nytt meddelande från kontrollplaner.com\n\n"
-            f"Namn:   {namn}\n"
-            f"E-post: {avsandare}\n\n"
-            f"Meddelande:\n{meddelande}\n"
+        req = urllib.request.Request(
+            "https://api.sendgrid.com/v3/mail/send",
+            data=payload,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            },
+            method="POST"
         )
-        html_body = f"""
-        <div style="font-family:sans-serif;max-width:600px">
-          <h2 style="color:#1a3822">Nytt meddelande – kontrollplaner.com</h2>
-          <table style="border-collapse:collapse;width:100%">
-            <tr><td style="padding:6px 12px;background:#f2faf4;font-weight:600">Namn</td>
-                <td style="padding:6px 12px">{namn}</td></tr>
-            <tr><td style="padding:6px 12px;background:#f2faf4;font-weight:600">E-post</td>
-                <td style="padding:6px 12px"><a href="mailto:{avsandare}">{avsandare}</a></td></tr>
-          </table>
-          <div style="margin-top:16px;padding:16px;background:#f6faf7;border-left:4px solid #2d6b3d;border-radius:4px">
-            <p style="margin:0;white-space:pre-wrap">{meddelande}</p>
-          </div>
-          <p style="margin-top:16px;font-size:12px;color:#6b8474">
-            Skickat via kontaktformuläret på kontrollplaner.com
-          </p>
-        </div>
-        """
-        msg.attach(MIMEText(text_body, "plain", "utf-8"))
-        msg.attach(MIMEText(html_body, "html",  "utf-8"))
-
-        # Försök port 465 (SSL) först, fallback till 587 (TLS)
-        try:
-            import ssl
-            ctx = ssl.create_default_context()
-            with smtplib.SMTP_SSL(smtp_host, 465, context=ctx, timeout=10) as server:
-                server.login(smtp_user, smtp_pass)
-                server.sendmail(smtp_user, to_addr, msg.as_string())
-        except OSError:
-            # Port 465 blockerad – försök 587 TLS
-            with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
-                server.ehlo()
-                server.starttls()
-                server.login(smtp_user, smtp_pass)
-                server.sendmail(smtp_user, to_addr, msg.as_string())
-
-        return True
-
-    except smtplib.SMTPAuthenticationError as exc:
-        app.logger.error(f"SMTP autentiseringsfel – kontrollera SMTP_USER och SMTP_PASS: {exc}")
-        return False
-    except smtplib.SMTPConnectError as exc:
-        app.logger.error(f"SMTP anslutningsfel – kontrollera SMTP_HOST och SMTP_PORT: {exc}")
-        return False
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            app.logger.info(f"SendGrid svar: {resp.status}")
+            return resp.status in (200, 202)
     except Exception as exc:
-        app.logger.error(f"SMTP-fel ({type(exc).__name__}): {exc}")
+        app.logger.error(f"SendGrid-fel ({type(exc).__name__}): {exc}")
         return False
 
 
