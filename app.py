@@ -95,16 +95,16 @@ def terms():
 
 def _send_contact_email(namn: str, avsandare: str, meddelande: str) -> bool:
     """
-    Skickar kontaktformulär-meddelande via One.com SMTP till info@kontrollplaner.com.
+    Skickar kontaktformulär-meddelande via Gmail SMTP.
 
     Inställningar hämtas från miljövariabler så att lösenordet aldrig
     finns i källkoden.  Sätt dessa i Render → Environment:
 
-        SMTP_HOST     mail.kontrollplaner.com   (eller smtp.one.com)
+        SMTP_HOST     smtp.gmail.com
         SMTP_PORT     587
-        SMTP_USER     info@kontrollplaner.com
-        SMTP_PASS     ditt-lösenord
-        CONTACT_TO    info@kontrollplaner.com
+        SMTP_USER     kontrollplaner@gmail.com
+        SMTP_PASS     ditt-google-applösenord (16 tecken)
+        CONTACT_TO    kontrollplaner@gmail.com
     """
     smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
     smtp_port = int(os.environ.get("SMTP_PORT", 587))
@@ -113,9 +113,15 @@ def _send_contact_email(namn: str, avsandare: str, meddelande: str) -> bool:
     to_addr   = os.environ.get("CONTACT_TO", os.environ.get("SMTP_USER", ""))
 
     if not smtp_pass:
-        # Lösenord ej konfigurerat – logga men krascha inte
         app.logger.warning("SMTP_PASS ej satt – e-post skickades ej.")
         return False
+    if not smtp_user:
+        app.logger.warning("SMTP_USER ej satt – e-post skickades ej.")
+        return False
+    if not to_addr:
+        app.logger.warning("CONTACT_TO ej satt – e-post skickades ej.")
+        return False
+    app.logger.info(f"Försöker skicka e-post via {smtp_host}:{smtp_port} som {smtp_user}")
 
     try:
         msg = MIMEMultipart("alternative")
@@ -158,8 +164,14 @@ def _send_contact_email(namn: str, avsandare: str, meddelande: str) -> bool:
 
         return True
 
+    except smtplib.SMTPAuthenticationError as exc:
+        app.logger.error(f"SMTP autentiseringsfel – kontrollera SMTP_USER och SMTP_PASS: {exc}")
+        return False
+    except smtplib.SMTPConnectError as exc:
+        app.logger.error(f"SMTP anslutningsfel – kontrollera SMTP_HOST och SMTP_PORT: {exc}")
+        return False
     except Exception as exc:
-        app.logger.error(f"SMTP-fel: {exc}")
+        app.logger.error(f"SMTP-fel ({type(exc).__name__}): {exc}")
         return False
 
 
