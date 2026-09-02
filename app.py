@@ -196,6 +196,10 @@ def lp_tillbyggnad():
 def lp_garage():
     return render_template("kontrollplan_garage.html")
 
+@app.route("/kontrollplan-nya-byggregler")
+def lp_nya_byggregler():
+    return render_template("kontrollplan_nya_byggregler.html")
+
 @app.route("/kontrollplan-pool")
 def lp_pool():
     return render_template("kontrollplan_pool.html")
@@ -677,6 +681,7 @@ def sitemap_xml():
         {"path": "kontrollplan-pool",        "changefreq": "monthly", "priority": "0.8"},
         {"path": "kontrollplan-altan",       "changefreq": "monthly", "priority": "0.8"},
         {"path": "kontrollplan-fasad",       "changefreq": "monthly", "priority": "0.8"},
+        {"path": "kontrollplan-nya-byggregler", "changefreq": "monthly", "priority": "0.9"},
         {"path": "kontrollplan-tak",         "changefreq": "monthly", "priority": "0.8"},
         {"path": "guide",                        "changefreq": "monthly", "priority": "0.7"},
         {"path": "guide/vad-ar-en-kontrollplan", "changefreq": "monthly", "priority": "0.8"},
