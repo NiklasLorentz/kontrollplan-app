@@ -30,7 +30,7 @@
         <a href="/faq" class="{% if request.path.startswith('/faq') %}active{% endif %}">FAQ</a>
         <a href="/guide" class="{% if request.path.startswith('/guide') %}active{% endif %}">Guider</a>
         <a href="/kontakt" class="{% if request.path.startswith('/kontakt') %}active{% endif %}">Kontakt</a>
-        <a href="/skapa" class="nav-cta {% if request.path.startswith('/skapa') %}active{% endif %}">Skapa kontrollplan</a>
+        <a href="/skapa" class="nav-cta {% if request.path.startswith('/skapa') %}active{% endif %}" onclick="gtag('event','skapa_kontrollplan_click',{'event_category':'CTA','event_label':'nav'})">Skapa kontrollplan</a>
       </nav>
     </div>
   </header>
@@ -67,7 +67,7 @@
     <div class="footer-inner">
       <div class="footer-links">
         <a href="/">Hem</a>
-        <a href="/skapa">Skapa kontrollplan</a>
+        <a href="/skapa" onclick="gtag('event','skapa_kontrollplan_click',{'event_category':'CTA','event_label':'footer'})">Skapa kontrollplan</a>
         <a href="/faq">FAQ</a>
         <a href="/kontrollplan-nya-byggregler">Nya byggregler 2026</a>
         <a href="/guide">Guider</a>

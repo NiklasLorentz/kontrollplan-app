@@ -109,7 +109,7 @@
         <button type="button" id="add-row" class="btn-add">+ Kontrollpunkt</button>
         <button type="button" id="clear-all" class="btn-clear">Rensa icke-låsta</button>
         <span class="spacer"></span>
-        <button type="submit" class="btn">⬇ Ladda ner PDF</button>
+        <button type="submit" class="btn pdf-download-btn" id="pdf-submit-btn">⬇ Ladda ner PDF</button>
       </div>
     </div>
 
@@ -152,4 +152,33 @@
   </p>
 
 </div>
+
+<script>
+(function(){
+  var form = document.getElementById('pdf-form');
+  var btn  = document.getElementById('pdf-submit-btn');
+  if(!form || !btn) return;
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = '⏳ Genererar PDF...';
+
+    if(typeof gtag === 'function'){
+      gtag('event', 'ladda_ner_pdf', {
+        'event_category': 'PDF',
+        'event_label': 'result_page'
+      });
+    }
+
+    setTimeout(function(){
+      form.submit();
+      setTimeout(function(){
+        btn.disabled = false;
+        btn.textContent = '⬇ Ladda ner PDF';
+      }, 3000);
+    }, 300);
+  });
+})();
+</script>
 {% endblock %}
