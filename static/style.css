@@ -1080,3 +1080,24 @@ td input[type=text]:focus { outline: none; }
   .table-actions { gap: 6px; }
   .btn-add { font-size: 12px; padding: 8px; }
 }
+/* ── Infoga rad-knapp ────────────────────────────────────── */
+.btn-insert {
+  background: transparent;
+  border: 1px solid var(--green-400);
+  color: var(--green-600);
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-right: 4px;
+  opacity: 0.5;
+  transition: opacity .15s, background .15s;
+  min-height: 28px;
+}
+.btn-insert:hover {
+  opacity: 1;
+  background: var(--green-50);
+}
+tbody tr:hover .btn-insert {
+  opacity: 0.8;
+}

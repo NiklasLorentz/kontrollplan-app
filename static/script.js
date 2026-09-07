@@ -6,6 +6,60 @@
 
   const tbody = table.querySelector('tbody');
 
+  /* ── Hjälpfunktion: skapa en ny kontrollpunktsrad ───────── */
+  function createNewRow() {
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><span class="editable">Ny kontrollpunkt</span></td>' +
+      '<td><span class="editable">BH</span></td>' +
+      '<td><span class="editable">Egenkontroll</span></td>' +
+      '<td><span class="editable">Ritningar</span></td>' +
+      '<td><span class="editable">Under arbetet</span></td>' +
+      '<td>' +
+        '<button type="button" class="btn btn-insert btn-sm" title="Infoga rad nedan">➕</button>' +
+        '<button type="button" class="btn btn-danger btn-sm">Ta bort</button>' +
+      '</td>';
+    return tr;
+  }
+
+  /* ── Hjälpfunktion: skapa en ny rubrikrad ───────────────── */
+  function createNewCategory() {
+    const tr = document.createElement('tr');
+    tr.className = 'category-row';
+    tr.innerHTML =
+      '<td colspan="5"><span class="editable">Ny rubrik – klicka för att ändra</span></td>' +
+      '<td>' +
+        '<button type="button" class="btn btn-insert btn-sm" title="Infoga rad nedan">➕</button>' +
+        '<button type="button" class="btn btn-danger btn-sm">Ta bort</button>' +
+      '</td>';
+    return tr;
+  }
+
+  /* ── Lägg till ➕-knapp på alla befintliga rader ─────────── */
+  function addInsertButtons() {
+    tbody.querySelectorAll('tr').forEach(function(tr) {
+      const lastTd = tr.querySelector('td:last-child');
+      if (!lastTd) return;
+      // Lägg inte till dubbla insert-knappar
+      if (lastTd.querySelector('.btn-insert')) return;
+      const insertBtn = document.createElement('button');
+      insertBtn.type = 'button';
+      insertBtn.className = 'btn btn-insert btn-sm';
+      insertBtn.title = 'Infoga rad nedan';
+      insertBtn.textContent = '➕';
+      // Lägg knappen före Ta bort-knappen om den finns
+      const delBtn = lastTd.querySelector('.btn-danger');
+      if (delBtn) {
+        lastTd.insertBefore(insertBtn, delBtn);
+      } else {
+        lastTd.appendChild(insertBtn);
+      }
+    });
+  }
+
+  addInsertButtons();
+
+
   /* ── Inline-redigering ─────────────────────────────────── */
   table.addEventListener('click', function (e) {
     // Klick på .editable → gör om till input
@@ -39,19 +93,25 @@
         tr.remove();
       }
     }
+
+    // Klick på ➕ Infoga rad nedan
+    const insertBtn = e.target.closest('button.btn-insert');
+    if (insertBtn) {
+      const currentRow = insertBtn.closest('tr');
+      const newRow = createNewRow();
+      currentRow.after(newRow);
+      addInsertButtons();
+      newRow.querySelector('.editable').click();
+    }
+
   });
 
   /* ── Lägg till rubrik ──────────────────────────────────── */
   const addCategoryBtn = document.getElementById('add-category');
   if (addCategoryBtn) {
     addCategoryBtn.addEventListener('click', function () {
-      const tr = document.createElement('tr');
-      tr.className = 'category-row';
-      tr.innerHTML =
-        '<td colspan="5"><span class="editable">Ny rubrik – klicka för att ändra</span></td>' +
-        '<td><button type="button" class="btn btn-danger btn-sm">Ta bort</button></td>';
+      const tr = createNewCategory();
       tbody.appendChild(tr);
-      // Trigga direkt redigering
       tr.querySelector('.editable').click();
     });
   }
@@ -60,14 +120,7 @@
   const addRowBtn = document.getElementById('add-row');
   if (addRowBtn) {
     addRowBtn.addEventListener('click', function () {
-      const tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td><span class="editable">Ny kontrollpunkt</span></td>' +
-        '<td><span class="editable">BH</span></td>' +
-        '<td><span class="editable">Egenkontroll</span></td>' +
-        '<td><span class="editable">Ritningar</span></td>' +
-        '<td><span class="editable">Under arbetet</span></td>' +
-        '<td><button type="button" class="btn btn-danger btn-sm">Ta bort</button></td>';
+      const tr = createNewRow();
       tbody.appendChild(tr);
       tr.querySelector('.editable').click();
     });
